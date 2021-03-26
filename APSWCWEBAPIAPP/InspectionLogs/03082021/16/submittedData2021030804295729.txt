@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01104","WarehouseName":"Sompeta (Own)","Description":"jkdbsfca","uploadeddate":"2021-03-08T10:59:55.697Z","FilePath":"Inspection\\Images\\img010 (3).jpg"}

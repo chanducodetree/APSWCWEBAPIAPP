@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01212","WarehouseName":"Kotabommali (AMC)","Description":"checking quantity bag","uploadeddate":"2021-03-08T11:02:20.45Z","FilePath":"Inspection\\Images\\loginbg.png"}

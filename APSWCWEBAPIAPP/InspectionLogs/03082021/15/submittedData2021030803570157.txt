@@ -1,0 +1,1 @@
+{"WarehouseId":null,"WarehouseName":"csdhjcbd","Description":"checking quantity bag","uploadeddate":"2021-03-08T10:26:57.849Z","FilePath":"Inspection\\Images\\img010 (3).jpg"}

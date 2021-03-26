@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01213","WarehouseName":"Nivagam (Vasapa_AMC)","Description":"hgguyg","uploadeddate":"2021-03-12T12:27:39.935Z","FilePath":"Inspection\\Images\\Chandrasekhar Kuramdasu_6332118.pdf"}

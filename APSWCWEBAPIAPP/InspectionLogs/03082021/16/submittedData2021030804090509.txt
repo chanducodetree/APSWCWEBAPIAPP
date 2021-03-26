@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01105","WarehouseName":"vvv","Description":"cdccc","uploadeddate":"2021-03-08T10:39:03.149Z","FilePath":"Inspection\\Images\\6.jpg"}
