@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01105","WarehouseName":"Ponduru (Own)","Description":"ccdcdc","uploadeddate":"2021-03-08T10:41:42.226Z","FilePath":"Inspection\\Images\\loginbg.png"}

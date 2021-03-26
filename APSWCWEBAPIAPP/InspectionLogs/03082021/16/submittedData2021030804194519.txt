@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01208","WarehouseName":"Rajam(AMC)","Description":"checking quantity bag","uploadeddate":"2021-03-08T10:49:43.049Z","FilePath":"Inspection\\Images\\img010 (3).jpg"}

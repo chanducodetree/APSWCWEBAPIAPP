@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01106","WarehouseName":"Narasannapeta (Own)","Description":null,"uploadeddate":"2021-03-12T10:49:00.655Z","FilePath":"Inspection\\Images\\3.jpg"}

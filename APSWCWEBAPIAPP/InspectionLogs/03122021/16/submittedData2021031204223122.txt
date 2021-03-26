@@ -1,0 +1,1 @@
+{"WarehouseId":"VZ01118","WarehouseName":"Palasa (AMC-Own)","Description":"dfd","uploadeddate":"2021-03-12T10:52:31.733Z","FilePath":"Inspection\\Images\\Chandrasekhar Kuramdasu_6332118.pdf"}
