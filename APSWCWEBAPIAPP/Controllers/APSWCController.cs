@@ -18,15 +18,17 @@ using System.Web;
 using APSWCWEBAPIAPP.Services;
 using System.IO;
 using AuthService;
+using APSWCWEBAPIAPP.DBConnection;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase
     {
         private readonly IConfiguration _config;
+        private readonly SqlCon _hel;
 
         private readonly ICaptchaService _authservice;
         private List<User> appUsers = new List<User>
@@ -37,7 +39,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
         private List<InspectionModel> InsUsers = new List<InspectionModel>
         {
-           
+
             new InspectionModel {   WarehouseId = "VZ01101", WarehouseName = "Amdalavalasa -I (Own)",
             Description = "quanity checking", uploadeddate = DateTime.Now,FilePath="Inspection\\Images\\6.jpg" },
             new InspectionModel {   WarehouseName= "Amdalavalasa -Ii (Own-PEG)",
@@ -45,11 +47,11 @@ namespace APSWCWEBAPIAPP.Controllers
         };
 
 
-        public APSWCController(IConfiguration config, ICaptchaService auth)
+        public APSWCController(IConfiguration config, ICaptchaService auth, SqlCon hel)
         {
             _config = config;
             _authservice = auth;
-            
+            _hel = hel;
         }
 
         [HttpGet]
@@ -74,7 +76,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 //return response;
 
             }
-               
+
 
             User user = AuthenticateUser(login);
             if (user != null)
@@ -88,16 +90,16 @@ namespace APSWCWEBAPIAPP.Controllers
             }
             return response;
         }
-        
+
         [HttpGet]
         [Route("WareHouseMaster")]
-        public  List<WareHouseMaste> GetWareHouseMaster()
+        public List<WareHouseMaste> GetWareHouseMaster()
         {
-            var res=ListWarehouse.ListWareHosueMaster.ToList();
+            var res = ListWarehouse.ListWareHosueMaster.ToList();
             return res;
         }
 
-      
+
 
 
         [HttpGet]
@@ -111,7 +113,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [Route("InspectionRegistration")]
-        public IActionResult InspectionRegistration ([FromBody] InspectionModel Ins)
+        public IActionResult InspectionRegistration([FromBody] InspectionModel Ins)
         {
             IActionResult response = Unauthorized();
             var folderName = Path.Combine("InspectionLogs");
@@ -120,7 +122,7 @@ namespace APSWCWEBAPIAPP.Controllers
             string jsondata = JsonConvert.SerializeObject(Ins);
             Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, jsondata));
 
-             
+
             response = Ok(new
             {
                 StatusCode = 100,
@@ -128,6 +130,196 @@ namespace APSWCWEBAPIAPP.Controllers
             });
             return response;
         }
+
+        
+
+        [HttpGet]
+        [Route("GetWorkLocations")]
+        public async Task<IActionResult> GetWorkLocations()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetWorkLocations());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Work Locations",
+                    
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetEmployeeTypes")]
+        public async Task<IActionResult> GetEmployeeTypes()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetEmployeeTypes());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Employee Types"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetEducations")]
+        public async Task<IActionResult> GetEducations()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetEducations());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Educations"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDistricts")]
+        public async Task<IActionResult> GetDistricts()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetDistricts());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Districts"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAreaTypes")]
+        public async Task<IActionResult> GetAreaTypes()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetAreaTypes());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Area Types"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetMandlas")]
+        public async Task<IActionResult> GetMandlas(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetMandlas(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Mandals"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetVillages")]
+        public async Task<IActionResult> GetVillages(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetVillages(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Villages"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetStorageTypes")]
+        public async Task<IActionResult> GetStorageTypes()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetStorageTypes());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Storage Types"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetChargeDetails")]
+        public async Task<IActionResult> GetChargeDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetChargeDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Charge Details"
+                });
+                return response;
+            }
+        }
+
         public async Task<bool> IsCaptchaValid(string token)
         {
             var result = false;
@@ -148,7 +340,7 @@ namespace APSWCWEBAPIAPP.Controllers
             catch (Exception e)
             {
                 // fail gracefully, but log
-              //  logger.LogError("Failed to process captcha validation", e);
+                //  logger.LogError("Failed to process captcha validation", e);
             }
 
             return result;
@@ -158,7 +350,7 @@ namespace APSWCWEBAPIAPP.Controllers
         {
             public bool success { get; set; }
         }
-       
+
         User AuthenticateUser(User loginCredentials)
         {
             User user = appUsers.SingleOrDefault(x => x.UserName == loginCredentials.UserName && x.Password == loginCredentials.Password);
