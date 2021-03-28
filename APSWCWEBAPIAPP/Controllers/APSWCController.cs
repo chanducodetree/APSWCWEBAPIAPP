@@ -99,9 +99,6 @@ namespace APSWCWEBAPIAPP.Controllers
             return res;
         }
 
-
-
-
         [HttpGet]
         [Route("InsecpctionList")]
         public List<InspectionModel> GetInsecpctionList()
@@ -109,7 +106,6 @@ namespace APSWCWEBAPIAPP.Controllers
             var res = InsUsers;
             return res;
         }
-
 
         [HttpPost]
         [Route("InspectionRegistration")]
@@ -130,8 +126,6 @@ namespace APSWCWEBAPIAPP.Controllers
             });
             return response;
         }
-
-        
 
         [HttpGet]
         [Route("GetWorkLocations")]
@@ -315,6 +309,290 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while load Charge Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSections")]
+        public async Task<IActionResult> GetSections()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetSections());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Sections"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetBloodGroups")]
+        public async Task<IActionResult> GetBloodGroups()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetBloodGroups());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Blood Groups"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetExperianceYears")]
+        public async Task<IActionResult> GetExperianceYears()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetExperianceYears());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Experiance Years"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetExperianceMonths")]
+        public async Task<IActionResult> GetExperianceMonths()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetExperianceMonths());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Experiance Years"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetNationality")]
+        public async Task<IActionResult> GetNationality()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetNationality());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Nationality"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetReligions")]
+        public async Task<IActionResult> GetReligions()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetReligions());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Religions"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCommunities")]
+        public async Task<IActionResult> GetCommunities()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetCommunities());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Communities"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetMaritalStatus")]
+        public async Task<IActionResult> GetMaritalStatus()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetMaritalStatus());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Marital Status"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetStates")]
+        public async Task<IActionResult> GetStates()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetStates());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load States"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetLocations")]
+        public async Task<IActionResult> GetLocations(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetLocations(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load States"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetRManagers")]
+        public async Task<IActionResult> GetRManagers(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetRManagers(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Reporting Managers"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetRelations")]
+        public async Task<IActionResult> GetRelations()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetRelations());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Relations"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSpaceDetails")]
+        public async Task<IActionResult> GetSpaceDetails()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetSpaceDetails());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Space Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetFiveYearsReport")]
+        public async Task<IActionResult> GetFiveYearsReport()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetFiveYearsReport());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Five Years Report"
                 });
                 return response;
             }
