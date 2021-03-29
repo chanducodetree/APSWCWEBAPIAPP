@@ -22,7 +22,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         public SqlCon(IConfiguration configuration)
         {
            exPathToSave= Path.Combine(Directory.GetCurrentDirectory(), exFolder);
-            _connectionString = configuration.GetConnectionString("apswcdb");
+            _connectionString = configuration.GetConnectionString("apswcproddb");
         }
 
         public async Task<dynamic> GetApswcWareHouseMaster()
@@ -686,7 +686,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             DataTable dt = new DataTable();
             try
             {
-                cmd = new SqlCommand("SP_MASTER", sqlcon);
+                cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
                 SqlDataAdapter adp = new SqlDataAdapter();
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
@@ -733,6 +733,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 cmd.Parameters.AddWithValue("@CALL_MOBILE_MODEL", objMa.CALL_MOBILE_MODEL);
                 cmd.Parameters.AddWithValue("@CALL_LATITUDE", objMa.CALL_LATITUDE);
                 cmd.Parameters.AddWithValue("@CALL_LONGITUDE", objMa.CALL_LONGITUDE);
+                cmd.Parameters.AddWithValue("@CALL_IP_IMEI", objMa.CALL_IP_IMEI);
                 await sqlcon.OpenAsync();
                 adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
