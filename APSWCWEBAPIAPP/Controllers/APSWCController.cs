@@ -22,7 +22,7 @@ using APSWCWEBAPIAPP.DBConnection;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-
+   
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase
@@ -39,7 +39,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
         private List<InspectionModel> InsUsers = new List<InspectionModel>
         {
-
+           
             new InspectionModel {   WarehouseId = "VZ01101", WarehouseName = "Amdalavalasa -I (Own)",
             Description = "quanity checking", uploadeddate = DateTime.Now,FilePath="Inspection\\Images\\6.jpg" },
             new InspectionModel {   WarehouseName= "Amdalavalasa -Ii (Own-PEG)",
@@ -47,7 +47,7 @@ namespace APSWCWEBAPIAPP.Controllers
         };
 
 
-        public APSWCController(IConfiguration config, ICaptchaService auth, SqlCon hel)
+        public APSWCController(IConfiguration config, ICaptchaService auth , SqlCon hel)
         {
             _config = config;
             _authservice = auth;
@@ -76,7 +76,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 //return response;
 
             }
-
+               
 
             User user = AuthenticateUser(login);
             if (user != null)
@@ -90,12 +90,12 @@ namespace APSWCWEBAPIAPP.Controllers
             }
             return response;
         }
-
+        
         [HttpGet]
         [Route("WareHouseMaster")]
-        public List<WareHouseMaste> GetWareHouseMaster()
+        public  List<WareHouseMaste> GetWareHouseMaster()
         {
-            var res = ListWarehouse.ListWareHosueMaster.ToList();
+            var res=ListWarehouse.ListWareHosueMaster.ToList();
             return res;
         }
 
@@ -109,7 +109,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [Route("InspectionRegistration")]
-        public IActionResult InspectionRegistration([FromBody] InspectionModel Ins)
+        public IActionResult InspectionRegistration ([FromBody] InspectionModel Ins)
         {
             IActionResult response = Unauthorized();
             var folderName = Path.Combine("InspectionLogs");
@@ -118,7 +118,7 @@ namespace APSWCWEBAPIAPP.Controllers
             string jsondata = JsonConvert.SerializeObject(Ins);
             Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, jsondata));
 
-
+             
             response = Ok(new
             {
                 StatusCode = 100,
@@ -618,7 +618,7 @@ namespace APSWCWEBAPIAPP.Controllers
             catch (Exception e)
             {
                 // fail gracefully, but log
-                //  logger.LogError("Failed to process captcha validation", e);
+              //  logger.LogError("Failed to process captcha validation", e);
             }
 
             return result;
@@ -628,7 +628,7 @@ namespace APSWCWEBAPIAPP.Controllers
         {
             public bool success { get; set; }
         }
-
+       
         User AuthenticateUser(User loginCredentials)
         {
             User user = appUsers.SingleOrDefault(x => x.UserName == loginCredentials.UserName && x.Password == loginCredentials.Password);

@@ -50,7 +50,6 @@ namespace ModelService
         public string CALL_MOBILE_MODEL { get; set; }
         public string CALL_LATITUDE { get; set; }
         public string CALL_LONGITUDE { get; set; }
-        public string CALL_IP_IMEI { get; set; }
 
     }
 }

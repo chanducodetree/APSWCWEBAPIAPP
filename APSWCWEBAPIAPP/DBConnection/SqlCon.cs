@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,12 +16,11 @@ namespace APSWCWEBAPIAPP.DBConnection
     public class SqlCon
     {
         private readonly string _connectionString;
-        private string exFolder = Path.Combine("ExceptionLogs");
+       private string exFolder = Path.Combine("ExceptionLogs");
         private string exPathToSave = string.Empty;
-        dynamic resultobj = new ExpandoObject();
         public SqlCon(IConfiguration configuration)
         {
-            exPathToSave = Path.Combine(Directory.GetCurrentDirectory(), exFolder);
+           exPathToSave= Path.Combine(Directory.GetCurrentDirectory(), exFolder);
             _connectionString = configuration.GetConnectionString("apswcdb");
         }
 
@@ -40,13 +38,13 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetApswcWareHouseMaster:Method:" + jsondata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetApswcWareHouseMaster:Method:"+jsondata));
                 return ex.Message.ToString();
             }
-
+            
         }
 
-        public async Task<dynamic> GetBoardofDirectors()
+       public  async Task<dynamic> GetBoardofDirectors()
         {
             try
             {
@@ -55,12 +53,12 @@ namespace APSWCWEBAPIAPP.DBConnection
                 m.TYPEID = "BOARD_OF_DIRECTORS";
                 return await APSWCMasterSp(m);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-
+                
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBoardofDirectors:Method:" + jsondata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBoardofDirectors:Method:"+jsondata));
                 return ex.Message.ToString();
             }
         }
@@ -687,7 +685,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             DataTable dt = new DataTable();
             try
             {
-                cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
+                cmd = new SqlCommand("SP_MASTER", sqlcon);
                 SqlDataAdapter adp = new SqlDataAdapter();
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
@@ -734,18 +732,16 @@ namespace APSWCWEBAPIAPP.DBConnection
                 cmd.Parameters.AddWithValue("@CALL_MOBILE_MODEL", objMa.CALL_MOBILE_MODEL);
                 cmd.Parameters.AddWithValue("@CALL_LATITUDE", objMa.CALL_LATITUDE);
                 cmd.Parameters.AddWithValue("@CALL_LONGITUDE", objMa.CALL_LONGITUDE);
-                cmd.Parameters.AddWithValue("@CALL_IP_IMEI", objMa.CALL_IP_IMEI);
                 await sqlcon.OpenAsync();
                 adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
                 return dt;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw ex;
             }
 
-        }
-
+          }
     }
 }
