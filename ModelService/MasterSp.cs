@@ -6,6 +6,7 @@ namespace ModelService
 {
     public class MasterSp
     {
+
 public string DIRECTION_ID { get; set; }
 public string TYPEID {get;set;}
 public string INPUT_01 {get;set;}
@@ -51,6 +52,7 @@ public string CALL_MOBILE_MODEL {get;set;}
 public string CALL_LATITUDE {get;set;}
 public string CALL_LONGITUDE {get;set;}
         public string CALL_IP_IMEI { get; set; }
+
 
     }
 }

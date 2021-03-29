@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Dynamic;
 namespace APSWCWEBAPIAPP.DBConnection
 {
     public class SqlCon
@@ -18,6 +18,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         private readonly string _connectionString;
        private string exFolder = Path.Combine("ExceptionLogs");
         private string exPathToSave = string.Empty;
+        dynamic resultobj = new ExpandoObject();
         public SqlCon(IConfiguration configuration)
         {
            exPathToSave= Path.Combine(Directory.GetCurrentDirectory(), exFolder);
@@ -62,7 +63,623 @@ namespace APSWCWEBAPIAPP.DBConnection
                 return ex.Message.ToString();
             }
         }
-        private async Task<DataTable>APSWCMasterSp(MasterSp objMa)
+
+        public async Task<dynamic> GetWorkLocations()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "WORK_LOCATION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWorkLocations : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Work Locations";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetEmployeeTypes()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "EMP_TYPE";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Employee Types";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GetEducations()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "EDU";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEducations : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Educations";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetDistricts()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "DISTRICTS";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetDistricts : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Districts";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetAreaTypes()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "URBAN_RURAL";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetAreaTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Area Types";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetMandlas(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "MMC";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetMandlas : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Mandals";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetVillages(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "WARD_VILLAGE";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetVillages : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Villages";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetStorageTypes()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "STORAGE_TYPE";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetStorageTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Storage Types";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetChargeDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "STORAGE_LIST";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetChargeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Charge Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetSections()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetSections : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Sections";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetBloodGroups()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBloodGroups : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Blood Groups";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetExperianceYears()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetExperianceYears : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Experiance Years";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetExperianceMonths()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetExperianceMonths : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Experiance Months";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetNationality()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetNationality : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Nationality";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetReligions()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetReligions : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Religions";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetCommunities()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetCommunities : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Communities";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetMaritalStatus()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetMaritalStatus : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Marital Status";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetStates()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetStates : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load States";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetSpaceDetails()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SPACE_HOMEPAGE";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetSpaceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Space Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetFiveYearsReport()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SPACE_ABSTRACT";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFiveYearsReport : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Five Years Report";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetLocations(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "STORAGE_LIST";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLocations : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Locations";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetRManagers(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "STORAGE_LIST";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetRManagers : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Managers";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetRelations()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "SECTION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetRelations : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Relations";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<DataTable> APSWCMasterSp(MasterSp objMa)
         {
             SqlConnection sqlcon = new SqlConnection(_connectionString);
             SqlCommand cmd = new SqlCommand();
