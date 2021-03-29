@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Dynamic;
 namespace APSWCWEBAPIAPP.DBConnection
 {
     public class SqlCon
@@ -18,6 +18,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         private readonly string _connectionString;
        private string exFolder = Path.Combine("ExceptionLogs");
         private string exPathToSave = string.Empty;
+        dynamic resultobj = new ExpandoObject();
         public SqlCon(IConfiguration configuration)
         {
            exPathToSave= Path.Combine(Directory.GetCurrentDirectory(), exFolder);
