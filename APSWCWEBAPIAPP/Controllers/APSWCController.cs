@@ -23,7 +23,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-   
+   [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase
@@ -86,12 +86,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 _context.Entry(ca).State = EntityState.Detached;
                 _context.captcha.Update(ca);
                 _context.SaveChanges();
-            }
-            bool flag = IsCaptchaValid(login.GToken).Result;
-            if (!flag)
-            {
-                //return response;
-
             }
                
 
