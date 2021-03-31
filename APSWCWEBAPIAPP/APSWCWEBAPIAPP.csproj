@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.12" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
@@ -22,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Inspection\" />
     <Folder Include="EntityFramework\" />
+    <Folder Include="Inspection\" />
     <Folder Include="capth\" />
   </ItemGroup>
 

@@ -1,20 +1,25 @@
-﻿using System;
+﻿using ModelService;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Dynamic;
 using System.IO;
+using System.Security.Cryptography.Xml;
 using System.Text;
-
 namespace AuthService
 {
     public class CaptchaService : ICaptchaService
     {
-        public CaptchaService()
-        { 
+        private ApplicationAPSWCCDbContext _context;
+        public CaptchaService(ApplicationAPSWCCDbContext appcontext)
+        {
+            { _context = appcontext; }
         }
         public dynamic check_s_captch(string value)
         {
+            Captch cap = new Captch();
+            
             dynamic data = new ExpandoObject();
 
             var ids = "";
@@ -55,7 +60,11 @@ namespace AuthService
 
             if (captchgen == true)
             {
-
+                cap.Capchid = data.Capchid;
+                cap.Id = data.id;
+                cap.IsActive = 1;
+                _context.captcha.Add(cap);
+                _context.SaveChanges();
                 byte[] imageBytes = System.IO.File.ReadAllBytes(Path.Combine("capth", ids + serila + fileName));
                 string base64String = Convert.ToBase64String(imageBytes);
                 data.idval = ids;

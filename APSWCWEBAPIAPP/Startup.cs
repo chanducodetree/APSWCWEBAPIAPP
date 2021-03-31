@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -41,8 +42,8 @@ namespace APSWCWEBAPIAPP
             //services.AddControllers();
                         services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            
 
+            services.AddDbContext<ApplicationAPSWCCDbContext>(context => { context.UseInMemoryDatabase("ApswcCaptcha").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); });
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             services.AddScoped<SqlCon>();
@@ -127,29 +128,40 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
       FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Inspection")),
       RequestPath = new PathString("/Inspection")
   });
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "DENY");
+                context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+                context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
+               // context.Response.Headers.Add("Permissions-Policy", "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
+                //context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'");
+                await next();
+            });
 
-  /*app.Use(nextDelegate => context =>
-  {
-      string path = context.Request.Path.Value.ToLower();
-      string[] directUrls = { "/admin", "/store", "/cart", "checkout", "/login" };
-      if (path.StartsWith("/swagger") || path.StartsWith("/api") || string.Equals("/", path) || directUrls.Any(url => path.StartsWith(url)))
-      {
-          AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(context);
-          context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions()
-          {
-              HttpOnly = false,
-              Secure = false,
-              IsEssential = true,
-              SameSite = SameSiteMode.Strict
-          });
+            /*app.Use(nextDelegate => context =>
+            {
+                string path = context.Request.Path.Value.ToLower();
+                string[] directUrls = { "/admin", "/store", "/cart", "checkout", "/login" };
+                if (path.StartsWith("/swagger") || path.StartsWith("/api") || string.Equals("/", path) || directUrls.Any(url => path.StartsWith(url)))
+                {
+                    AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(context);
+                    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions()
+                    {
+                        HttpOnly = false,
+                        Secure = false,
+                        IsEssential = true,
+                        SameSite = SameSiteMode.Strict
+                    });
 
-      }
+                }
 
-      return nextDelegate(context);
-  });
-  */
+                return nextDelegate(context);
+            });
+            */
 
-  app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
   {
       endpoints.MapControllerRoute(
            name: "default",

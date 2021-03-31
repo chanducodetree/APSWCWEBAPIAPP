@@ -19,6 +19,7 @@ using APSWCWEBAPIAPP.Services;
 using System.IO;
 using AuthService;
 using APSWCWEBAPIAPP.DBConnection;
+using Microsoft.EntityFrameworkCore;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
@@ -29,7 +30,7 @@ namespace APSWCWEBAPIAPP.Controllers
     {
         private readonly IConfiguration _config;
         private readonly SqlCon _hel;
-
+        private ApplicationAPSWCCDbContext _context;
         private readonly ICaptchaService _authservice;
         private List<User> appUsers = new List<User>
         {
@@ -47,8 +48,9 @@ namespace APSWCWEBAPIAPP.Controllers
         };
 
 
-        public APSWCController(IConfiguration config, ICaptchaService auth , SqlCon hel)
+        public APSWCController(ApplicationAPSWCCDbContext apcontext,IConfiguration config, ICaptchaService auth , SqlCon hel)
         {
+            _context = apcontext;
             _config = config;
             _authservice = auth;
             _hel = hel;
@@ -70,6 +72,21 @@ namespace APSWCWEBAPIAPP.Controllers
         {
             IActionResult response = Unauthorized();
 
+            var captval = _context.captcha.FirstOrDefault(i => i.Id == login.GToken && i.Capchid==login.Idval && i.IsActive==1);
+            
+            if (captval == null)
+                return NotFound();
+            else
+            {
+                
+                Captch ca = new Captch();
+                ca.Capchid = captval.Capchid;
+                ca.Id = captval.Id;
+                ca.IsActive = 0;
+                _context.Entry(ca).State = EntityState.Detached;
+                _context.captcha.Update(ca);
+                _context.SaveChanges();
+            }
             bool flag = IsCaptchaValid(login.GToken).Result;
             if (!flag)
             {

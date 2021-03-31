@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ModelService;
+
 namespace ModelService
 {
-    public class ApplicationDbContext:IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base (options)
         {
         }
 
@@ -22,14 +22,18 @@ namespace ModelService
             );
         }
 
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<AddressModel> Addresses { get; set; }
         public DbSet<TokenModel> Tokens { get; set; }
-        //public DbSet<ActivityModel> Activities { get; set; }
-        //public DbSet<CountryModel> Countries { get; set; }
-        //public DbSet<ApplicationRole> ApplicationRoles { get; set; }
-        //public DbSet<RolePermission> RolePermissions { get; set; }
-        //public DbSet<PermissionType> PermissionTypes { get; set; }
-        //public DbSet<TwoFactorCodeModel> TwoFactorCodes { get; set; }
+        
     }
 }
+
+
+/* NUGET PACKAGES TO INSTALL
+ * Microsoft.AspNetCore.DataProtection.EntityFrameworkCore
+ * Microsoft.AspNetCore.Identity.EntityFrameworkCore
+ * Microsoft.EntityFrameworkCore.Design
+ * Microsoft.EntityFrameworkCore.Tools
+ */
