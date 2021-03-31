@@ -45,7 +45,7 @@ namespace APSWCWEBAPIAPP.Services
 			string strPath = f_name + "\\" + DateTime.Now.ToString("MMddyyyy") + "\\" + DateTime.Now.ToString("HH").ToString();
 			if (!Directory.Exists(strPath))
 				Directory.CreateDirectory(strPath);
-			string path2 = strPath + "\\" + "submittedData" + DateTime.Now.ToString("yyyyMMddhhmmssmmm");
+			string path2 = strPath + "\\" + "submittedData" + DateTime.Now.ToString("yyyyMMddhhmmssmmmffff");
 			StreamWriter swLog = new StreamWriter(path2 + ".txt", true);
 			swLog.WriteLine(strMsg);
 			swLog.Close();
