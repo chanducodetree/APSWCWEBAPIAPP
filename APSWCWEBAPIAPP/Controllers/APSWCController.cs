@@ -20,10 +20,11 @@ using System.IO;
 using AuthService;
 using APSWCWEBAPIAPP.DBConnection;
 using Microsoft.EntityFrameworkCore;
+using APSWCWEBAPIAPP.Models;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-   [Authorize]
+    [Authorize(Policy = Policies.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase

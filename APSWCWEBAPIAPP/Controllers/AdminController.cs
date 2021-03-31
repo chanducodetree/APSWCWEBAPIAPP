@@ -18,7 +18,7 @@ namespace APSWCWEBAPIAPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Policy = Policies.Admin)]
+   //[Authorize(Policy = Policies.Admin)]
     public class AdminController : ControllerBase
     {
         private readonly IConfiguration _config;
