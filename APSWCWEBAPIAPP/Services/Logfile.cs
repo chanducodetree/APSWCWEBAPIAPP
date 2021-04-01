@@ -39,10 +39,10 @@ namespace APSWCWEBAPIAPP.Services
 
 
 		}
-		public static object Write_Log(string f_name, dynamic strMsg)
+		public static object Write_Log(string f_name, string methodlog, dynamic strMsg)
 		{
 			//f_name= "//10.96.52.149\\vvolunteers02\\websites\\VVSendOtpLogs";
-			string strPath = f_name + "\\" + DateTime.Now.ToString("MMddyyyy") + "\\" + DateTime.Now.ToString("HH").ToString();
+			string strPath = f_name +"\\"+methodlog+"\\" + DateTime.Now.ToString("MMddyyyy") + "\\" + DateTime.Now.ToString("HH").ToString();
 			var random = new Random();
 			var number = random.Next(111111,999999);
 			if (!Directory.Exists(strPath))

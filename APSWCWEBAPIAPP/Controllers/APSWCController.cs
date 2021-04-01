@@ -24,7 +24,7 @@ using APSWCWEBAPIAPP.Models;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-   // [Authorize(Policy = Policies.Admin)]
+   //[Authorize(Policy = Policies.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase
@@ -48,6 +48,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
         public APSWCController(ApplicationAPSWCCDbContext apcontext,IConfiguration config, ICaptchaService auth , SqlCon hel)
         {
+            saPathToSave = Path.Combine(Directory.GetCurrentDirectory(), saFolder);
             _context = apcontext;
             _config = config;
             _authservice = auth;
@@ -125,7 +126,7 @@ namespace APSWCWEBAPIAPP.Controllers
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
             string jsondata = JsonConvert.SerializeObject(Ins);
-            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, jsondata));
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "InspectionRegistrationlogs", jsondata));
 
 
             response = Ok(new
@@ -634,7 +635,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPrimaryDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPrimaryDetailslogs", "SaveEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPrimaryDetails(rootobj));
             }
@@ -657,7 +658,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpCommuDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpCommuDetailslogs", "SaveEmpCommuDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpCommuDetails(rootobj));
             }
@@ -680,7 +681,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpWorkDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpWorkDetailsLogs", "SaveEmpWorkDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpWorkDetails(rootobj));
             }
@@ -703,7 +704,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpBankDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpBankDetailsLogs", "SaveEmpBankDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpBankDetails(rootobj));
             }
@@ -726,7 +727,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailslogs", "SaveEmpFamilyDetails : Input Data : " + value));
                 FamilyListCls rootobj = JsonConvert.DeserializeObject<FamilyListCls>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
             }
@@ -749,9 +750,9 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPFDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPFDetailslogs", "SaveEmpPFDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.SaveEmpWorkDetails(rootobj));
+                return Ok(await _hel.SaveEmpPFDetails(rootobj));
             }
             catch (Exception ex)
             {

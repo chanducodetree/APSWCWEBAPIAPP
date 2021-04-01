@@ -11,6 +11,7 @@ namespace APSWCWEBAPIAPP.Models
     {
         public const string Admin = "Admin";
         public const string User = "User";
+        public const string Mob = "Mob";
 
         public static AuthorizationPolicy AdminPolicy()
         {
@@ -20,6 +21,10 @@ namespace APSWCWEBAPIAPP.Models
         public static AuthorizationPolicy UserPolicy()
         {
             return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(User).Build();
+        }
+        public static AuthorizationPolicy MobPolicy()
+        {
+            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Mob).Build();
         }
 
     }

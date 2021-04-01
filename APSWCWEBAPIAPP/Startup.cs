@@ -74,6 +74,7 @@ namespace APSWCWEBAPIAPP
             {
                 config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
                 config.AddPolicy(Policies.User, Policies.UserPolicy());
+                config.AddPolicy(Policies.Mob, Policies.MobPolicy());
             });
 
 
