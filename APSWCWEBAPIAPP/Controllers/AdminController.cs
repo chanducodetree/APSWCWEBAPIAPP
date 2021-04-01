@@ -18,7 +18,7 @@ namespace APSWCWEBAPIAPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Policy = Policies.Admin)]
+   //[Authorize(Policy = Policies.Admin)]
     public class AdminController : ControllerBase
     {
         private readonly IConfiguration _config;
@@ -81,7 +81,7 @@ namespace APSWCWEBAPIAPP.Controllers
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
             string jsondata = JsonConvert.SerializeObject(Ins);
-            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, jsondata));
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "InspectionRegistrationlogs", jsondata));
 
 
             response = Ok(new
@@ -101,7 +101,7 @@ namespace APSWCWEBAPIAPP.Controllers
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
             string jsondata = JsonConvert.SerializeObject(Ins);
-            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, jsondata));
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "GalleryRegistrationlogs", jsondata));
 
 
             response = Ok(new
@@ -121,7 +121,7 @@ namespace APSWCWEBAPIAPP.Controllers
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
             string jsondata = JsonConvert.SerializeObject(Ins);
-            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, jsondata));
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "TendersRegistrationlogs", jsondata));
 
 
             response = Ok(new
