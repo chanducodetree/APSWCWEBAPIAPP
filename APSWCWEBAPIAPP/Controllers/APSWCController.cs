@@ -732,7 +732,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetails : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                FamilyListCls rootobj = JsonConvert.DeserializeObject<FamilyListCls>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
             }
             catch (Exception ex)
@@ -764,6 +764,28 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Save Employee Providend Fund Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetIFSCCodeDetails")]
+        public async Task<IActionResult> GetIFSCCodeDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetIFSCCodeDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get IFSC Code Details"
                 });
                 return response;
             }
