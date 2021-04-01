@@ -26,6 +26,7 @@ namespace ModelService
         public string Password { get; set; }
         public string UserType { get; set; }
         public string GToken{ get; set; }
+        public string Idval { get; set; }
     }
 
     public class InspectionModel
