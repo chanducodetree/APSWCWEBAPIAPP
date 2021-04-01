@@ -659,7 +659,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "1";
-                rootobj.TYPEID = "SECTION";
+                rootobj.TYPEID = "RELATION";
 
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Loaded Successfully";
@@ -790,7 +790,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "103";
+                rootobj.TYPEID = "104";
 
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Inserted Successfully";
@@ -811,16 +811,28 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> SaveEmpFamilyDetails(MasterSp rootobj)
+        public async Task<dynamic> SaveEmpFamilyDetails(FamilyListCls rootobj)
         {
             try
             {
-                rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "103";
+                foreach (var family in rootobj.FamilyList)
+                {
+                    var obj = new MasterSp();
+                    obj.DIRECTION_ID = "2";
+                    obj.TYPEID = "301";
+
+                    obj.INPUT_01 = family.INPUT_01;
+                    obj.INPUT_02 = family.INPUT_02;
+                    obj.INPUT_03 = family.INPUT_03;
+                    obj.INPUT_04 = family.INPUT_04;
+                    obj.INPUT_05 = family.INPUT_05;
+                    obj.INPUT_06 = family.INPUT_06;
+
+                    resultobj.Details = await APSWCMasterSp(obj);
+                }
 
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
 
                 return resultobj;
             }
@@ -842,7 +854,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "103";
+                rootobj.TYPEID = "106";
 
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Inserted Successfully";
@@ -858,6 +870,32 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee Providend Fund Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetIFSCCodeDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "BANK_DETAILS";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetIFSCCodeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get IFSC Code Details";
                 return resultobj;
 
             }
