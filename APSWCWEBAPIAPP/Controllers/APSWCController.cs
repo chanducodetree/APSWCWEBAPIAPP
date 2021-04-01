@@ -24,7 +24,7 @@ using APSWCWEBAPIAPP.Models;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-    [Authorize(Policy = Policies.Admin)]
+   // [Authorize(Policy = Policies.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase
@@ -35,12 +35,7 @@ namespace APSWCWEBAPIAPP.Controllers
         private readonly ICaptchaService _authservice;
         private string saFolder = Path.Combine("SaveLogs");
         private string saPathToSave = string.Empty;
-        private List<User> appUsers = new List<User>
-        {
-            new User {  FirstName = "Admin",  UserName = "Admin", Password = "Admin@789", UserType = "Admin" },
-            new User {  FirstName = "apswc",  UserName = "apswc", Password = "apswc@1234", UserType = "User" }
-        };
-
+       
         private List<InspectionModel> InsUsers = new List<InspectionModel>
         {
 
@@ -92,10 +87,10 @@ namespace APSWCWEBAPIAPP.Controllers
             }
 
 
-            User user = AuthenticateUser(login);
+            User user = _authservice.AuthenticateUser(login);
             if (user != null)
             {
-                var tokenString = GenerateJWT(user);
+                var tokenString = _authservice.GenerateJWT(user);
                 response = Ok(new
                 {
                     token = tokenString,
@@ -800,34 +795,7 @@ namespace APSWCWEBAPIAPP.Controllers
             public bool success { get; set; }
         }
 
-        User AuthenticateUser(User loginCredentials)
-        {
-            User user = appUsers.SingleOrDefault(x => x.UserName == loginCredentials.UserName && x.Password == loginCredentials.Password);
-            return user;
-        }
-
-        string GenerateJWT(User userInfo)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
-                new Claim("firstName", userInfo.FirstName.ToString()),
-                new Claim("role",userInfo.UserType),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: credentials
-            );
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+       
     }
 
 }

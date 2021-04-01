@@ -1,10 +1,15 @@
-﻿using ModelService;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using ModelService;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Dynamic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography.Xml;
 using System.Text;
 namespace AuthService
@@ -12,10 +17,20 @@ namespace AuthService
     public class CaptchaService : ICaptchaService
     {
         private ApplicationAPSWCCDbContext _context;
-        public CaptchaService(ApplicationAPSWCCDbContext appcontext)
+        private readonly IConfiguration _config;
+        public CaptchaService(ApplicationAPSWCCDbContext appcontext, IConfiguration config)
         {
-            { _context = appcontext; }
+            { _context = appcontext;
+                _config = config;
+            }
         }
+        private List<User> appUsers = new List<User>
+        {
+            new User {  FirstName = "Admin",  UserName = "Admin", Password = "Admin@789", UserType = "Admin" },
+            new User {  FirstName = "apswc",  UserName = "apswc", Password = "apswc@1234", UserType = "User" },
+            new User {  FirstName = "apswcmob",  UserName = "apswcmob", Password = "apswcmob@789", UserType = "Mob" },
+        };
+
         public dynamic check_s_captch(string value)
         {
             Captch cap = new Captch();
@@ -92,12 +107,42 @@ namespace AuthService
             }
         }
 
-       
+       public User AuthenticateUser(User loginCredentials)
+        {
+            User user = appUsers.SingleOrDefault(x => x.UserName == loginCredentials.UserName && x.Password == loginCredentials.Password);
+            return user;
+        }
+
+       public string GenerateJWT(User userInfo)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
+                new Claim("firstName", userInfo.FirstName.ToString()),
+                new Claim("role",userInfo.UserType),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
     }
 
     public interface ICaptchaService
     {
         dynamic check_s_captch(string value);
+        User AuthenticateUser(User loginCredentials);
+        string GenerateJWT(User userInfo);
+
     }
 }
