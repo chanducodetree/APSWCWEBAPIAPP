@@ -39,7 +39,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetApswcWareHouseMaster:Method:"+jsondata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetApswcWareHouseMasterlogs", "GetApswcWareHouseMaster:Method:" +jsondata));
                 return ex.Message.ToString();
             }
             
@@ -59,7 +59,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetBoardofDirectors:Method:"+jsondata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBoardofDirectorslogs", "GetBoardofDirectors:Method:"+jsondata));
                 return ex.Message.ToString();
             }
         }
@@ -82,7 +82,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetWorkLocations : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWorkLocationslogs", "GetWorkLocations : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Work Locations";
@@ -109,7 +109,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpList : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpListlogs", "GetEmpList : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Employees List";
@@ -136,7 +136,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetEmployeeTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeTypeslogs", "GetEmployeeTypes : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Employee Types";
@@ -162,7 +162,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetEducations : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEducationslogs", "GetEducations : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Educations";
@@ -189,7 +189,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetDistricts : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetDistrictslogs", "GetDistricts : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Districts";
@@ -216,7 +216,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetAreaTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetAreaTypeslogs","GetAreaTypes : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Area Types";
@@ -242,7 +242,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetMandlas : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetMandlaslogs", "GetMandlas : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Mandals";
@@ -268,7 +268,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetVillages : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetVillageslogs", "GetVillages : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Villages";
@@ -295,7 +295,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetStorageTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetStorageTypeslogs", "GetStorageTypes : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Storage Types";
@@ -321,7 +321,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetChargeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetChargeDetailslogs", "GetChargeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Charge Details";
@@ -348,7 +348,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetSections : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetSectionslogs", "GetSections : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Sections";
@@ -375,7 +375,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetBloodGroups : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBloodGroupslogs", "GetBloodGroups : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Blood Groups";
@@ -402,7 +402,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetExperianceYears : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetExperianceYearslogs", "GetExperianceYears : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Experiance Years";
@@ -429,7 +429,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetExperianceMonths : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetExperianceMonthslogs", "GetExperianceMonths : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Experiance Months";
@@ -456,7 +456,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetNationality : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetNationalitylogs", "GetNationality : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Nationality";
@@ -483,7 +483,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetReligions : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetReligionslogs", "GetReligions : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Religions";
@@ -510,7 +510,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetCommunities : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetCommunitieslogs", "GetCommunities : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Communities";
@@ -537,7 +537,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetMaritalStatus : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetMaritalStatuslogs", "GetMaritalStatus : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Marital Status";
@@ -564,7 +564,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetStates : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetStateslogs", "GetStates : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load States";
@@ -591,7 +591,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetSpaceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetSpaceDetailslogs", "GetSpaceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Space Details";
@@ -618,7 +618,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetFiveYearsReport : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFiveYearsReportlogs", "GetFiveYearsReport : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Five Years Report";
@@ -644,7 +644,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetLocations : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLocationslogs", "GetLocations : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Locations";
@@ -671,7 +671,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetRManagers : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetRManagerslogs", "GetRManagers : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Managers";
@@ -698,7 +698,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetRelations : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetRelationslogs", "GetRelations : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Relations";
@@ -725,7 +725,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetGenders : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetGenderslogs", "GetGenders : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Genders";
@@ -751,7 +751,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpPrimaryDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpPrimaryDetailslogs", "SaveEmpPrimaryDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee General Details";
@@ -777,7 +777,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpCommuDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpPrimaryDetailslogs", "SaveEmpCommuDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee Communication Details";
@@ -803,7 +803,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpWorkDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpWorkDetailslogs", "SaveEmpWorkDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee Work Details";
@@ -829,7 +829,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpBankDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpBankDetailslogs", "SaveEmpBankDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee Bank Details";
@@ -838,26 +838,14 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> SaveEmpFamilyDetails(FamilyListCls rootobj)
+        public async Task<dynamic> SaveEmpFamilyDetails(MasterSp rootobj)
         {
             try
             {
-                foreach (var family in rootobj.FamilyList)
-                {
-                    var obj = new MasterSp();
-                    obj.DIRECTION_ID = "2";
-                    obj.TYPEID = "105";
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "105";
 
-                    obj.INPUT_01 = family.INPUT_01;
-                    obj.INPUT_02 = family.INPUT_02;
-                    obj.INPUT_03 = family.INPUT_03;
-                    obj.INPUT_04 = family.INPUT_04;
-                    obj.INPUT_05 = family.INPUT_05;
-                    obj.INPUT_06 = family.INPUT_06;
-
-                    resultobj.Details = await APSWCMasterSp(obj);
-                }
-
+                resultobj.Details = await APSWCMasterSp(rootobj);
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Inserted Successfully";
 
@@ -867,7 +855,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpFamilyDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpFamilyDetailslogs", "SaveEmpFamilyDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee Family Details";
@@ -893,7 +881,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpPFDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpPFDetailslogs", "SaveEmpPFDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Employee Providend Fund Details";
@@ -919,7 +907,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetIFSCCodeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetIFSCCodeDetailslogs", "GetIFSCCodeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get IFSC Code Details";
@@ -945,7 +933,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpFamilyDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpFamilyDetailslogs", "GetEmpFamilyDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Employee Family Details";
@@ -971,10 +959,36 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeDetailslogs", "GetEmployeeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Employee Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> UpdatedEmployeeDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "107";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdatedEmployeeDetailslogs", "UpdatedEmployeeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Update Employee Details";
                 return resultobj;
 
             }

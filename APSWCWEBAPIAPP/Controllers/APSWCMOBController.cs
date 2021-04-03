@@ -662,7 +662,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailsLogs", "SaveEmpFamilyDetails : Input Data : " + value));
-                FamilyListCls rootobj = JsonConvert.DeserializeObject<FamilyListCls>(value);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
             }
             catch (Exception ex)
