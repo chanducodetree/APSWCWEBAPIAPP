@@ -999,10 +999,11 @@ namespace APSWCWEBAPIAPP.DBConnection
             SqlConnection sqlcon = new SqlConnection(_connectionString);
             SqlCommand cmd = new SqlCommand();
             DataTable dt = new DataTable();
+            SqlDataAdapter adp = new SqlDataAdapter();
             try
             {
                 cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
-                SqlDataAdapter adp = new SqlDataAdapter();
+                
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
                 cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
@@ -1052,10 +1053,21 @@ namespace APSWCWEBAPIAPP.DBConnection
                 await sqlcon.OpenAsync();
                 adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
+
+                await sqlcon.CloseAsync();
+                await cmd.DisposeAsync();
+                adp.Dispose();
+
                 return dt;
             }
             catch(Exception ex)
             {
+                if (sqlcon.State == ConnectionState.Open)
+                {
+                    await sqlcon.CloseAsync();
+                    await cmd.DisposeAsync();
+                    adp.Dispose();
+                }
                 throw ex;
             }
 
