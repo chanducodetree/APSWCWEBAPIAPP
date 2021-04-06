@@ -180,6 +180,27 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [Route("GetDesignations")]
+        public async Task<IActionResult> GetDesignations()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetDesignations());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Designations",
+
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
         [Route("GetEmployeeTypes")]
         public async Task<IActionResult> GetEmployeeTypes()
         {

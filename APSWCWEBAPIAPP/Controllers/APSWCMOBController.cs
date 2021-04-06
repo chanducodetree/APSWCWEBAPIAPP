@@ -721,5 +721,27 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetBoardofDirectors")]
+        public async Task<IActionResult> GetBoardofDirectorMaster()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetBoardofDirectors());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Board of Directors"
+                });
+                return response;
+            }
+
+            
+        }
+
     }
 }
