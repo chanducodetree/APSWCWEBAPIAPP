@@ -178,7 +178,49 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+        [HttpGet]
+        [Route("GetBoardofDirectors")]
+        public async Task<IActionResult> GetBoardofDirectors()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetBoardofDirectors());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Work Locations",
 
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetContactList")]
+        public async Task<IActionResult> GetContactList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetContactLists(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load States"
+                });
+                return response;
+            }
+        }
         [HttpGet]
         [Route("GetDesignations")]
         public async Task<IActionResult> GetDesignations()
