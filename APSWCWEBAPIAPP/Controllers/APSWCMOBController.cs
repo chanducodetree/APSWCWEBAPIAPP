@@ -1,52 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using ModelService;
+using Microsoft.Extensions.Configuration;
+using APSWCWEBAPIAPP.DBConnection;
+using AuthService;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
-using System.Web;
-
 using APSWCWEBAPIAPP.Services;
 using System.IO;
-using AuthService;
-using APSWCWEBAPIAPP.DBConnection;
-using Microsoft.EntityFrameworkCore;
 using APSWCWEBAPIAPP.Models;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-   //[Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = Policies.Mob)]
     [Route("api/[controller]")]
     [ApiController]
-    public class APSWCController : ControllerBase
+    public class APSWCMOBController : ControllerBase
     {
+
         private readonly IConfiguration _config;
         private readonly SqlCon _hel;
         private ApplicationAPSWCCDbContext _context;
         private readonly ICaptchaService _authservice;
-        private string saFolder = Path.Combine("SaveLogs");
+        private string saFolder = Path.Combine("SaveMobileLogs");
         private string saPathToSave = string.Empty;
-       
-        private List<InspectionModel> InsUsers = new List<InspectionModel>
-        {
 
-            new InspectionModel {   WarehouseId = "VZ01101", WarehouseName = "Amdalavalasa -I (Own)",
-            Description = "quanity checking", uploadeddate = DateTime.Now,FilePath="Inspection\\Images\\6.jpg" },
-            new InspectionModel {   WarehouseName= "Amdalavalasa -Ii (Own-PEG)",
-            WarehouseId= "VZ01102", Description = "building checking", uploadeddate = DateTime.Now,FilePath="Inspection\\Images\\6.jpg" },
-        };
-
-
-        public APSWCController(ApplicationAPSWCCDbContext apcontext,IConfiguration config, ICaptchaService auth , SqlCon hel)
+        public APSWCMOBController(ApplicationAPSWCCDbContext apcontext, IConfiguration config, ICaptchaService auth, SqlCon hel)
         {
             saPathToSave = Path.Combine(Directory.GetCurrentDirectory(), saFolder);
             _context = apcontext;
@@ -55,107 +39,36 @@ namespace APSWCWEBAPIAPP.Controllers
             _hel = hel;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("Captcha")]
-        public dynamic Captcha()
-        {
-            return _authservice.check_s_captch("");
-        }
-
-
         [HttpPost]
         [AllowAnonymous]
-        [Route("Login")]
-        public IActionResult Login([FromBody] User login)
+        [Route("Token")]
+        public IActionResult Token([FromBody] User login)
         {
-            IActionResult response = Unauthorized();
-
-            var captval = _context.captcha.FirstOrDefault(i => i.Id == login.GToken && i.Capchid==login.Idval && i.IsActive==1);
-            
-            if (captval == null)
-                return NotFound();
-            else
-            {
-                
-                Captch ca = new Captch();
-                ca.Capchid = captval.Capchid;
-                ca.Id = captval.Id;
-                ca.IsActive = 0;
-                _context.Entry(ca).State = EntityState.Detached;
-                _context.captcha.Update(ca);
-                _context.SaveChanges();
-            }
-
+            IActionResult response = Unauthorized();            
 
             User user = _authservice.AuthenticateUser(login);
             if (user != null)
             {
                 var tokenString = _authservice.GenerateJWT(user);
+                user.GToken = tokenString;
+                user.FirstName = user.UserName;
+                user.Password = "";
                 response = Ok(new
                 {
-                    token = tokenString,
+                    statusCode = 100,           
                     userDetails = user,
+                    statusMessage = ""
+                }); 
+            }
+            else
+            {
+                response = Ok(new 
+                    {
+                    statusCode=102,
+                    statusMessage = "Invalid Username and Password"
                 });
             }
             return response;
-        }
-
-        [HttpGet]
-        [Route("WareHouseMaster")]
-        public List<WareHouseMaste> GetWareHouseMaster()
-        {
-            var res = ListWarehouse.ListWareHosueMaster.ToList();
-            return res;
-        }
-
-        [HttpGet]
-        [Route("InsecpctionList")]
-        public List<InspectionModel> GetInsecpctionList()
-        {
-            var res = InsUsers;
-            return res;
-        }
-
-        [HttpPost]
-        [Route("InspectionRegistration")]
-        public IActionResult InspectionRegistration([FromBody] InspectionModel Ins)
-        {
-            IActionResult response = Unauthorized();
-            var folderName = Path.Combine("InspectionLogs");
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
-            string jsondata = JsonConvert.SerializeObject(Ins);
-            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "InspectionRegistrationlogs", jsondata));
-
-
-            response = Ok(new
-            {
-                StatusCode = 100,
-                StatusMessage = "Data Submitted Succssfully"
-            });
-            return response;
-        }
-
-        [HttpGet]
-        [Route("GetEmpList")]
-        public async Task<IActionResult> GetEmpList()
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                return Ok(await _hel.GetEmpList());
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Employee List",
-
-                });
-                return response;
-            }
         }
 
         [HttpGet]
@@ -178,6 +91,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
         [HttpGet]
         [Route("GetBoardofDirectors")]
         public async Task<IActionResult> GetBoardofDirectors()
@@ -193,49 +107,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while load Work Locations",
-
-                });
-                return response;
-            }
-        }
-
-
-        [HttpPost]
-        [Route("GetContactList")]
-        public async Task<IActionResult> GetContactList(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetContactLists(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load States"
-                });
-                return response;
-            }
-        }
-        [HttpGet]
-        [Route("GetDesignations")]
-        public async Task<IActionResult> GetDesignations()
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                return Ok(await _hel.GetDesignations());
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Designations",
 
                 });
                 return response;
@@ -416,6 +287,26 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 return Ok(await _hel.GetSections());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Sections"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetServiceCharterDetails")]
+        public async Task<IActionResult> GetServiceCharterDetails()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetServiceCharterDetails());
             }
             catch (Exception)
             {
@@ -610,6 +501,28 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetContactList")]
+        public async Task<IActionResult> GetContactList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetContactLists(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load States"
+                });
+                return response;
+            }
+        }
+
         [HttpGet]
         [Route("GetRManagers")]
         public async Task<IActionResult> GetRManagers()
@@ -719,7 +632,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPrimaryDetailslogs", "SaveEmpPrimaryDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPrimaryDetailsLogs", "SaveEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPrimaryDetails(rootobj));
             }
@@ -742,7 +655,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpCommuDetailslogs", "SaveEmpCommuDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpCommuDetailsLogs", "SaveEmpCommuDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpCommuDetails(rootobj));
             }
@@ -811,7 +724,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailslogs", "SaveEmpFamilyDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailsLogs", "SaveEmpFamilyDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
             }
@@ -834,7 +747,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPFDetailslogs", "SaveEmpPFDetails : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPFDetailsLogs", "SaveEmpPFDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPFDetails(rootobj));
             }
@@ -871,105 +784,27 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("GetEmpFamilyDetails")]
-        public async Task<IActionResult> GetEmpFamilyDetails(dynamic data)
+        [HttpGet]
+        [Route("GetBoardofDirectors")]
+        public async Task<IActionResult> GetBoardofDirectorMaster()
         {
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetEmpFamilyDetails(rootobj));
+                return Ok(await _hel.GetBoardofDirectors());
             }
             catch (Exception)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Employee Family Details"
+                    StatusMessage = "Error Occured while load Board of Directors"
                 });
                 return response;
             }
+
+            
         }
 
-        [HttpPost]
-        [Route("GetEmployeeDetails")]
-        public async Task<IActionResult> GetEmployeeDetails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetEmployeeDetails(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Employee Details"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("UpdatedEmployeeDetails")]
-        public async Task<IActionResult> UpdatedEmployeeDetails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdatedEmployeeDetailsLogs", "UpdatedEmployeeDetails : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.UpdatedEmployeeDetails(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Update Employee Details"
-                });
-                return response;
-            }
-        }
-
-        public async Task<bool> IsCaptchaValid(string token)
-        {
-            var result = false;
-
-            var googleVerificationUrl = "https://www.google.com/recaptcha/api/siteverify";
-
-            try
-            {
-                string secretKey = "6Lfb2XkUAAAAAMGZT_WidYXjlGPYSSBilRfO3EkA";
-                using var client = new HttpClient();
-
-                var response = await client.PostAsync($"{googleVerificationUrl}?secret={secretKey}&response={token}", null);
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var captchaVerfication = JsonConvert.DeserializeObject<CaptchaVerificationResponse>(jsonString);
-
-                result = captchaVerfication.success;
-            }
-            catch (Exception e)
-            {
-                // fail gracefully, but log
-                //  logger.LogError("Failed to process captcha validation", e);
-            }
-
-            return result;
-        }
-
-        public class CaptchaVerificationResponse
-        {
-            public bool success { get; set; }
-        }
-
-       
     }
-
 }
