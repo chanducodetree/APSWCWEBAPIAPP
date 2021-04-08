@@ -72,6 +72,14 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        [Route("Captcha")]
+        public dynamic Captcha()
+        {
+            return _authservice.check_s_captch("");
+        }
+
+        [HttpGet]
         [Route("GetWorkLocations")]
         public async Task<IActionResult> GetWorkLocations()
         {
@@ -301,12 +309,14 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [Route("GetServiceCharterDetails")]
-        public async Task<IActionResult> GetServiceCharterDetails()
+        public async Task<IActionResult> GetServiceCharterDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
-                return Ok(await _hel.GetServiceCharterDetails());
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetServiceCharterDetails(rootobj));
             }
             catch (Exception)
             {
@@ -725,7 +735,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailsLogs", "SaveEmpFamilyDetails : Input Data : " + value));
-                FamilyListCls rootobj = JsonConvert.DeserializeObject<FamilyListCls>(value);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
             }
             catch (Exception ex)
