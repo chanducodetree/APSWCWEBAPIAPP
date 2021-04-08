@@ -386,9 +386,9 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> GetServiceCharterDetails()
+        public async Task<dynamic> GetServiceCharterDetails(MasterSp rootobj)
         {
-            MasterSp rootobj = new MasterSp();
+           
             try
             {
                 rootobj.DIRECTION_ID = "1";
@@ -404,10 +404,10 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetSections : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetServiceCharterDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Sections";
+                resultobj.StatusMessage = "Error Occured while load Service Charter Details";
                 return resultobj;
 
             }
@@ -715,7 +715,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "1";
-                rootobj.TYPEID = "'CONTACT'";
+                rootobj.TYPEID = "CONTACT";
 
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Loaded Successfully";

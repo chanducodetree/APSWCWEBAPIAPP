@@ -109,6 +109,28 @@ namespace APSWCWEBAPIAPP.Controllers
             return res;
         }
 
+        [HttpPost]
+        [Route("GetServiceCharterDetails")]
+        public async Task<IActionResult> GetServiceCharterDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetServiceCharterDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Service Charter Details"
+                });
+                return response;
+            }
+        }
+
         [HttpGet]
         [Route("InsecpctionList")]
         public List<InspectionModel> GetInsecpctionList()

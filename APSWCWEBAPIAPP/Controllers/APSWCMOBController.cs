@@ -72,6 +72,14 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        [Route("Captcha")]
+        public dynamic Captcha()
+        {
+            return _authservice.check_s_captch("");
+        }
+
+        [HttpGet]
         [Route("GetWorkLocations")]
         public async Task<IActionResult> GetWorkLocations()
         {
@@ -301,12 +309,14 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [Route("GetServiceCharterDetails")]
-        public async Task<IActionResult> GetServiceCharterDetails()
+        public async Task<IActionResult> GetServiceCharterDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
-                return Ok(await _hel.GetServiceCharterDetails());
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetServiceCharterDetails(rootobj));
             }
             catch (Exception)
             {
@@ -782,28 +792,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 });
                 return response;
             }
-        }
-
-        [HttpGet]
-        [Route("GetBoardofDirectors")]
-        public async Task<IActionResult> GetBoardofDirectorMaster()
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                return Ok(await _hel.GetBoardofDirectors());
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Board of Directors"
-                });
-                return response;
-            }
-
-            
         }
 
     }
