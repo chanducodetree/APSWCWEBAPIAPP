@@ -16,12 +16,12 @@ namespace APSWCWEBAPIAPP.DBConnection
     public class SqlCon
     {
         private readonly string _connectionString;
-       private string exFolder = Path.Combine("ExceptionLogs");
+        private string exFolder = Path.Combine("ExceptionLogs");
         private string exPathToSave = string.Empty;
         dynamic resultobj = new ExpandoObject();
         public SqlCon(IConfiguration configuration)
         {
-           exPathToSave= Path.Combine(Directory.GetCurrentDirectory(), exFolder);
+            exPathToSave = Path.Combine(Directory.GetCurrentDirectory(), exFolder);
             _connectionString = configuration.GetConnectionString("apswcproddb");
         }
 
@@ -39,13 +39,13 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetApswcWareHouseMasterlogs", "GetApswcWareHouseMaster:Method:" +jsondata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetApswcWareHouseMasterlogs", "GetApswcWareHouseMaster:Method:" + jsondata));
                 return ex.Message.ToString();
             }
-            
+
         }
 
-       public  async Task<dynamic> GetBoardofDirectors()
+        public async Task<dynamic> GetBoardofDirectors()
         {
             try
             {
@@ -54,12 +54,12 @@ namespace APSWCWEBAPIAPP.DBConnection
                 m.TYPEID = "BOARD_OF_DIRECTORS";
                 return await APSWCMasterSp(m);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
+
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBoardofDirectorslogs", "GetBoardofDirectors:Method:"+jsondata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetBoardofDirectorslogs", "GetBoardofDirectors:Method:" + jsondata));
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Board of Directors";
                 return resultobj;
@@ -245,7 +245,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetAreaTypeslogs","GetAreaTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetAreaTypeslogs", "GetAreaTypes : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Area Types";
@@ -254,7 +254,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-       
+
 
 
         public async Task<dynamic> GetMandlas(MasterSp rootobj)
@@ -391,7 +391,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> GetServiceCharterDetails(MasterSp rootobj)
         {
-           
+
             try
             {
                 rootobj.DIRECTION_ID = "1";
@@ -766,6 +766,8 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+
+
         public async Task<dynamic> GetRelations()
         {
             MasterSp rootobj = new MasterSp();
@@ -1136,7 +1138,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> GetWHList(MasterSp rootobj)
         {
-            
+
             try
             {
                 rootobj.DIRECTION_ID = "1";
@@ -1163,7 +1165,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> GetRegionDistricts(MasterSp rootobj)
         {
-            
+
             try
             {
                 rootobj.DIRECTION_ID = "1";
@@ -1249,7 +1251,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
-                
+
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
                 cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
@@ -1306,7 +1308,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 return dt;
             }
-          catch(Exception ex)
+            catch (Exception ex)
             {
                 if (sqlcon.State == ConnectionState.Open)
                 {
@@ -1317,6 +1319,6 @@ namespace APSWCWEBAPIAPP.DBConnection
                 throw ex;
             }
 
-          }
+        }
     }
 }
