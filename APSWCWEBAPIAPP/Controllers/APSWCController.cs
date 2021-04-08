@@ -141,22 +141,18 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [Route("InspectionRegistration")]
-        public IActionResult InspectionRegistration([FromBody] InspectionModel Ins)
+        public async Task<IActionResult> InspectionRegistration([FromBody] MasterSp Ins)
         {
             IActionResult response = Unauthorized();
             var folderName = Path.Combine("InspectionLogs");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
             string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
             Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "InspectionRegistrationlogs", jsondata));
 
-
-            response = Ok(new
-            {
-                StatusCode = 100,
-                StatusMessage = "Data Submitted Succssfully"
-            });
-            return response;
+            return Ok(await _hel.SaveInspectionPhotos(obj));
+           
         }
 
         [HttpGet]
