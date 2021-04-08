@@ -93,6 +93,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+
         public async Task<dynamic> GetDesignations()
         {
             MasterSp rootobj = new MasterSp();
@@ -132,16 +133,19 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.StatusMessage = "Data Loaded Successfully";
                 resultobj.Details = await APSWCMasterSp(rootobj);
 
+
                 return resultobj;
             }
             catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
+
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpListlogs", "GetEmpList : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Employees List";
+
                 return resultobj;
 
             }
