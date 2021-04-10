@@ -155,6 +155,70 @@ namespace APSWCWEBAPIAPP.Controllers
            
         }
 
+
+        [HttpPost]
+        [Route("ContactRegistration")]
+        public async Task<IActionResult> ContactRegistration([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "ContactRegistrationLogs", jsondata));
+
+            return Ok(await _hel.SaveContactRegisteration(obj));
+
+        }
+
+        [HttpPost]
+        [Route("BoardofDirectorsRegistration")]
+        public async Task<IActionResult> BoardofDirectorsRegistration([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "BoardofDirectorsRegistrationLogs", jsondata));
+
+            return Ok(await _hel.Saveboardofdirectors(obj));
+
+        }
+
+        [HttpPost]
+        [Route("ServiceCharterInsert")]
+        public async Task<IActionResult> ServiceCharterInsert([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "ServiceCharterInsertLogs", jsondata));
+
+            return Ok(await _hel.SaveServiceCharter(obj));
+
+        }
+        [HttpPost]
+        [Route("HomePageConentInsert")]
+        public async Task<IActionResult> HomePageConentInsert([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "HomePageConentInsertLogs", jsondata));
+
+            return Ok(await _hel.SaveHomePageConent(obj));
+
+        }
+
         [HttpGet]
         [Route("GetEmpList")]
         public async Task<IActionResult> GetEmpList()
