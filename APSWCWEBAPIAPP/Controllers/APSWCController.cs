@@ -67,38 +67,24 @@ namespace APSWCWEBAPIAPP.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("Login")]
-        public IActionResult Login([FromBody] User login)
+        public async Task<IActionResult> Login(dynamic data)
         {
             IActionResult response = Unauthorized();
-
-            var captval = _context.captcha.FirstOrDefault(i => i.Id == login.GToken && i.Capchid==login.Idval && i.IsActive==1);
-            
-            if (captval == null)
-                return NotFound();
-            else
+            try
             {
-                
-                Captch ca = new Captch();
-                ca.Capchid = captval.Capchid;
-                ca.Id = captval.Id;
-                ca.IsActive = 0;
-                _context.Entry(ca).State = EntityState.Detached;
-                _context.captcha.Update(ca);
-                _context.SaveChanges();
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.CheckLogin(rootobj));
             }
-
-
-            User user = _authservice.AuthenticateUser(login);
-            if (user != null)
+            catch (Exception)
             {
-                var tokenString = _authservice.GenerateJWT(user);
                 response = Ok(new
                 {
-                    token = tokenString,
-                    userDetails = user,
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Login"
                 });
+                return response;
             }
-            return response;
         }
 
         [HttpGet]
@@ -956,6 +942,30 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("UpdateEmpPrimaryDetails")]
+        public async Task<IActionResult> UpdateEmpPrimaryDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateEmpPrimaryDetailsLogs", "UpdateEmpPrimaryDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateEmpPrimaryDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update Employee General Details"
+                });
+                return response;
+            }
+        }
+
+
         public async Task<bool> IsCaptchaValid(string token)
         {
             var result = false;
@@ -1125,7 +1135,28 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-
+        [HttpPost]
+        [Route("SaveChangePassword")]
+        public async Task<IActionResult> SaveChangePassword(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveChangePasswordlogs", "SaveChangePassword : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveChangePassword(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Change Password"
+                });
+                return response;
+            }
+        }
     }
 
 }

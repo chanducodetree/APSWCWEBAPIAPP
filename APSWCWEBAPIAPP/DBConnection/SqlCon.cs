@@ -11,6 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Dynamic;
+using AuthService;
+
 namespace APSWCWEBAPIAPP.DBConnection
 {
     public class SqlCon
@@ -19,10 +21,66 @@ namespace APSWCWEBAPIAPP.DBConnection
         private string exFolder = Path.Combine("ExceptionLogs");
         private string exPathToSave = string.Empty;
         dynamic resultobj = new ExpandoObject();
-        public SqlCon(IConfiguration configuration)
+        private ApplicationAPSWCCDbContext _context;
+        private readonly ICaptchaService _authservice;
+
+        public SqlCon(IConfiguration configuration, ApplicationAPSWCCDbContext apcontext, ICaptchaService auth)
         {
+            _context = apcontext;
+            _authservice = auth;
             exPathToSave = Path.Combine(Directory.GetCurrentDirectory(), exFolder);
             _connectionString = configuration.GetConnectionString("apswcproddb");
+        }
+
+        public async Task<dynamic> CheckLogin(MasterSp rootobj)
+        {
+            
+            try
+            {
+                var captval = _context.captcha.FirstOrDefault(i => i.Id == rootobj.INPUT_03 && i.Capchid == rootobj.INPUT_04 && i.IsActive == 1);
+                if (captval != null)
+                {
+                    rootobj.DIRECTION_ID = "1";
+                    rootobj.TYPEID = "LOGIN";
+
+                    var data = await APSWCMasterSp(rootobj);
+
+                    if (data.Rows.Count > 0)
+                    {
+                        var user = new User() { UserName = data.Rows[0][0].ToString() , FirstName = data.Rows[0][1].ToString(), UserType = data.Rows[0][2].ToString() };
+                        var tokenString = _authservice.GenerateJWT(user);
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "User Login Successfully.";
+                        resultobj.Details = data;
+                        resultobj.token = tokenString;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Invalid User Name OR Password";
+                    }
+                   
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Invalid Capcha";
+                }
+
+                return resultobj;
+
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "Loginlogs", "CheckLogin : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured While Login";
+                return resultobj;
+
+            }
         }
 
         public async Task<dynamic> GetApswcWareHouseMaster()
@@ -92,8 +150,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
-
         public async Task<dynamic> GetDesignations()
         {
             MasterSp rootobj = new MasterSp();
@@ -258,7 +314,39 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> SaveInspectionPhotos(MasterSp rootobj)
+        {
 
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "201";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                // resultobj.Details = await 
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveInspectionPhotos", "GetRManagers : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Managers";
+            }
+
+            return resultobj;
+        }
 
 
         public async Task<dynamic> GetMandlas(MasterSp rootobj)
@@ -1241,6 +1329,58 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Update Warehouse Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> UpdateEmpPrimaryDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "108";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdateEmpPrimaryDetailslogs", "UpdateEmpPrimaryDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Update Employee General Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveChangePassword(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "501";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveChangePasswordlogs", "SaveChangePassword : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Change Password";
                 return resultobj;
 
             }
