@@ -41,6 +41,29 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("Login")]
+        public async Task<IActionResult> Login(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.CheckLogin(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Login"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         [Route("Token")]
         public IActionResult Token([FromBody] User login)
         {
