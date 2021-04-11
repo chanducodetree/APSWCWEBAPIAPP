@@ -1148,7 +1148,29 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        
+
+        [HttpPost]
+        [Route("GetWH_History")]
+        public async Task<IActionResult> GetWH_History(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWH_History(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Warehouse History"
+                });
+                return response;
+            }
+        }
+
 
 
         [HttpPost]
@@ -1325,6 +1347,30 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("updateWareHouseDetails_ALL")]
+        public async Task<IActionResult> updateWareHouseDetails_ALL(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update WareHouse Details"
+                });
+                return response;
+            }
+        }
+
     }
 
 }

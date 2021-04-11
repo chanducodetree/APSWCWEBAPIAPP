@@ -1406,6 +1406,33 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> GetWH_History(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "WH_HISTORY";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWarehouseHistorylogs", "GetWarehouseHistory : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Warehouse History";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> GetRegionDistricts(MasterSp rootobj)
         {
 
@@ -1463,6 +1490,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
+               
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "302";
 
@@ -1485,6 +1513,30 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> UpdateWareHouseDetails_all(MasterSp rootobj)
+        {
+            try
+            {
+
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "305";
+
+                resultobj.Details = await APSWCMasterSp(rootobj);
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Updated Successfully";
+            }
+          catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdateWarehouseDetails_alllogs", "UpdateWarehouseDetails_all : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Update Warehouse Details";
+                return resultobj;
+
+            }
+        }
         public async Task<dynamic> UpdateEmpPrimaryDetails(MasterSp rootobj)
         {
             try
