@@ -90,7 +90,20 @@ namespace APSWCWEBAPIAPP.DBConnection
                 MasterSp m = new MasterSp();
                 m.DIRECTION_ID = "1";
                 m.TYPEID = "101";
-                return await APSWCMasterSp(m);
+                //return await APSWCMasterSp(m);
+                DataTable dt = await APSWCMasterSp(m);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
             }
             catch (Exception ex)
             {
@@ -110,7 +123,20 @@ namespace APSWCWEBAPIAPP.DBConnection
                 MasterSp m = new MasterSp();
                 m.DIRECTION_ID = "1";
                 m.TYPEID = "BOARD_OF_DIRECTORS";
-                return await APSWCMasterSp(m);
+                //return await APSWCMasterSp(m);
+                DataTable dt = await APSWCMasterSp(m);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
             }
             catch (Exception ex)
             {
@@ -132,10 +158,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "WORK_LOCATION";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -168,7 +202,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -195,11 +229,21 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "TOTAL_EMP_DETAILS";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
-
+                //resultobj.StatusCode = 100;
+                //resultobj.StatusMessage = "Data Loaded Successfully";
+                //resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -400,11 +444,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "EMP_TYPE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -426,11 +477,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "EDU";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -453,11 +511,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "DISTRICTS";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -480,10 +545,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "URBAN_RURAL";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -506,10 +579,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "MMC";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -532,10 +613,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "WARD_VILLAGE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -559,10 +648,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "STORAGE_TYPE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -585,10 +682,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "STORAGE_LIST";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -612,11 +717,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "SECTION";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -640,9 +752,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "SERVICE_CHARTER";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -666,10 +787,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "BLOOD_GROUP";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -693,10 +822,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "EXPERIANCE_YEARS";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -720,10 +857,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "EXPERIANCE_MONTH";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -747,10 +892,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "SECTION";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -774,10 +927,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "RELIGION";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -801,10 +962,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "COMMUNITY";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -828,10 +997,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "MARITAL_STATUS";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -855,10 +1032,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "STATES";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -882,11 +1067,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "SPACE_HOMEPAGE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -909,10 +1101,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "SPACE_ABSTRACT";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -935,10 +1135,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "LOCATION_LIST";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -963,9 +1171,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "CONTACT";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -989,10 +1206,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "REPORTING_OFFICER";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1018,10 +1243,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "RELATION";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1045,10 +1278,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "GENDER";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1071,11 +1312,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "101";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -1097,10 +1345,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "102";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1123,10 +1379,19 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "103";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
 
                 return resultobj;
             }
@@ -1149,10 +1414,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "104";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1175,10 +1448,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "105";
-
-                resultobj.Details = await APSWCMasterSp(rootobj);
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1201,10 +1482,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "106";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1227,10 +1516,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "BANK_DETAILS";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1253,11 +1550,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "FAMILY_DETAILS";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -1280,9 +1584,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "EMP_DETAILS";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1305,10 +1618,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "107";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1332,11 +1653,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "REGION";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -1359,10 +1687,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "WH_TYPE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1386,10 +1722,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "WH_LIST";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1411,12 +1755,21 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             try
             {
+
                 rootobj.DIRECTION_ID = "3";
                 rootobj.TYPEID = "GET_LOG_HISTORY";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1440,10 +1793,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "REGN_DIST";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1466,10 +1827,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "301";
-
-                resultobj.Details = await APSWCMasterSp(rootobj);
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1493,10 +1862,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "302";
-
-                resultobj.Details = await APSWCMasterSp(rootobj);
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Updated Successfully";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1521,9 +1898,22 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "305";
 
-                resultobj.Details = await APSWCMasterSp(rootobj);
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Updated Successfully";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Updated Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+
+               
+
                 return resultobj;
             }
           catch (Exception ex)
@@ -1536,18 +1926,27 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.StatusMessage = "Error Occured while Update Warehouse Details";
                 return resultobj;
 
-            }
+           }
         }
+      
         public async Task<dynamic> UpdateEmpPrimaryDetails(MasterSp rootobj)
         {
             try
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "108";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1570,10 +1969,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "501";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1592,15 +1999,23 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> Getmasterslist(MasterSp objMa)
         {
-            //MasterSp rootobj = new MasterSp();
+            MasterSp rootobj = new MasterSp();
             try
             {
                 //rootobj.DIRECTION_ID = "1";
                 //rootobj.TYPEID = "EMP_TYPE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterlist(objMa);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -1622,10 +2037,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "304";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data submitted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1634,7 +2057,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpmasterreg : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "employeemasterRegistrationlogs : Method:" + jsondata + " , Input Data : " + inputdata));
                 if (ex.Message.Contains("ORA-00001"))
                 {
                     resultobj.StatusCode = 102;
@@ -1644,7 +2067,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save Employee General Details";
+                resultobj.StatusMessage = "Error Occured while Save MasterDetails";
                 return resultobj;
 
             }
@@ -1656,10 +2079,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "303";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -1667,10 +2098,10 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpPrimaryDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "employeemasterUpdatelogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save Employee General Details";
+                resultobj.StatusMessage = "Error Occured while Update Master Details";
                 return resultobj;
 
             }
@@ -1682,11 +2113,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "109";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
                 return resultobj;
             }
             catch (Exception ex)

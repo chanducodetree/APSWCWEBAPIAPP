@@ -1293,7 +1293,6 @@ namespace APSWCWEBAPIAPP.Controllers
         [Route("employeemasterreg")]
         public IActionResult employeemasterreg(dynamic data)
         {
-            
             IActionResult response = Unauthorized();
             try
             {
@@ -1313,7 +1312,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
 
                     StatusCode = "102",
-                    StatusMessage = "Error Occured while Save EmployeeMaster Details",
+                    StatusMessage = "Error Occured while Save Master Details",
 
                 });
                 return response;
@@ -1342,7 +1341,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while update EmployeeMaster Details"
+                    StatusMessage = "Error Occured while update Master Details"
                 });
                 return response;
             }
