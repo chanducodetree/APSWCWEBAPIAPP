@@ -1524,6 +1524,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.Details = await APSWCMasterSp(rootobj);
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Updated Successfully";
+                return resultobj;
             }
           catch (Exception ex)
             {
@@ -1534,8 +1535,9 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Update Warehouse Details";
                 return resultobj;
-
             }
+
+            
         }
         public async Task<dynamic> UpdateEmpPrimaryDetails(MasterSp rootobj)
         {
@@ -1633,7 +1635,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpmasterreg : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "employeemasterRegistrationlogs : Method:" + jsondata + " , Input Data : " + inputdata));
                 if (ex.Message.Contains("ORA-00001"))
                 {
                     resultobj.StatusCode = 102;
@@ -1643,7 +1645,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save Employee General Details";
+                resultobj.StatusMessage = "Error Occured while Save MasterDetails";
                 return resultobj;
 
             }
@@ -1666,10 +1668,10 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpPrimaryDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "employeemasterUpdatelogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save Employee General Details";
+                resultobj.StatusMessage = "Error Occured while Update Master Details";
                 return resultobj;
 
             }
