@@ -1166,8 +1166,8 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             try
             {
-                rootobj.DIRECTION_ID = "1";
-                rootobj.TYPEID = "WH_HISTORY";
+                rootobj.DIRECTION_ID = "3";
+                rootobj.TYPEID = "GET_LOG_HISTORY";
 
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Loaded Successfully";
