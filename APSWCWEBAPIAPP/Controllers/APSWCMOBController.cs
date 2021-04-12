@@ -41,6 +41,29 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("Login")]
+        public async Task<IActionResult> Login(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.CheckLogin(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Login"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         [Route("Token")]
         public IActionResult Token([FromBody] User login)
         {
@@ -72,6 +95,14 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        [Route("Captcha")]
+        public dynamic Captcha()
+        {
+            return _authservice.check_s_captch("");
+        }
+
+        [HttpGet]
         [Route("GetWorkLocations")]
         public async Task<IActionResult> GetWorkLocations()
         {
@@ -79,6 +110,27 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 return Ok(await _hel.GetWorkLocations());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Work Locations",
+
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetBoardofDirectors")]
+        public async Task<IActionResult> GetBoardofDirectors()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetBoardofDirectors());
             }
             catch (Exception)
             {
@@ -278,6 +330,28 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetServiceCharterDetails")]
+        public async Task<IActionResult> GetServiceCharterDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetServiceCharterDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Sections"
+                });
+                return response;
+            }
+        }
+
         [HttpGet]
         [Route("GetBloodGroups")]
         public async Task<IActionResult> GetBloodGroups()
@@ -448,6 +522,28 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetLocations(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load States"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetContactList")]
+        public async Task<IActionResult> GetContactList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetContactLists(rootobj));
             }
             catch (Exception)
             {
@@ -662,7 +758,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailsLogs", "SaveEmpFamilyDetails : Input Data : " + value));
-                FamilyListCls rootobj = JsonConvert.DeserializeObject<FamilyListCls>(value);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
             }
             catch (Exception ex)
@@ -720,6 +816,95 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("UpdatedEmployeeDetails")]
+        public async Task<IActionResult> UpdatedEmployeeDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateEmpPrimaryDetailsLogs", "UpdateEmpPrimaryDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateEmpPrimaryDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update Employee Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDesignations")]
+        public async Task<IActionResult> GetDesignations()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetDesignations());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Designations",
+
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmpFamilyDetails")]
+        public async Task<IActionResult> GetEmpFamilyDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetEmpFamilyDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Employee Family Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmployeeDetails")]
+        public async Task<IActionResult> GetEmployeeDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetEmployeeDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Employee Details"
+                });
+                return response;
+            }
+        }
+
 
     }
 }
