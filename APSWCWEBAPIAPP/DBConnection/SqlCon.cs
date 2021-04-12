@@ -1991,15 +1991,23 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> Getmasterslist(MasterSp objMa)
         {
-            //MasterSp rootobj = new MasterSp();
+            MasterSp rootobj = new MasterSp();
             try
             {
                 //rootobj.DIRECTION_ID = "1";
                 //rootobj.TYPEID = "EMP_TYPE";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Loaded Successfully";
-                resultobj.Details = await APSWCMasterlist(objMa);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
