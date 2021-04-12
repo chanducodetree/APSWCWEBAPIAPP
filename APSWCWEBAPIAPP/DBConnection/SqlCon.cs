@@ -1524,6 +1524,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.Details = await APSWCMasterSp(rootobj);
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Updated Successfully";
+                return resultobj;
             }
           catch (Exception ex)
             {
