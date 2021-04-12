@@ -101,7 +101,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -134,7 +134,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -168,7 +168,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -202,7 +202,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -242,7 +242,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -454,7 +454,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -487,7 +487,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -521,7 +521,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -555,7 +555,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -589,7 +589,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -623,7 +623,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -658,7 +658,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -692,7 +692,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -727,7 +727,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -762,7 +762,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -797,7 +797,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -832,7 +832,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -867,7 +867,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -902,7 +902,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -937,7 +937,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -972,7 +972,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1007,7 +1007,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1042,7 +1042,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1077,7 +1077,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -1111,7 +1111,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1145,7 +1145,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1181,7 +1181,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1216,7 +1216,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1253,7 +1253,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1288,7 +1288,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1526,7 +1526,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1560,7 +1560,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -1594,7 +1594,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1663,7 +1663,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -1697,7 +1697,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1732,7 +1732,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -1767,7 +1767,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
                 return resultobj;
             }
@@ -1801,7 +1801,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
@@ -2007,7 +2007,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.StatusMessage = "No Data Found";
                 }
 
                 return resultobj;
