@@ -1769,6 +1769,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = "No Data Found";
                 }
+
                 return resultobj;
             }
             catch (Exception ex)
@@ -1895,11 +1896,12 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "305";
+
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
                 {
                     resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.StatusMessage = "Data Updated Successfully";
                     resultobj.Details = dt;
                 }
                 else
@@ -1907,6 +1909,10 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = dt.Rows[0][1].ToString();
                 }
+
+
+               
+
                 return resultobj;
             }
           catch (Exception ex)
@@ -1992,12 +1998,12 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> Getmasterslist(MasterSp objMa)
         {
-            MasterSp rootobj = new MasterSp();
+            //MasterSp rootobj = new MasterSp();
             try
             {
                 //rootobj.DIRECTION_ID = "1";
                 //rootobj.TYPEID = "EMP_TYPE";
-                DataTable dt = await APSWCMasterlist(rootobj);
+                DataTable dt = await APSWCMasterlist(objMa);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     resultobj.StatusCode = 100;
@@ -2165,6 +2171,41 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.StatusMessage = "Error Occured while Get Employee History";
                 return resultobj;
 
+            }
+        }
+
+        public async Task<dynamic> GetmastersHistorylist(MasterSp objMa)
+        {
+
+            try
+            {
+                objMa.DIRECTION_ID = "3";
+                objMa.TYPEID = "GET_LOG_HISTORY";
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No History Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetmastersHistorylist : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Master History";
+                return resultobj;
             }
         }
 
