@@ -1755,8 +1755,8 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             try
             {
-                rootobj.DIRECTION_ID = "1";
-                rootobj.TYPEID = "WH_HISTORY";
+                rootobj.DIRECTION_ID = "3";
+                rootobj.TYPEID = "GET_LOG_HISTORY";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -1997,7 +1997,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 //rootobj.DIRECTION_ID = "1";
                 //rootobj.TYPEID = "EMP_TYPE";
-                DataTable dt = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterlist(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     resultobj.StatusCode = 100;
@@ -2128,6 +2128,41 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Update Employee General Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetEmployeeHistory(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "3";
+                rootobj.TYPEID = "GET_LOG_HISTORY";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeHistorylogs", "GetEmployeeHistory : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Employee History";
                 return resultobj;
 
             }
