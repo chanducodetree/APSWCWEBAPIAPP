@@ -362,6 +362,33 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+
+        public async Task<dynamic> GetHomepageContent()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "3";
+                rootobj.TYPEID = "GET_HOMEPAGE";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeTypeslogs", "GetEmployeeTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Employee Types";
+                return resultobj;
+            }
+        }
+
         public async Task<dynamic> GetEducations()
         {
             MasterSp rootobj = new MasterSp();

@@ -220,6 +220,15 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [Route("GetHomePageConent")]
+        public async Task<IActionResult> GetHomePageConent()
+        {
+        
+            return Ok(await _hel.GetHomepageContent());
+
+        }
+
+        [HttpGet]
         [Route("GetEmpList")]
         public async Task<IActionResult> GetEmpList()
         {
