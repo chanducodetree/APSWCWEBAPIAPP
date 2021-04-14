@@ -1148,6 +1148,29 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetWH_View")]
+        public async Task<IActionResult> GetWH_View(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWH_View(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load WarehouseList"
+                });
+                return response;
+            }
+        }
+
+
 
         [HttpPost]
         [Route("GetWH_History")]
@@ -1365,6 +1388,74 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Update WareHouse Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetPageDetails")]
+        public async Task<IActionResult> GetPageDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPageDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetPageAccessDetails")]
+        public async Task<IActionResult> GetPageAccessDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPageAccessDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SavePageDetails")]
+        public async Task<IActionResult> SavePageDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePageDetailslogs", "SavePageDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SavePageDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Page Details"
                 });
                 return response;
             }

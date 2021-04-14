@@ -1750,6 +1750,41 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> GetWH_View(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "WH_VIEW";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWarehouseListlogs", "GetWarehouseList : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Warehouse List";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> GetWH_History(MasterSp rootobj)
         {
 
@@ -1849,6 +1884,113 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Warehouse Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetPageDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "602";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetPageDetailslogs", "GetPageDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Page Details";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> GetPageAccessDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID=rootobj.INPUT_01 == "DD" ? "604" : "603";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetPageDetailslogs", "GetPageDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Page Details";
+                return resultobj;
+
+            }
+        }
+        public async Task<dynamic> SavePageDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "601";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Submitted Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveWarehouseDetailslogs", "SaveWarehouseDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Page Details";
                 return resultobj;
 
             }
