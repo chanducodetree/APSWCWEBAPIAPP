@@ -60,8 +60,15 @@ namespace APSWCWEBAPIAPP.Controllers
         {
             try
             {
+                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
                 var file = Request.Form.Files[0];
                 var folderName = Path.Combine("Gallery", "Images");
+                //var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+                //if (!supportedTypes.Contains(fileExt))
+                //{
+                //    string ErrorMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+                //    return Ok(new { ErrorMessage });
+                //}
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {

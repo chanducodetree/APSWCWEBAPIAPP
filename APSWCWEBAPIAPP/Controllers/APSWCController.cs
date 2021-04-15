@@ -205,6 +205,38 @@ namespace APSWCWEBAPIAPP.Controllers
 
         }
 
+        [HttpPost]
+        [Route("ScrollNewMessageInsert")]
+        public async Task<IActionResult> ScrollNewMessageInsert([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "ScrollNewMessageInsertLogs", jsondata));
+
+            return Ok(await _hel.SaveNewsScrollMessage(obj));
+
+        }
+
+        [HttpPost]
+        [Route("GetScrollNewMessage")]
+        public async Task<IActionResult> GetScrollNewMessage([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            //Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "ScrollNewMessageInsertLogs", jsondata));
+
+            return Ok(await _hel.GetNewsScrollMessageData(obj));
+
+        }
+
         [HttpGet]
         [Route("GetHomePageConent")]
         public async Task<IActionResult> GetHomePageConent()
