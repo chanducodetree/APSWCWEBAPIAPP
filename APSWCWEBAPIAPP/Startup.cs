@@ -128,6 +128,9 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
   {
       FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Inspection")),
       RequestPath = new PathString("/Inspection")
+
+
+
   });
             app.Use(async (context, next) =>
             {
