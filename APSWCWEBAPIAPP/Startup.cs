@@ -123,12 +123,14 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
   app.UseRouting();
   app.UseAuthentication();
   app.UseAuthorization();
-          
-  app.UseStaticFiles(new StaticFileOptions()
-  {
-      FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Inspection")),
-      RequestPath = new PathString("/Inspection")
-  });
+
+            app.UseStaticFiles();       
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"inspection")),
+                RequestPath = new PathString("/inspection")
+            });
+            
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("X-Frame-Options", "DENY");
