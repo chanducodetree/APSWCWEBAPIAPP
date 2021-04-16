@@ -1,14 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+
 
 namespace APSWCWEBAPIAPP.Services
 {
     public static class Logfile
     {
+		private static IHttpContextAccessor _httpContextAccessor;
 		#region"Logs code"
+	 
 		public static object Write_Log_Exception(string mappath, dynamic strMsg)
 		{
 			string strPath = mappath + "\\" + DateTime.Now.ToString("MMddyyyy");
@@ -57,6 +64,42 @@ namespace APSWCWEBAPIAPP.Services
 
 
 		#endregion
+
+
+		public static string GetLocalIPAddress()
+		{
+
+	
+			var host = Dns.GetHostEntry(Dns.GetHostName());
+			foreach (var ip in host.AddressList)
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				{
+					return ip.ToString();
+				}
+			}
+			throw new Exception("No network adapters with an IPv4 address in the system!");
+		}
+
+		public static string MachineName(string ipadrress)
+		{
+			return Dns.GetHostEntry(ipadrress).HostName;
+			//Dns.GetHostEntry(Request.ServerVariables["REMOTE_HOST"]).HostName;
+		}
+		public static string Browsename()
+		{
+			try
+			{
+				string userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
+				return userAgent;
+			}
+			catch(Exception ex)
+			{
+				return "chrome";
+			}
+		}
+
+		
 
 	}
 }

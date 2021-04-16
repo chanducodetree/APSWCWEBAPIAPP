@@ -594,6 +594,35 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> GetVisitorsCount()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "3";
+                rootobj.TYPEID = "SITE_VISITORS";
+                rootobj.INPUT_01 = Logfile.Browsename();
+                rootobj.INPUT_02 = Logfile.GetLocalIPAddress();
+                rootobj.INPUT_03 = Logfile.MachineName(Logfile.GetLocalIPAddress());
+                
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Loaded Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeTypeslogs", "GetEmployeeTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Not Get Ip Address";
+                return resultobj;
+            }
+        }
+
         public async Task<dynamic> GetEducations()
         {
             MasterSp rootobj = new MasterSp();
