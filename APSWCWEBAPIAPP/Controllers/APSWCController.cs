@@ -142,7 +142,21 @@ namespace APSWCWEBAPIAPP.Controllers
            
         }
 
+        [HttpPost]
+        [Route("GalleryRegistration")]
+        public async Task<IActionResult> GalleryRegistration([FromBody] MasterSp Ins)
+        {
+            IActionResult response = Unauthorized();
+            var folderName = Path.Combine("APSWCLogs");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+            string jsondata = JsonConvert.SerializeObject(Ins);
+            MasterSp obj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "GalleryRegistrationLogs", jsondata));
 
+            return Ok(await _hel.SaveGalleryRegisteration(obj));
+
+        }
         [HttpPost]
         [Route("ContactRegistration")]
         public async Task<IActionResult> ContactRegistration([FromBody] MasterSp Ins)
@@ -244,6 +258,16 @@ namespace APSWCWEBAPIAPP.Controllers
         {
         
             return Ok(await _hel.GetHomepageContent());
+
+        }
+
+
+        [HttpGet]
+        [Route("GetGalleryImages")]
+        public async Task<IActionResult> GetGalleryImages()
+        {
+
+            return Ok(await _hel.GetGalleryImages());
 
         }
 
