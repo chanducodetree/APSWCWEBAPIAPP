@@ -69,7 +69,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 //    string ErrorMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
                 //    return Ok(new { ErrorMessage });
                 //}
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                var pathToSave = Path.Combine("wwwroot", folderName);
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
