@@ -1131,9 +1131,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetWHList(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWHList(rootobj));
             }
@@ -1153,13 +1154,14 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetWH_View(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                //string value = JsonConvert.SerializeObject(jsondata);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWH_View(rootobj));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response = Ok(new
                 {
@@ -1176,9 +1178,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetWH_History(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWH_History(rootobj));
             }
@@ -1200,9 +1203,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetRegionDistricts(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetRegionDistricts(rootobj));
             }
@@ -1223,9 +1227,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> SaveWareHouseDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+               // string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWareHouseDetailslogs", "SaveWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveWareHouseDetails(rootobj));
@@ -1248,9 +1253,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> updateWareHouseDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetailslogs", "UpdateWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateWareHouseDetails(rootobj));
@@ -1374,9 +1380,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> updateWareHouseDetails_ALL(dynamic data)
         {
             IActionResult response = Unauthorized();
+            string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+               // string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
@@ -1397,6 +1404,7 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetPageDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
+           
             try
             {
                 string value = JsonConvert.SerializeObject(data);
