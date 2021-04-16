@@ -95,6 +95,7 @@ namespace APSWCWEBAPIAPP.Controllers
             return res;
         }
 
+
         [HttpPost]
         [Route("GetServiceCharterDetails")]
         public async Task<IActionResult> GetServiceCharterDetails(dynamic data)
@@ -243,6 +244,15 @@ namespace APSWCWEBAPIAPP.Controllers
         {
         
             return Ok(await _hel.GetHomepageContent());
+
+        }
+
+        [HttpGet]
+        [Route("GetVisitorsCount")]
+        public async Task<IActionResult> GetVisitorsCount()
+        {
+
+            return Ok(await _hel.GetVisitorsCount());
 
         }
 
