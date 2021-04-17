@@ -1,0 +1,1 @@
+UpdatedEmployeeDetails : Input Data : {"INPUT_01":"EMP0004","INPUT_02":"3","INPUT_03":3,"INPUT_04":"Indian","INPUT_05":1,"INPUT_06":1,"INPUT_07":1,"INPUT_08":"Son","INPUT_09":"2019-02-02","INPUT_11":"vamsi7890@gmail.com","INPUT_12":8008197194,"INPUT_13":8074819567,"INPUT_35":"Base64"}

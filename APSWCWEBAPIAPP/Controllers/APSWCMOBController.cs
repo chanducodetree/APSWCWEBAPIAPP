@@ -67,47 +67,32 @@ namespace APSWCWEBAPIAPP.Controllers
         [Route("Token")]
         public IActionResult Token([FromBody] User login)
         {
-            IActionResult response = Unauthorized();            
+          IActionResult response = Unauthorized();            
 
-            User user = _authservice.AuthenticateUser(login);
+          User user = _authservice.AuthenticateUser(login);
             if (user != null)
-            {
+           {
                 var tokenString = _authservice.GenerateJWT(user);
-                user.GToken = tokenString;
-                user.FirstName = user.UserName;
-                user.Password = "";
+               user.GToken = tokenString;
+               user.FirstName = user.UserName;
+               user.Password = "";
                 response = Ok(new
-                {
-                    statusCode = 100,           
-                    userDetails = user,
-                    statusMessage = ""
-                }); 
-            }
-            else
-            {
+              {
+                  statusCode = 100,           
+                  userDetails = user,
+                statusMessage = ""
+               }); 
+           }
+           else
+           {
                 response = Ok(new 
                     {
                     statusCode=102,
                     statusMessage = "Invalid Username and Password"
-                });
+               });
             }
             return response;
         }
-
-        //[AllowAnonymous]
-        //[HttpGet]
-        //[Route("GetToken")]
-        //public dynamic GetToken()
-        //{
-        //    try
-        //    {
-        //        return _hel.GetToken1();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
 
         [HttpGet]
         [AllowAnonymous]
@@ -139,6 +124,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetBoardofDirectors")]
         public async Task<IActionResult> GetBoardofDirectors()
         {
@@ -305,6 +291,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetStorageTypes")]
         public async Task<IActionResult> GetStorageTypes()
         {
@@ -325,6 +312,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("GetChargeDetails")]
         public async Task<IActionResult> GetChargeDetails(dynamic data)
         {
@@ -347,6 +335,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetSections")]
         public async Task<IActionResult> GetSections()
         {
@@ -367,6 +356,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("GetServiceCharterDetails")]
         public async Task<IActionResult> GetServiceCharterDetails(dynamic data)
         {
@@ -571,6 +561,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("GetContactList")]
         public async Task<IActionResult> GetContactList(dynamic data)
         {
@@ -634,6 +625,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetSpaceDetails")]
         public async Task<IActionResult> GetSpaceDetails()
         {
@@ -654,6 +646,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetFiveYearsReport")]
         public async Task<IActionResult> GetFiveYearsReport()
         {
@@ -1027,8 +1020,6 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-
-
         [HttpPost]
         [Route("GetRegionDistricts")]
         public async Task<IActionResult> GetRegionDistricts(dynamic data)
@@ -1087,6 +1078,29 @@ namespace APSWCWEBAPIAPP.Controllers
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetailslogs", "UpdateWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateWareHouseDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update WareHouse Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateWareHouseDetails_all")]
+        public async Task<IActionResult> UpdateWareHouseDetails_all(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
             }
             catch (Exception ex)
             {
