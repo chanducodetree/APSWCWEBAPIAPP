@@ -1719,6 +1719,41 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> GetFacilitiesAvailable()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "FACILITY_AVAILABLE";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWarehouseTypeslogs", "GetGetWarehouseTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Warehouse Available Facilities";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> GetWHList(MasterSp rootobj)
         {
 
