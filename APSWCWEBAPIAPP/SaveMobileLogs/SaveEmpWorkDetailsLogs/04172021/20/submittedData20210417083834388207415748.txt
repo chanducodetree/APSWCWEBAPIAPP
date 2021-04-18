@@ -1,0 +1,1 @@
+SaveEmpWorkDetails : Input Data : {"INPUT_01":"APSWC0002","INPUT_02":"Warehouse","INPUT_03":"KD11103","INPUT_04":"Allagadda (Own)  (KURNOOL)","INPUT_05":"Sri S. Srikanth Nath Reddy I.F.S","INPUT_06":1,"INPUT_07":"B & L Section","USER_NAME":"APSWC_ADMIN","CALL_SOURCE":"WEB","INPUT_08":"Employee Working Good"}
