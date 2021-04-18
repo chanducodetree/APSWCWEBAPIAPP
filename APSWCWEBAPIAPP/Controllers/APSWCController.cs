@@ -1782,6 +1782,54 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetHolidayMaster_VIEW")]
+        public async Task<IActionResult> GetHolidayMaster_VIEW(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetHolidayMaster_VIEW", "GetHolidayMaster_VIEW : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHolidayMaster_VIEW(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get HolidayMaster_VIEW Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetLeaveMaster_VIEW")]
+        public async Task<IActionResult> GetLeaveMaster_VIEW(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetLeaveMaster_VIEW", "GetLeaveMaster_VIEW : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetLeaveMaster_VIEW(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get GetLeaveMaster_VIEW Details"
+                });
+                return response;
+            }
+        }
+
     }
 
 }
