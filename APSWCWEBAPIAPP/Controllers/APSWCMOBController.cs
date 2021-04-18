@@ -17,7 +17,7 @@ using APSWCWEBAPIAPP.Models;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-    [Authorize(Policy = Policies.Mob)]
+    //[Authorize(Policy = Policies.Mob)]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCMOBController : ControllerBase
@@ -1005,6 +1005,28 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWHList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load WarehouseList"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetWH_View")]
+        public async Task<IActionResult> GetWH_View(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWH_View(rootobj));
             }
             catch (Exception)
             {
