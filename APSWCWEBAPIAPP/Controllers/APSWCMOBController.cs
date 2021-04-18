@@ -975,6 +975,26 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAvailable_Facilities")]
+        public async Task<IActionResult> GetFacilitiesAvailable()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetFacilitiesAvailable());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Warehouse Available Facilities"
+                });
+                return response;
+            }
+        }
+
         [HttpPost]
         [Route("GetWH_List")]
         public async Task<IActionResult> GetWHList(dynamic data)
