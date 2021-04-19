@@ -19,13 +19,13 @@ namespace APSWCWEBAPIAPP.Controllers
         {
             try
             {
-                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf"};
+                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
                 var file = Request.Form.Files[0];
                 var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
-               
+
                 if (!supportedTypes.Contains(fileExt))
                 {
-                   string ErrorMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+                    string ErrorMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
                     return Ok(new { ErrorMessage });
                 }
                 var folderName = Path.Combine("Inspection", "Images");
@@ -33,7 +33,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, DateTime.Now.ToString("ddMMyyyy"),fileName);
+                    var fullPath = Path.Combine(pathToSave, DateTime.Now.ToString("ddMMyyyy"), fileName);
                     var dbPath = Path.Combine(folderName, fileName);
                     bool folderExists = Directory.Exists(pathToSave);
                     if (!folderExists)
@@ -60,16 +60,9 @@ namespace APSWCWEBAPIAPP.Controllers
         {
             try
             {
-                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Gallery", "Images");
-                //var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
-                //if (!supportedTypes.Contains(fileExt))
-                //{
-                //    string ErrorMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
-                //    return Ok(new { ErrorMessage });
-                //}
-                var pathToSave = Path.Combine("wwwroot", folderName);
+                var folderName = Path.Combine("WareHouse", "Documents");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
