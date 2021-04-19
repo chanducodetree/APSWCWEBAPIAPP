@@ -72,7 +72,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.CheckLogin(rootobj));
             }
@@ -102,7 +103,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetServiceCharterDetails(rootobj));
             }
@@ -275,7 +277,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetContactLists(rootobj));
             }
@@ -397,7 +400,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetMandlas(rootobj));
             }
@@ -419,7 +423,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetVillages(rootobj));
             }
@@ -461,7 +466,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetChargeDetails(rootobj));
             }
@@ -663,7 +669,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetLocations(rootobj));
             }
@@ -786,7 +793,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPrimaryDetailslogs", "SaveEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPrimaryDetails(rootobj));
@@ -809,7 +817,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                // string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpCommuDetailslogs", "SaveEmpCommuDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpCommuDetails(rootobj));
@@ -832,7 +841,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpWorkDetailsLogs", "SaveEmpWorkDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpWorkDetails(rootobj));
@@ -855,7 +865,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpBankDetailsLogs", "SaveEmpBankDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpBankDetails(rootobj));
@@ -878,7 +889,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailslogs", "SaveEmpFamilyDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
@@ -901,7 +913,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                // string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPFDetailslogs", "SaveEmpPFDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPFDetails(rootobj));
@@ -924,7 +937,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetIFSCCodeDetails(rootobj));
             }
@@ -946,7 +960,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                // string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetEmpFamilyDetails(rootobj));
             }
@@ -968,7 +983,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetEmployeeDetails(rootobj));
             }
@@ -990,7 +1006,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdatedEmployeeDetailsLogs", "UpdatedEmployeeDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdatedEmployeeDetails(rootobj));
@@ -1013,7 +1030,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateEmpPrimaryDetailsLogs", "UpdateEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateEmpPrimaryDetails(rootobj));
@@ -1036,7 +1054,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateAdminEmpPrimaryDetailsLogs", "UpdateAdminEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateAdminEmpPrimaryDetails(rootobj));
@@ -1178,9 +1197,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetWH_History(dynamic data)
         {
             IActionResult response = Unauthorized();
-            string value = EncDecrpt.Decrypt_Data(data);
+            
             try
             {
+                string value = EncDecrpt.Decrypt_Data(data);
                 //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWH_History(rootobj));
@@ -1203,9 +1223,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetRegionDistricts(dynamic data)
         {
             IActionResult response = Unauthorized();
-            string value = EncDecrpt.Decrypt_Data(data);
+           
             try
             {
+                string value = EncDecrpt.Decrypt_Data(data);
                 //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetRegionDistricts(rootobj));
@@ -1227,10 +1248,11 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> SaveWareHouseDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
-            string value = EncDecrpt.Decrypt_Data(data);
+            
             try
             {
-               // string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                // string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWareHouseDetailslogs", "SaveWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveWareHouseDetails(rootobj));
@@ -1253,9 +1275,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> updateWareHouseDetails(dynamic data)
         {
             IActionResult response = Unauthorized();
-            string value = EncDecrpt.Decrypt_Data(data);
+            
             try
             {
+                string value = EncDecrpt.Decrypt_Data(data);
                 //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetailslogs", "UpdateWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
@@ -1279,7 +1302,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveChangePasswordlogs", "SaveChangePassword : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveChangePassword(rootobj));
@@ -1302,7 +1326,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.Getmasterslist(rootobj));
             }
@@ -1328,7 +1353,8 @@ namespace APSWCWEBAPIAPP.Controllers
                 var folderName = Path.Combine("employeemasterregLogs");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
-                string jsondata = JsonConvert.SerializeObject(data);
+                // string jsondata = JsonConvert.SerializeObject(data);
+                string jsondata = EncDecrpt.Decrypt_Data(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "employeemasterRegistrationlogs", jsondata));
                 return Ok(_hel.SaveEmpmasterreg(rootobj));
@@ -1359,7 +1385,8 @@ namespace APSWCWEBAPIAPP.Controllers
                 var folderName = Path.Combine("employeemasterupdateLogs");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
-                string jsondata = JsonConvert.SerializeObject(data);
+                // string jsondata = JsonConvert.SerializeObject(data);
+                string jsondata = EncDecrpt.Decrypt_Data(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "employeemasterUpdatelogs", jsondata));
                 return Ok(_hel.updateEmpmasterreg(rootobj));
@@ -1380,10 +1407,11 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> updateWareHouseDetails_ALL(dynamic data)
         {
             IActionResult response = Unauthorized();
-            string value = EncDecrpt.Decrypt_Data(data);
+           
             try
             {
-               // string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                // string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
@@ -1407,7 +1435,8 @@ namespace APSWCWEBAPIAPP.Controllers
            
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetPageDetails(rootobj));
             }
@@ -1430,7 +1459,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetPageAccessDetails(rootobj));
             }
@@ -1452,7 +1482,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.Get_DesigPageAccessDetails(rootobj));
             }
@@ -1474,7 +1505,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePageDetailslogs", "SavePageDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SavePageDetails(rootobj));
@@ -1497,7 +1529,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = JsonConvert.SerializeObject(data);
+                string value = EncDecrpt.Decrypt_Data(data);
+                //string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveUseraccessDetailslogs", "SaveUseraccessDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveUseraccessDetails(rootobj));
