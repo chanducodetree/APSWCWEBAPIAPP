@@ -97,7 +97,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Warehouse", "Docments");
+                var folderName = Path.Combine("Warehouse", "Documents");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
