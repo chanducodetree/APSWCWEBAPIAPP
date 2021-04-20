@@ -3018,7 +3018,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpLeavesCanDetailslogs", "GetEmpLeavesCanDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Leaves Cancel List";
+                resultobj.StatusMessage = "Error Occured while load Employee Leaves Cancel List Details";
                 return resultobj;
 
             }
