@@ -3015,6 +3015,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
+
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpLeavesCanDetailslogs", "GetEmpLeavesCanDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
@@ -3024,6 +3025,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+
         public async Task<dynamic> GetLeavesList(MasterSp rootobj)
         {
 
@@ -3031,6 +3033,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "410";
+
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -3050,6 +3053,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
+
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLeavesListlogs", "GetLeavesList : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
@@ -3058,6 +3062,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
+
 
         public async Task<dynamic> GetEmpLeavesHistory(MasterSp rootobj)
         {
@@ -3085,10 +3090,12 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
+
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeLeavesHistorylogs", "GetEmployeeLeavesHistory : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Employee Leaves History";
+
                 return resultobj;
 
             }
