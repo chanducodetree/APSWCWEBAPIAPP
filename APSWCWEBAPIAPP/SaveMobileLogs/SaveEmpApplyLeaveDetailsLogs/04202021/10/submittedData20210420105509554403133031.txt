@@ -1,0 +1,1 @@
+SaveEmpApplyLeaveDetails : Input Data : {"INPUT_01":"APSWC0007","INPUT_02":"Mounika","INPUT_03":"1","INPUT_04":2,"INPUT_05":"2021-04-20","INPUT_06":"2021-04-22","INPUT_07":2,"INPUT_08":"Manager","USER_NAME":"APSWC0007","CALL_SOURCE":"MOBILE"}

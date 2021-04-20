@@ -1303,5 +1303,114 @@ namespace APSWCWEBAPIAPP.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
+        [HttpGet]
+        [Route("Get_ApplyLeaveTypeDetails")]
+        public async Task<IActionResult> GetApplyLeaveTypeDetails()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetApplyLeaveTypeDetails());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Apply Leave Types"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmp_LeavesCanDetails")]
+        public async Task<IActionResult> GetEmpLeavesCanDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetEmpLeavesCanDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Leaves Cancel List"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmp_LeavesList")]
+        public async Task<IActionResult> GetLeavesList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetLeavesList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Leaves List"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveEmpApplyLeaveDetails")]
+        public async Task<IActionResult> SaveEmpApplyLeaveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpApplyLeaveDetailsLogs", "SaveEmpApplyLeaveDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveEmpApplyLeaveDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Employee Apply Leave Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmpLeaves_History")]
+        public async Task<IActionResult> GetEmpLeavesHistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetEmpLeavesHistory(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Employee Leaves History"
+                });
+                return response;
+            }
+        }
     }
 }
