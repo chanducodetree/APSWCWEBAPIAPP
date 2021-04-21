@@ -2995,7 +2995,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "408";
+                rootobj.TYPEID = "409";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -3030,7 +3030,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "410";
+                rootobj.TYPEID = "408";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
