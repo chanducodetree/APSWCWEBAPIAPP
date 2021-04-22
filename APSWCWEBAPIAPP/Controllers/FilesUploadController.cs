@@ -120,5 +120,44 @@ namespace APSWCWEBAPIAPP.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("RegUploadFileDetails")]
+        public IActionResult RegUploadFileDetails()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    var regID = Request.Form["regid"].ToString();
+                    var category = Request.Form["Category"].ToString();
+
+                    var folderName = Path.Combine("Registrations", regID);
+                    var pathToSave = Path.Combine("wwwroot", folderName);
+                    var fileExtension = Path.GetExtension(file.FileName);
+                    //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"')
+                    var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_"+ category + fileExtension;
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    bool folderExists = Directory.Exists(pathToSave);
+                    if (!folderExists)
+                        Directory.CreateDirectory(pathToSave);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
     }
 }

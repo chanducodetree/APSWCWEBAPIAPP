@@ -1830,6 +1830,138 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("GetRegistrationTypes")]
+        public async Task<IActionResult> GetRegistrationTypes()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetRegistrationTypes());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Registration Types"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDocTypes")]
+        public async Task<IActionResult> GetDocTypes()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetDocTypes());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Document Types"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetReqDocByReg")]
+        public async Task<IActionResult> GetReqDocByReg(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetReqDocByReg(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured Load Document List"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveRegistrationDetails")]
+        public async Task<IActionResult> SaveRegistrationDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveRegistrationDetailslogs", "SaveRegistrationDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveRegistrationDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Registration Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveRegDocDetails")]
+        public async Task<IActionResult> SaveRegDocDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveRegDocDetailslogs", "SaveRegDocDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveRegDocDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Document Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveRegCommuDetails")]
+        public async Task<IActionResult> SaveRegCommuDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveRegCommuDetailslogs", "SaveRegCommuDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveRegCommuDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Communication Details"
+                });
+                return response;
+            }
+        }
+
     }
 
 }

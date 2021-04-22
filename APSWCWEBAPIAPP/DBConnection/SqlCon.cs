@@ -2764,7 +2764,6 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-
         public async Task<dynamic> UpdateLeaveMaster(MasterSp rootobj)
         {
             try
@@ -2816,8 +2815,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
-
         public async Task<dynamic> UpdateHolidayMaster(MasterSp rootobj)
         {
             try
@@ -3089,6 +3086,216 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Employee Leaves History";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetRegistrationTypes()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "REGISTRATION";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetRegistrationTypesLogs", "GetRegistrationTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Registration Types";
+
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetDocTypes()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "DOCUMENT";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetDocTypesLogs", "GetDocTypes : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Document Types";
+
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetReqDocByReg(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "UPD_DOC";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetReqDocByRegLogs", "GetReqDocByReg : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Load Document List";
+
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveRegCommuDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "703";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveRegCommuDetailslogs", "SaveRegCommuDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Communication Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveRegistrationDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "701";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveRegistrationDetailslogs", "SaveRegistrationDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Registration Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveRegDocDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "702";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Save Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveRegDocDetailslogs", "SaveRegDocDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Documents Details";
                 return resultobj;
 
             }
