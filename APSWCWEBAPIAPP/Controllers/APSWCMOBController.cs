@@ -1278,7 +1278,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 var file = Request.Form.Files[0];
                 var folderName = Path.Combine("WareHouse", "Documents");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                var pathToSave = Path.Combine("wwwroot", folderName);
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -1304,21 +1304,23 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("Get_ApplyLeaveTypeDetails")]
-        public async Task<IActionResult> GetApplyLeaveTypeDetails()
+        [HttpPost]
+        [Route("GetEmp_LeavesType")]
+        public async Task<IActionResult> GetLeavesType(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
-                return Ok(await _hel.GetApplyLeaveTypeDetails());
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetLeavesType(rootobj));
             }
             catch (Exception)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while load Apply Leave Types"
+                    StatusMessage = "Error Occured while load Leaves Type"
                 });
                 return response;
             }

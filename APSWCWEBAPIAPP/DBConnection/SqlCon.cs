@@ -2954,14 +2954,13 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
-        public async Task<dynamic> GetApplyLeaveTypeDetails()
+        public async Task<dynamic> GetLeavesType(MasterSp rootobj)
         {
-            MasterSp rootobj = new MasterSp();
+
             try
             {
-                rootobj.DIRECTION_ID = "1";
-                rootobj.TYPEID = "LEAVES_DD";
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "410";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -2981,14 +2980,15 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetApplyLeaveTypeDetailslogs", "GetApplyLeaveTypeDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLeavesTypelogs", "GetLeavesType : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Apply Leave Types";
+                resultobj.StatusMessage = "Error Occured while load Leaves Type";
                 return resultobj;
 
             }
         }
+
         public async Task<dynamic> GetEmpLeavesCanDetails(MasterSp rootobj)
         {
 
