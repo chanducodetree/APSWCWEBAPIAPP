@@ -1830,6 +1830,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+
         [HttpGet]
         [Route("GetRegistrationTypes")]
         public async Task<IActionResult> GetRegistrationTypes()
