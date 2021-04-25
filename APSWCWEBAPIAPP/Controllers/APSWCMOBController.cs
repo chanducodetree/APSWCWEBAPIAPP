@@ -1305,155 +1305,207 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
-        [Route("GetEmp_LeavesType")]
-        public async Task<IActionResult> GetLeavesType(dynamic data)
+        [Route("SaveEmpLeave")]
+        public async Task<IActionResult> SaveEmpLeave(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
                 string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpLeave", "SaveEmpLeave : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetLeavesType(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Leaves Type"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("GetEmp_LeavesCanDetails")]
-        public async Task<IActionResult> GetEmpLeavesCanDetails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetEmpLeavesCanDetails(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Leaves Cancel List"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("GetEmp_LeavesList")]
-        public async Task<IActionResult> GetLeavesList(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetLeavesList(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Leaves List"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("SaveEmpApplyLeaveDetails")]
-        public async Task<IActionResult> SaveEmpApplyLeaveDetails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpApplyLeaveDetailsLogs", "SaveEmpApplyLeaveDetails : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.SaveEmpApplyLeaveDetails(rootobj));
+                return Ok(await _hel.SaveEmpLeave(rootobj));
             }
             catch (Exception ex)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while Save Employee Apply Leave Details"
+                    StatusMessage = "Error Occured while Save Employee Leave Details"
                 });
                 return response;
             }
         }
 
         [HttpPost]
-        [Route("GetEmpLeaves_History")]
-        public async Task<IActionResult> GetEmpLeavesHistory(dynamic data)
+        [Route("GetEmpLeaves")]
+        public async Task<IActionResult> GetEmpLeaves(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
                 string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetEmpLeaves", "GetEmpLeaves : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetEmpLeavesHistory(rootobj));
+                return Ok(await _hel.GetEmpLeaves(rootobj));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while load Employee Leaves History"
+                    StatusMessage = "Error Occured while GetEmpLeaves Details"
+                });
+                return response;
+            }
+        }
+        [HttpPost]
+        [Route("EmpLeave_Cancel")]
+        public async Task<IActionResult> EmpLeave_Cancel(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "EmpLeave_Cancel", "EmpLeave_Cancel : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.EmpLeave_Cancel(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Employee Leave Cancel  Details"
                 });
                 return response;
             }
         }
 
         [HttpPost]
-        [Route("GetHolidaysDetails")]
-        public async Task<IActionResult> GetHolidaysDetails(dynamic data)
+        [Route("EmpLeaveTypes_Get")]
+        public async Task<IActionResult> EmpLeaveTypes_Get(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
                 string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "EmpLeaveTypes_Get", "EmpLeaveTypes_Get : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetHolidaysDetails(rootobj));
+                return Ok(await _hel.EmpLeaveTypes_Get(rootobj));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured Load Holidays Details"
+                    StatusMessage = "Error Occured while Employee LeaveTypes Get  Details"
                 });
                 return response;
             }
         }
 
         [HttpPost]
-        [Route("GetHolidays_View")]
-        public async Task<IActionResult> GetHolidaysView(dynamic data)
+        [Route("SaveOfficeTimings")]
+        public async Task<IActionResult> SaveOfficeTimings(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
                 string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveOfficeTimings", "SaveOfficeTimings : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetHolidaysView(rootobj));
+                return Ok(await _hel.SaveOfficeTimings(rootobj));
             }
-            catch (Exception)
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save OfficeTimings  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateOfficeTimings")]
+        public async Task<IActionResult> UpdateOfficeTimings(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateOfficeTimings", "UpdateOfficeTimings : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateOfficeTimings(rootobj));
+            }
+            catch (Exception ex)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured Load Holidays List"
+                    StatusMessage = "Error Occured while UpdateOfficeTimings  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetOfficeTimings")]
+        public async Task<IActionResult> GetOfficeTimings(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetOfficeTimings", "GetOfficeTimings : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetOfficeTimings(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while GetOfficeTimings  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmpLeaveDetails")]
+        public async Task<IActionResult> GetEmpLeaveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetEmpLeaveDetails", "GetEmpLeaveDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetEmpLeaveDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get EmpLeaveDetails  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetNoOfDays")]
+        public async Task<IActionResult> GetNoOfDays(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetNoOfDays", "GetNoOfDays : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetNoOfDays(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get NoOfDays  Details"
                 });
                 return response;
             }
