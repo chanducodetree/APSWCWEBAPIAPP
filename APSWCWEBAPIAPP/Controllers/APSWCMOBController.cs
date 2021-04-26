@@ -1510,5 +1510,27 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("GetEmployeeLeavesHistory")]
+        public async Task<IActionResult> GetEmployeeLeavesHistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                return Ok(await _hel.GetEmployeeLeavesHistory(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Employee Leaves History"
+                });
+                return response;
+            }
+        }
     }
 }
