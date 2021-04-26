@@ -2167,7 +2167,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetDetailsofOutsourcing")]
         public async Task<IActionResult> GetDetailsofOutsourcing(dynamic data)
         {
@@ -2189,7 +2189,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetOutsourceContactDetails")]
         public async Task<IActionResult> GetOutsourceContactDetails(dynamic data)
         {
@@ -2252,6 +2252,133 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Get NoOfDays  Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetuserAccess_menu")]
+        public async Task<IActionResult> GetuserAccessmenu(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetuserAccessmenu(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Menu Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetExistingUser_Details")]
+        public async Task<IActionResult> GetExistingUserDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetExistingUserDetails(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load User Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetSubmitted_Docs")]
+        public async Task<IActionResult> GetSubmittedDocs(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetSubmittedDocs(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetCommu_Details")]
+        public async Task<IActionResult> GetCommuDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCommuDetails(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetCommodityGroup_Details")]
+        public async Task<IActionResult> GetCommodityGroupDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCommodityGroupDetails(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
                 });
                 return response;
             }
