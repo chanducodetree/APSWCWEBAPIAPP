@@ -3418,7 +3418,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "707";
+                rootobj.TYPEID = "709";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
