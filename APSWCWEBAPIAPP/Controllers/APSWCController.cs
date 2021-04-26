@@ -24,7 +24,7 @@ using APSWCWEBAPIAPP.Models;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-   //[Authorize(Policy = Policies.Admin)]
+    //[Authorize(Policy = Policies.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCController : ControllerBase
@@ -35,7 +35,7 @@ namespace APSWCWEBAPIAPP.Controllers
         private readonly ICaptchaService _authservice;
         private string saFolder = Path.Combine("SaveLogs");
         private string saPathToSave = string.Empty;
-       
+
         private List<InspectionModel> InsUsers = new List<InspectionModel>
         {
 
@@ -46,7 +46,7 @@ namespace APSWCWEBAPIAPP.Controllers
         };
 
 
-        public APSWCController(ApplicationAPSWCCDbContext apcontext,IConfiguration config, ICaptchaService auth , SqlCon hel)
+        public APSWCController(ApplicationAPSWCCDbContext apcontext, IConfiguration config, ICaptchaService auth, SqlCon hel)
         {
             saPathToSave = Path.Combine(Directory.GetCurrentDirectory(), saFolder);
             _context = apcontext;
@@ -139,7 +139,7 @@ namespace APSWCWEBAPIAPP.Controllers
             Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "InspectionRegistrationlogs", jsondata));
 
             return Ok(await _hel.SaveInspectionPhotos(obj));
-           
+
         }
 
         [HttpPost]
@@ -256,7 +256,7 @@ namespace APSWCWEBAPIAPP.Controllers
         [Route("GetHomePageConent")]
         public async Task<IActionResult> GetHomePageConent()
         {
-        
+
             return Ok(await _hel.GetHomepageContent());
 
         }
