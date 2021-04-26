@@ -2919,178 +2919,6 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> SaveEmpApplyLeaveDetails(MasterSp rootobj)
-        {
-            try
-            {
-                rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "405";
-                DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
-                {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Loaded Successfully";
-                    resultobj.Details = dt;
-                }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
-                }
-                return resultobj;
-            }
-            catch (Exception ex)
-            {
-                string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveEmpApplyLeaveDetailslogs", "SaveEmpApplyLeaveDetails : Method:" + jsondata + " , Input Data : " + inputdata));
-
-                resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save Employee Apply Leave Details";
-                return resultobj;
-
-            }
-        }
-        public async Task<dynamic> GetLeavesType(MasterSp rootobj)
-        {
-
-            try
-            {
-                rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "410";
-                DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Loaded Successfully";
-                    resultobj.Details = dt;
-                }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "No Data Found";
-                }
-
-                return resultobj;
-            }
-            catch (Exception ex)
-            {
-                string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLeavesTypelogs", "GetLeavesType : Method:" + jsondata + " , Input Data : " + inputdata));
-
-                resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Leaves Type";
-                return resultobj;
-
-            }
-        }
-
-        public async Task<dynamic> GetEmpLeavesCanDetails(MasterSp rootobj)
-        {
-
-            try
-            {
-                rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "409";
-                DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Loaded Successfully";
-                    resultobj.Details = dt;
-                }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "No Data Found";
-                }
-
-                return resultobj;
-            }
-            catch (Exception ex)
-            {
-                string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpLeavesCanDetailslogs", "GetEmpLeavesCanDetails : Method:" + jsondata + " , Input Data : " + inputdata));
-
-                resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Employee Leaves Cancel List Details";
-                return resultobj;
-
-            }
-        }
-
-        public async Task<dynamic> GetLeavesList(MasterSp rootobj)
-        {
-
-            try
-            {
-                rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "408";
-                DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Loaded Successfully";
-                    resultobj.Details = dt;
-                }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "No Data Found";
-                }
-
-                return resultobj;
-            }
-            catch (Exception ex)
-            {
-                string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLeavesListlogs", "GetLeavesList : Method:" + jsondata + " , Input Data : " + inputdata));
-
-                resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Leaves List";
-                return resultobj;
-
-            }
-        }
-
-        public async Task<dynamic> GetEmpLeavesHistory(MasterSp rootobj)
-        {
-
-            try
-            {
-                rootobj.DIRECTION_ID = "3";
-                rootobj.TYPEID = "GET_LOG_HISTORY";
-                DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Loaded Successfully";
-                    resultobj.Details = dt;
-                }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "No Data Found";
-                }
-
-                return resultobj;
-            }
-            catch (Exception ex)
-            {
-                string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmployeeLeavesHistorylogs", "GetEmployeeLeavesHistory : Method:" + jsondata + " , Input Data : " + inputdata));
-
-                resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Employee Leaves History";
-                return resultobj;
-
-            }
-        }
-
         public async Task<dynamic> GetRegistrationTypes()
         {
             MasterSp rootobj = new MasterSp();
@@ -3127,7 +2955,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> GetDocTypes()
         {
             MasterSp rootobj = new MasterSp();
@@ -3164,7 +2991,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> GetReqDocByReg(MasterSp rootobj)
         {
 
@@ -3201,7 +3027,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> SaveRegCommuDetails(MasterSp rootobj)
         {
             try
@@ -3234,7 +3059,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> SaveRegistrationDetails(MasterSp rootobj)
         {
             try
@@ -3267,7 +3091,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> SaveRegDocDetails(MasterSp rootobj)
         {
             try
@@ -3922,7 +3745,6 @@ namespace APSWCWEBAPIAPP.DBConnection
                 await sqlcon.CloseAsync();
                 await cmd.DisposeAsync();
                 adp.Dispose();
-
                 return dt;
             }
             catch (Exception ex)
