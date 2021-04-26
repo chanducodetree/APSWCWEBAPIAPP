@@ -39,7 +39,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> CheckLogin(MasterSp rootobj)
         {
-            
+
             try
             {
                 var captval = _context.captcha.FirstOrDefault(i => i.Id == rootobj.INPUT_03 && i.Capchid == rootobj.INPUT_04 && i.IsActive == 1);
@@ -50,7 +50,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                     var data = await APSWCMasterSp(rootobj);
                     if (data.Rows.Count > 0)
                     {
-                        var user = new User() { UserName = data.Rows[0][0].ToString() , FirstName = data.Rows[0][1].ToString(), UserType = data.Rows[0][2].ToString() };
+                        var user = new User() { UserName = data.Rows[0][0].ToString(), FirstName = data.Rows[0][1].ToString(), UserType = data.Rows[0][2].ToString() };
                         var tokenString = _authservice.GenerateJWT(user);
                         resultobj.StatusCode = 100;
                         resultobj.StatusMessage = "User Login Successfully.";
@@ -62,7 +62,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                         resultobj.StatusCode = 102;
                         resultobj.StatusMessage = "Invalid User Name OR Password";
                     }
-                   
+
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-        
+
 
         public async Task<dynamic> GetApswcWareHouseMaster()
         {
@@ -223,7 +223,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 return resultobj;
             }
         }
-               // resultobj.Details = await 
+        // resultobj.Details = await 
 
         public async Task<dynamic> GetEmpList()
         {
@@ -306,10 +306,10 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             try
             {
-               
+
 
                 DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString()=="1")
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
                 {
                     resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Loaded Successfully";
@@ -388,7 +388,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage ="No Data Found";
+                    resultobj.StatusMessage = "No Data Found";
                     resultobj.Details = dt;
                 }
                 // resultobj.Details = await 
@@ -644,7 +644,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.INPUT_01 = Logfile.Browsename();
                 rootobj.INPUT_02 = Logfile.GetLocalIPAddress();
                 rootobj.INPUT_03 = Logfile.MachineName(Logfile.GetLocalIPAddress());
-                
+
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = "Data Loaded Successfully";
                 resultobj.Details = await APSWCMasterSp(rootobj);
@@ -2161,7 +2161,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
 
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID=rootobj.INPUT_01 == "DD" ? "604" : "603";
+                rootobj.TYPEID = rootobj.INPUT_01 == "DD" ? "604" : "603";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
@@ -2299,7 +2299,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-               
+
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "302";
                 DataTable dt = await APSWCMasterSp(rootobj);
@@ -2352,11 +2352,11 @@ namespace APSWCWEBAPIAPP.DBConnection
                 }
 
 
-               
+
 
                 return resultobj;
             }
-          catch (Exception ex)
+            catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
@@ -2366,9 +2366,9 @@ namespace APSWCWEBAPIAPP.DBConnection
                 resultobj.StatusMessage = "Error Occured while Update Warehouse Details";
                 return resultobj;
 
-           }
+            }
         }
-      
+
         public async Task<dynamic> UpdateEmpPrimaryDetails(MasterSp rootobj)
         {
             try
@@ -3131,9 +3131,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "405";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Inserted Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
 
                 return resultobj;
             }
@@ -3157,9 +3166,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "408";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -3182,11 +3200,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "409";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Updated Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -3208,11 +3233,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "410";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
-
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
                 return resultobj;
             }
             catch (Exception ex)
@@ -3227,7 +3259,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
 
         public async Task<dynamic> SaveOfficeTimings(MasterSp rootobj)
         {
@@ -3455,10 +3486,18 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "414";
-
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -3482,9 +3521,18 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "415";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
-                resultobj.Details = await APSWCMasterSp(rootobj);
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
                 return resultobj;
             }
@@ -3496,6 +3544,41 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get NoOfDays Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetEmployeeLeavesHistory(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "3";
+                rootobj.TYPEID = "GET_LOG_HISTORY";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "EmployeeLeavesHistorylogs", "GetEmployeeLeavesHistory : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Employee Leaves History";
                 return resultobj;
 
             }
@@ -3774,7 +3857,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
 
                 cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
-                
+
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
                 cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
