@@ -2167,7 +2167,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetDetailsofOutsourcing")]
         public async Task<IActionResult> GetDetailsofOutsourcing(dynamic data)
         {
@@ -2189,7 +2189,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetOutsourceContactDetails")]
         public async Task<IActionResult> GetOutsourceContactDetails(dynamic data)
         {
