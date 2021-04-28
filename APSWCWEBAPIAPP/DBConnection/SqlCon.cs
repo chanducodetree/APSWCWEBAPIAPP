@@ -3371,6 +3371,39 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> UpdateOutsourcingAgency(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "711";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdateOutsourcingAgencylogs", "UpdateOutsourcingAgency : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Update Outsourcing Agency Details";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> GetOutsourcingAgencies()
         {
             MasterSp rootobj = new MasterSp();
@@ -3766,6 +3799,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+
         public async Task<dynamic> SaveEmpAttendance(MasterSp rootobj)
         {
             try
@@ -3778,6 +3812,176 @@ namespace APSWCWEBAPIAPP.DBConnection
                 {
                     resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Inserted Successfully";
+                    resultobj.Details = dt;
+                   }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                  }
+
+                return resultobj;
+              }
+            catch (Exception ex)
+            {
+              string jsondata = JsonConvert.SerializeObject(ex.Message);
+              string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpAttendance : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save EmpLeave Attendance Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> Getcommoditieslist(MasterSp objMa)
+        {
+
+            try
+            {
+                objMa.DIRECTION_ID = "1";
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                    
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Getmasterslist : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Master Details";
+                return resultobj;
+
+            }
+        }
+        public async Task<dynamic> GetEmpAttendanceDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "417";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                 if (dt != null && dt.Rows.Count > 0)
+                  {
+                      resultobj.StatusCode = 100;
+                      resultobj.StatusMessage = "Data Loaded Successfully";
+                      resultobj.Details = dt;
+                  }
+                  else
+                  {
+                      resultobj.StatusCode = 102;
+                      resultobj.StatusMessage = "No Data Found";
+                  }
+
+                  return resultobj;
+            }
+              catch (Exception ex)
+            {
+               string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetEmpAttendanceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Employee Attendance Details";
+            }
+        }
+
+        public async Task<dynamic> GetRegionmasterslist(MasterSp objMa)
+        {
+
+            try
+            {
+                objMa.DIRECTION_ID = "1";
+
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Getmasterslist : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Master History";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GetRegionbydistcode(MasterSp objMa)
+        {
+
+            try
+            {
+                objMa.DIRECTION_ID = "1";
+                objMa.TYPEID = "REG_DIST";
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Getmasterslist : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Master Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> insertcommodity(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "306";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
                     resultobj.Details = dt;
                 }
                 else
@@ -3792,23 +3996,22 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpAttendance : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "employeemasterregLogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save EmpLeave Attendance Details";
+                resultobj.StatusMessage = "Error Occured while insert Master Details";
                 return resultobj;
 
             }
         }
-        public async Task<dynamic> GetEmpAttendanceDetails(MasterSp rootobj)
+      public async Task<dynamic> updateCommodities(MasterSp rootobj)
         {
             try
             {
                 rootobj.DIRECTION_ID = "2";
-                rootobj.TYPEID = "417";
-
+                rootobj.TYPEID = "307";
                 DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0)
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
                 {
                     resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Loaded Successfully";
@@ -3817,7 +4020,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 else
                 {
                     resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "No Data Found";
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
                 }
 
                 return resultobj;
@@ -3826,14 +4029,15 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetEmpAttendanceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "employeemasterUpdatelogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Get Employee Attendance Details";
+                resultobj.StatusMessage = "Error Occured while Update Master Details";
                 return resultobj;
 
             }
         }
+      
         public async Task<dynamic> GetCalendarDetails(MasterSp rootobj)
         {
             try
@@ -3844,7 +4048,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    resultobj.StatusCode = 100;
+                   resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Loaded Successfully";
                     resultobj.Details = dt;
                 }
@@ -3852,6 +4056,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 {
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = "No Data Found";
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
                 }
 
                 return resultobj;
@@ -3864,6 +4069,109 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Calendar Details";
+
+            }
+        }
+
+        public async Task<dynamic> Emp_CheckIn_Out(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "416";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Emp_CheckIn_Out : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Emp_CheckIn_Out Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> Get_Emp_CheckIn_Out_Details(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "417";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Get_Emp_CheckIn_Out_Details : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get_Emp_CheckIn_Out_Details Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> Emp_All_Events(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "418";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Emp_All_Events : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Emp_All_Events Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> Emp_Notes_Save(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "419";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Emp_Notes_Save : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Emp_Notes_Save Details";
                 return resultobj;
 
             }
