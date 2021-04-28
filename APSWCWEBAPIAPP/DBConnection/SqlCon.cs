@@ -3893,11 +3893,13 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
               catch (Exception ex)
             {
-               string inputdata = JsonConvert.SerializeObject(rootobj);
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetEmpAttendanceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Employee Attendance Details";
+                return resultobj;
             }
         }
 
@@ -4069,7 +4071,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Calendar Details";
-
+                return resultobj;
             }
         }
 
