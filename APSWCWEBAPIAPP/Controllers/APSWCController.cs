@@ -2788,6 +2788,99 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Emp_Leave_Balance")]
+        public async Task<IActionResult> Emp_Leave_Balance(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "Emp_Leave_Balance", "Emp_Leave_Balance : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                OkObjectResult okObjectResult = Ok(await _hel.Emp_Leave_Balance(rootobj));
+
+                return okObjectResult;
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Emp_Leave_Balance  Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Emp_Leave_Balance_Save")]
+        public async Task<IActionResult> Emp_Leave_Balance_Save(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "Emp_Leave_Balance_Save", "Emp_Leave_Balance_Save : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Emp_Leave_Balance_Save(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Emp_Leave_Balance_Save  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetSpaceReservationDetails")]
+        public async Task<IActionResult> GetSpaceReservationDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+               
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetSpaceReservationDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Space Reservation  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetTransportDetails")]
+        public async Task<IActionResult> GetTransportDetails()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+           
+                return Ok(await _hel.GetTransportDetails());
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Trasport  Details"
+                });
+                return response;
+            }
+        }
+
     }
 
 }
