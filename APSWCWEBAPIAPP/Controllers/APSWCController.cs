@@ -1701,6 +1701,32 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
+        [HttpPost]
+        [Route("GetQuantity_contract_Details")]
+        public async Task<IActionResult> GetQntity_cntrct_Details(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetQntity_cntrct_Details(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+        
+
 
 
         [HttpPost]
