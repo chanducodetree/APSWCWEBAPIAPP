@@ -4581,7 +4581,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "102";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
@@ -4614,7 +4614,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "GET_TOKEN";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
@@ -4649,7 +4649,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "GET_BOOKING_DETAILS";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
@@ -4684,7 +4684,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "103";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
@@ -4717,7 +4717,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "GET_GODOWNS";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
@@ -4752,7 +4752,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "GET_COMPARTMENTS";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
@@ -4787,7 +4787,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         {
             try
             {
-                rootobj.DIRECTION_ID = "4";
+                rootobj.DIRECTION_ID = "7";
                 rootobj.TYPEID = "GET_STACKS";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
@@ -4849,6 +4849,176 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Stack Types Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveStacking(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = "105";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveStackinglogs", "SaveStacking : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Stacking Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetInsurancesList()
+        {
+            try
+            {
+                MasterSp rootobj = new MasterSp();
+                rootobj.DIRECTION_ID = "6";
+                rootobj.TYPEID = "INSURANCE_LIST";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetInsurancesListLogs", "GetInsurancesList : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Insurences Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetInsuranceByID(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "6";
+                rootobj.TYPEID = "INSURANCE_GET";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetInsuranceByIDLogs", "GetInsuranceByID : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Insurance Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveInsuranceDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "6";
+                rootobj.TYPEID = "101";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveInsuranceDetailslogs", "SaveInsuranceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Insurance Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> UpdateInsuranceDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "6";
+                rootobj.TYPEID = "102";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdateInsuranceDetailslogs", "UpdateInsuranceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Update Insurance Details";
                 return resultobj;
 
             }
