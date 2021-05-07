@@ -1688,7 +1688,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while load WareHouse Inspection Data",
+                    StatusMessage = "Error Occured while WareHouse Inspection List",
 
                 });
                 return response;
@@ -1711,7 +1711,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while wareHouse Inspection Save  Details"
+                    StatusMessage = "Error Occured while Save WareHouse Inspection Details"
                 });
                 return response;
             }
@@ -1757,23 +1757,23 @@ namespace APSWCWEBAPIAPP.Controllers
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Re-Sheduled Inspection Details"
+                    StatusMessage = "Error Occured while Update Re-Sheduled Inspection Details"
                 });
                 return response;
             }
         }
 
         [HttpPost]
-        [Route("SCHEDULED_INSPECTION_REVIEW")]
-        public async Task<IActionResult> SCHEDULED_INSPECTION_REVIEW(dynamic data)
+        [Route("Scheduled_Inspection_Review")]
+        public async Task<IActionResult> Scheduled_Inspection_Review(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SheduledInspectionReview", "GetLoginSheduled : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SheduledInspectionReviewLogs", "SheduledInspectionReview : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.SCHEDULED_INSPECTION_REVIEW(rootobj));
+                return Ok(await _hel.Scheduled_Inspection_Review(rootobj));
             }
             catch (Exception ex)
             {
@@ -1787,29 +1787,30 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
-        [Route("INSPECTION_REVIEW")]
-        public async Task<IActionResult> INSPECTION_REVIEW(dynamic data)
+        [Route("Review_Inspection")]
+        public async Task<IActionResult> Review_Inspection(dynamic data)
         {
             IActionResult response = Unauthorized();
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SheduledReview", "GetLoginSheduled : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "Review_InspectionLogs", "Review_Inspection : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.INSPECTION_REVIEW(rootobj));
+                return Ok(await _hel.Review_Inspection(rootobj));
             }
             catch (Exception ex)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Sheduled Inspection Review Details"
+                    StatusMessage = "Error Occured while Get Inspection Review Details"
                 });
                 return response;
             }
         }
 
-        [HttpPost]
+
+        [HttpPost, DisableRequestSizeLimit]
         [Route("VirtualInspectiondFileDetails")]
         public IActionResult VirtualInspection()
         {

@@ -3836,6 +3836,218 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
+
+
+
+        public async Task<dynamic> WeighmentTokenList(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = rootobj.INPUT_02 == "WEIGHT_INTKN" ? "WEIGHT_IN" : rootobj.INPUT_02 == "COMDLISTOFTKN" ? "COMMODITY_DEATILS" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Token Details Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Token Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetVarietyGradeList(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = rootobj.INPUT_04 == "VARIETY" ? "VARIETY" : rootobj.INPUT_04 == "GRADE" ? "GRADE" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Variety/Grade Details Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Variety/Grade Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetQualityPrameters(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = "QUALITY";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Quality Parameters Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Quality Parameters Details";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> SaveQualityChecking(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = "104";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Submitted Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+
+
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "QualityCheckingDetailslogs", "QualityCheckingDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save QualityChecking Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveWeighmentOut(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = "106";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Submitted Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+
+
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "WeighmentOutDetailslogs", "WeighmentOutDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save SaveWeighmentOut Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> Weighment_OUTTokenList(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "7";
+                rootobj.TYPEID = rootobj.INPUT_02 == "WEIGHT_OUTTKN" ? "WEIGHT_OUT" : rootobj.INPUT_02 == "COMDLISTOFTKN" ? "WEIGHT_OUT_COMMODITY" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Token Details Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Token Details";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> SaveEmpAttendance(MasterSp rootobj)
         {
             try
@@ -4221,7 +4433,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
 
                 objMa.DIRECTION_ID = "5";
-                objMa.TYPEID = objMa.INPUT_01 == "CAT_LIST" ? "105" : objMa.INPUT_01 == "SUBCAT_LIST" ? "106" : objMa.INPUT_01 == "SECTION_DD" ? "101" : objMa.INPUT_01 == "CATEGORY_DD" ? "103" : "105";
+                objMa.TYPEID = objMa.INPUT_01 == "CAT_LIST" ? "105" : objMa.INPUT_01 == "SEC_DEADSTOCK_LIST" ? "112" : objMa.INPUT_01 == "RGN_DEADSTOCK_LIST" ? "111" : objMa.INPUT_01 == "SUBCAT_LIST" ? "106" : objMa.INPUT_01 == "ITEM_LIST" ? "110" : objMa.INPUT_01 == "SECTION_DD" ? "101" : objMa.INPUT_01 == "CATEGORY_DD" ? "103" : objMa.INPUT_01 == "SUBCATEGORY_DD" ? "108" : objMa.INPUT_01 == "ITEM_DD" ? "109" : objMa.INPUT_01 == "DEADSTOCK_LIST" ? "113" : "105";
                 DataTable dt = await APSWCMasterSp(objMa);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -4255,7 +4467,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
 
                 objMa.DIRECTION_ID = "5";
-                objMa.TYPEID = objMa.INPUT_01 == "MAINTENANCE_CATEGORY" ? "102" : objMa.INPUT_01 == "MAINTENANCESUB_CATEGORY" ? "102" : objMa.INPUT_01 == "ACTIVE_INACTIVE" ? "107" : "102";
+                objMa.TYPEID = objMa.INPUT_01 == "MAINTENANCE_CATEGORY" ? "102" : objMa.INPUT_01 == "CANCEL_RECORD" ? "114" : objMa.INPUT_01 == "MAINTENANCESUB_CATEGORY" ? "102" : objMa.INPUT_01 == "WAREHOUSE_ITEM_TYPE" ? "102" : objMa.INPUT_01 == "ACTIVE_INACTIVE" ? "107" : objMa.INPUT_01 == "FORM_SUBMISSION" ? "104" : "102";
                 DataTable dt = await APSWCMasterSp(objMa);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -4477,6 +4689,32 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> Emp_In_Out_Get(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "422";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Emp_In_Out_Get : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Emp_In_Out_Get Details";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> GetSpaceReservationDetails(MasterSp rootobj)
         {
             try
@@ -4522,8 +4760,6 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "TRANSPORT_TYPE";
 
-                resultobj.StatusCode = 100;
-                resultobj.StatusMessage = "Data Inserted Successfully";
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -4559,6 +4795,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "8";
                 rootobj.TYPEID = "WAREHOUSE";
+
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -4578,10 +4815,10 @@ namespace APSWCWEBAPIAPP.DBConnection
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
 
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWH_Inspectionlogs", "GetWH_Inspection : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWH_InspectionDatalogs", "GetWH_InspectionData : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while load Warehouse Inspection Data";
+                resultobj.StatusMessage = "Error Occured while WareHouse Inspection List";
 
                 return resultobj;
 
@@ -4616,7 +4853,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "WH_Inspection_Savelogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save WareHouse Details";
+                resultobj.StatusMessage = "Error Occured while Save WareHouse Inspection Details";
                 return resultobj;
 
             }
@@ -4647,12 +4884,13 @@ namespace APSWCWEBAPIAPP.DBConnection
             catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetLoginSheduled : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "Get_Login_SheduledLogs", "Get_Login_Sheduled : Method:" + jsondata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get User Login Sheduled Details";
                 return resultobj;
+
             }
         }
 
@@ -4662,7 +4900,6 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "8";
                 rootobj.TYPEID = "RE-SCHEDULE";
-
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
                 {
@@ -4675,21 +4912,23 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = dt.Rows[0][1].ToString();
                 }
+
                 return resultobj;
             }
             catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "ReSheduledInspection : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Get_ReSheduled_Inspectionlogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Get Re-Sheduled Inspection Details";
+                resultobj.StatusMessage = "Error Occured while Update Re-Sheduled Inspection Details";
                 return resultobj;
+
             }
         }
 
-        public async Task<dynamic> SCHEDULED_INSPECTION_REVIEW(MasterSp rootobj)
+        public async Task<dynamic> Scheduled_Inspection_Review(MasterSp rootobj)
         {
             try
             {
@@ -4707,20 +4946,28 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = dt.Rows[0][1].ToString();
                 }
+
                 return resultobj;
             }
             catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SheduledInspectionReview : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SheduledInspectionReviewlogs : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Sheduled Inspection Review Details";
                 return resultobj;
+
             }
         }
-        public async Task<dynamic> INSPECTION_REVIEW(MasterSp rootobj)
+
+
+
+
+
+
+        public async Task<dynamic> Review_Inspection(MasterSp rootobj)
         {
             try
             {
@@ -4739,20 +4986,21 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = "No Data Found";
                 }
+
                 return resultobj;
             }
             catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SheduledReview : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "Review_InspectionLogs", "Review_Inspection : Method:" + jsondata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Get Sheduled Inspection Review Details";
+                resultobj.StatusMessage = "Error Occured while Get User Inspection Review Details";
                 return resultobj;
+
             }
         }
-
         public async Task<DataTable> APSWCMasterSp(MasterSp objMa)
         {
             SqlConnection sqlcon = new SqlConnection(_connectionString);
