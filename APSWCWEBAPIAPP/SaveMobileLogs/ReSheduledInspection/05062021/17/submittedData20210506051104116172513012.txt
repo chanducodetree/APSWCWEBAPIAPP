@@ -1,0 +1,1 @@
+GetLoginSheduled : Input Data : {"INPUT_01":"2021-05-05","INPUT_02":"Inspection Continued Tomorrow","INPUT_03":"VZ01104","INPUT_04":"VZ01104000001","USER_NAME":"R0002","CALL_SOURCE":"MOBILE"}

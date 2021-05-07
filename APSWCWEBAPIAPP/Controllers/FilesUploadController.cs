@@ -87,6 +87,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
         [HttpPost, DisableRequestSizeLimit]
         [Route("WHUploadFileDetails")]
         public IActionResult WHUploadFileDetails()

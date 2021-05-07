@@ -1624,5 +1624,225 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("Emp_Leave_Balance")]
+        public async Task<IActionResult> Emp_Leave_Balance(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "Emp_Leave_Balance", "Emp_Leave_Balance : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                OkObjectResult okObjectResult = Ok(await _hel.Emp_Leave_Balance(rootobj));
+
+                return okObjectResult;
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Emp_Leave_Balance  Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Emp_Leave_Balance_Save")]
+        public async Task<IActionResult> Emp_Leave_Balance_Save(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "Emp_Leave_Balance_Save", "Emp_Leave_Balance_Save : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Emp_Leave_Balance_Save(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Emp_Leave_Balance_Save  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetWH_InspectionData")]
+        public async Task<IActionResult> GetWH_InspectionData()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetWH_InspectionData());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load WareHouse Inspection Data",
+
+                });
+                return response;
+            }
+        }
+        [HttpPost]
+        [Route("WH_Inspection_Save")]
+        public async Task<IActionResult> WH_Inspection_Save(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "WH_Inspection_Save", "WH_Inspection_Save : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.WH_Inspection_Save(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while wareHouse Inspection Save  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("Get_Login_Sheduled")]
+        public async Task<IActionResult> Get_Login_Sheduled(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetLoginSheduled", "GetLoginSheduled : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Get_Login_Sheduled(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get User Login Sheduled Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("Get_ReSheduled_Inspection")]
+        public async Task<IActionResult> Get_ReSheduled_Inspection(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "ReSheduledInspection", "GetLoginSheduled : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Get_ReSheduled_Inspection(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Re-Sheduled Inspection Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SCHEDULED_INSPECTION_REVIEW")]
+        public async Task<IActionResult> SCHEDULED_INSPECTION_REVIEW(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SheduledInspectionReview", "GetLoginSheduled : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SCHEDULED_INSPECTION_REVIEW(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Sheduled Inspection Review Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("INSPECTION_REVIEW")]
+        public async Task<IActionResult> INSPECTION_REVIEW(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SheduledReview", "GetLoginSheduled : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.INSPECTION_REVIEW(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Sheduled Inspection Review Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("VirtualInspectiondFileDetails")]
+        public IActionResult VirtualInspection()
+        {
+            try
+            {
+                var supportedTypes = new[] { "mp4" };
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("WareHouse", "InspectionVideos");
+                var pathToSave = Path.Combine("wwwroot", folderName);
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    bool folderExists = Directory.Exists(pathToSave);
+                    if (!folderExists)
+                        Directory.CreateDirectory(pathToSave);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
     }
 }

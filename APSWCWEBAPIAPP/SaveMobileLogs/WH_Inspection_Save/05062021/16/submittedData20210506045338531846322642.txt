@@ -1,0 +1,1 @@
+WH_Inspection_Save : Input Data : {"INPUT_01":"2021-05-05","INPUT_02":"VZ01104","INPUT_03":104,"USER_NAME":"R0001","CALL_SOURCE":"MOBILE"}
