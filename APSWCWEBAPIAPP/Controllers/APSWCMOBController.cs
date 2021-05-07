@@ -1702,7 +1702,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "WH_Inspection_Save", "WH_Inspection_Save : Input Data : " + value));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "WH_Inspection_SaveLogs", "WH_Inspection_Save : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.WH_Inspection_Save(rootobj));
             }

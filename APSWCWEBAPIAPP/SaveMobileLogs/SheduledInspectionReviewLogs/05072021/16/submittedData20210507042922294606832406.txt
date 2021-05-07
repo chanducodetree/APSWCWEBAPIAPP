@@ -1,0 +1,1 @@
+SheduledInspectionReview : Input Data : {"INPUT_01":"2021-05-10","INPUT_02":"VZ01108","INPUT_03":104,"INPUT_04":"VZ01108000001","INPUT_05":"WareHouse\\InspectionVideos\\VID-20200218-WA0017.mp4","USER_NAME":"R0003","CALL_SOURCE":"MOBILE"}

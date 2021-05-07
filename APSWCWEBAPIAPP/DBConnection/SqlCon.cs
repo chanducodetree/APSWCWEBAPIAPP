@@ -4818,7 +4818,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWH_InspectionDatalogs", "GetWH_InspectionData : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while WareHouse Inspection List";
+                resultobj.StatusMessage = "Error Occured while Get WareHouse Inspection List";
 
                 return resultobj;
 
