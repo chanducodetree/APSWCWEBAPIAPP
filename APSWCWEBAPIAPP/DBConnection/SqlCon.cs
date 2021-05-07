@@ -4962,11 +4962,6 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-
-
-
-
-
         public async Task<dynamic> Review_Inspection(MasterSp rootobj)
         {
             try
