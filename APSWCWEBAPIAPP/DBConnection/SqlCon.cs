@@ -4788,13 +4788,13 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> GetWH_InspectionData()
+        public async Task<dynamic> GetWHRegions()
         {
             MasterSp rootobj = new MasterSp();
             try
             {
                 rootobj.DIRECTION_ID = "8";
-                rootobj.TYPEID = "WAREHOUSE";
+                rootobj.TYPEID = "REGION";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
@@ -4815,16 +4815,83 @@ namespace APSWCWEBAPIAPP.DBConnection
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
 
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWH_InspectionDatalogs", "GetWH_InspectionData : Method:" + jsondata + " , Input Data : " + inputdata));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWHRegionslogs", "GetWHRegions : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Get WareHouse Inspection List";
+                resultobj.StatusMessage = "Error Occured while Get WareHouse Regions List";
 
                 return resultobj;
 
             }
         }
+        public async Task<dynamic> GetWHDistricts(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "8";
+                rootobj.TYPEID = "DISTRICT";
 
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWHDistrictsLogs", "GetWHDistricts : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get WareHouse District Details";
+                return resultobj;
+
+            }
+        }
+        public async Task<dynamic> GetWHInspectionList(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "8";
+                rootobj.TYPEID = "WAREHOUSE";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetWHInspectionListLogs", "GetWHInspectionList : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get WareHouse Inspection Details";
+                return resultobj;
+
+            }
+        }
         public async Task<dynamic> WH_Inspection_Save(MasterSp rootobj)
         {
             try
@@ -4992,6 +5059,41 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get User Inspection Review Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetInspectionHistory(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "8";
+                rootobj.TYPEID = "GET_LOG_HISTORY";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetInspectionHistorylogs", "GetInspectionHistory : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Virtual Inspection History";
                 return resultobj;
 
             }

@@ -1675,21 +1675,67 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpGet]
-        [Route("GetWH_InspectionData")]
-        public async Task<IActionResult> GetWH_InspectionData()
+        [Route("GetWH_Regions")]
+        public async Task<IActionResult> GetWHRegions()
         {
             IActionResult response = Unauthorized();
             try
             {
-                return Ok(await _hel.GetWH_InspectionData());
+                return Ok(await _hel.GetWHRegions());
             }
             catch (Exception)
             {
                 response = Ok(new
                 {
                     StatusCode = 102,
-                    StatusMessage = "Error Occured while WareHouse Inspection List",
+                    StatusMessage = "Error Occured while Get WareHouse Regions List",
 
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetWH_Districts")]
+        public async Task<IActionResult> GetWHDistricts(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetWHDistrictsLogs", "GetWHDistricts : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWHDistricts(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get WareHouse District Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetWH_InspectionList")]
+        public async Task<IActionResult> GetWHInspectionList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetWHInspectionListLogs", "GetWHInspectionList : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWHInspectionList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get WareHouse Inspection Details"
                 });
                 return response;
             }
@@ -1818,13 +1864,29 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 var supportedTypes = new[] { "mp4" };
                 var file = Request.Form.Files[0];
+                var file1 = Request.Form.Files[1];
+                var file2 = Request.Form.Files[2];
+                var file3 = Request.Form.Files[3];
+                var file4 = Request.Form.Files[4];
                 var folderName = Path.Combine("WareHouse", "InspectionVideos");
                 var pathToSave = Path.Combine("wwwroot", folderName);
-                if (file.Length > 0)
+                if (file.Length > 0 && file1.Length > 0 && file2.Length > 0 && file3.Length > 0 && file4.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileName1 = ContentDispositionHeaderValue.Parse(file1.ContentDisposition).FileName.Trim('"');
+                    var fileName2 = ContentDispositionHeaderValue.Parse(file2.ContentDisposition).FileName.Trim('"');
+                    var fileName3 = ContentDispositionHeaderValue.Parse(file3.ContentDisposition).FileName.Trim('"');
+                    var fileName4 = ContentDispositionHeaderValue.Parse(file4.ContentDisposition).FileName.Trim('"');
                     var fullPath = Path.Combine(pathToSave, fileName);
+                    var fullPath1 = Path.Combine(pathToSave, fileName1);
+                    var fullPath2 = Path.Combine(pathToSave, fileName2);
+                    var fullPath3 = Path.Combine(pathToSave, fileName3);
+                    var fullPath4 = Path.Combine(pathToSave, fileName4);
                     var dbPath = Path.Combine(folderName, fileName);
+                    var dbPath1 = Path.Combine(folderName, fileName1);
+                    var dbPath2 = Path.Combine(folderName, fileName2);
+                    var dbPath3 = Path.Combine(folderName, fileName3);
+                    var dbPath4 = Path.Combine(folderName, fileName4);
                     bool folderExists = Directory.Exists(pathToSave);
                     if (!folderExists)
                         Directory.CreateDirectory(pathToSave);
@@ -1832,7 +1894,23 @@ namespace APSWCWEBAPIAPP.Controllers
                     {
                         file.CopyTo(stream);
                     }
-                    return Ok(new { dbPath });
+                    using (var stream1 = new FileStream(fullPath1, FileMode.Create))
+                    {
+                        file1.CopyTo(stream1);
+                    }
+                    using (var stream2 = new FileStream(fullPath2, FileMode.Create))
+                    {
+                        file2.CopyTo(stream2);
+                    }
+                    using (var stream3 = new FileStream(fullPath3, FileMode.Create))
+                    {
+                        file3.CopyTo(stream3);
+                    }
+                    using (var stream4 = new FileStream(fullPath4, FileMode.Create))
+                    {
+                        file4.CopyTo(stream4);
+                    }
+                    return Ok(new { dbPath, dbPath1, dbPath2, dbPath3, dbPath4 });
                 }
                 else
                 {
@@ -1842,6 +1920,53 @@ namespace APSWCWEBAPIAPP.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        [HttpPost]
+        [Route("GetInspectionHistory")]
+        public async Task<IActionResult> GetInspectionHistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                return Ok(await _hel.GetInspectionHistory(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Virtual Inspection History"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetuserAccess_menu")]
+        public async Task<IActionResult> GetuserAccessmenu(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetuserAccessmenu(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Menu Details"
+                });
+                return response;
             }
         }
 
