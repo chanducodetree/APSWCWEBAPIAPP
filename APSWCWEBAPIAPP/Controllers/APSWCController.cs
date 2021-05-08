@@ -1490,6 +1490,27 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetPageDetailsByID")]
+        public async Task<IActionResult> GetPageDetailsByID(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPageDetailsByID(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
 
         [HttpPost]
         [Route("GetPageAccessDetails")]
@@ -1553,6 +1574,29 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Save Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdatePageDetails")]
+        public async Task<IActionResult> UpdatePageDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdatePageDetailslogs", "UpdatePageDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdatePageDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update Page Details"
                 });
                 return response;
             }
@@ -3184,6 +3228,30 @@ namespace APSWCWEBAPIAPP.Controllers
 
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Load Tokens Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetStackTokenInfo")]
+        public async Task<IActionResult> GetStackTokenInfo(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetStackTokenInfo(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Token Information"
                 });
                 return response;
             }
