@@ -3069,6 +3069,8 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        #region Depositor Receipt In 
+
         [HttpPost]
         [Route("GetSpaceReservationDetails")]
         public async Task<IActionResult> GetSpaceReservationDetails(dynamic data)
@@ -3087,6 +3089,57 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Get Space Reservation  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("Savereceiptin")]
+        public async Task<IActionResult> Savereceiptin(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Savereceiptin(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetReceiptInTokens")]
+        public async Task<IActionResult> GetReceiptInTokens(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetReceiptInTokens(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
                 });
                 return response;
             }
@@ -3422,6 +3475,8 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        #endregion
+
         [HttpGet]
         [Route("GetInsurancesList")]
         public async Task<IActionResult> GetInsurancesList()
@@ -3730,6 +3785,80 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        #region Depositor Receipt Out
+
+        [HttpPost]
+        [Route("GetStackinDetails")]
+        public async Task<IActionResult> GetStackinDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetStackinDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Stack in Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveReceiptOutRequest")]
+        public async Task<IActionResult> SaveReceiptOutRequest(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveReceiptOutRequestLogs", "SaveReceiptOutRequest : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveReceiptOutRequest(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Receipt Out Request Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetReceiptOutDetails")]
+        public async Task<IActionResult> GetReceiptOutDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetReceiptOutDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Token  Details"
+                });
+                return response;
+            }
+        }
+
+        #endregion
     }
 
 }
