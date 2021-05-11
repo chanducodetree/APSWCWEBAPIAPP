@@ -1,0 +1,1 @@
+DeadStockCategory : Input Data : {"INPUT_01":"CATEGORY_DD"}
