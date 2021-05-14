@@ -2192,6 +2192,48 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Get_Tenders_Details")]
+        public async Task<IActionResult> GetTendersDetails()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetTendersDetails());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Tenders Details",
+
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("Get_News_Details")]
+        public async Task<IActionResult> GetNewsDetails()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetNewsDetails());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get News Details",
+
+                });
+                return response;
+            }
+        }
+
 
     }
 }
