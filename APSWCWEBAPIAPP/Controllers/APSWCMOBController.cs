@@ -2234,6 +2234,25 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-
+        [Route("GetWH_DeadStock_History")]
+        public async Task<IActionResult> GetWHDeadStockHistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                return Ok(await _hel.GetWHDeadStockHistory(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Dead Stock History"
+                });
+                return response;
+            }
+        }
     }
 }

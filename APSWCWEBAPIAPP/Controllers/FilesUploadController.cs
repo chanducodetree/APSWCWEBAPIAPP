@@ -431,7 +431,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new { "" });
+                return Ok(new { docBase64 });
             }
         }
 
