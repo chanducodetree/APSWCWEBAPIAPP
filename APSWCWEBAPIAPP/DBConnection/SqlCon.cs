@@ -7215,6 +7215,58 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> Notifications_Get(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "11";
+                rootobj.TYPEID = "GET_NOTIFICATION";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Notifications_Get : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Notifications_Get Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> Notifications_Update(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "11";
+                rootobj.TYPEID = "101";
+
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = "Data Inserted Successfully";
+                resultobj.Details = await APSWCMasterSp(rootobj);
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Notifications_Update : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Notifications_Update Details";
+                return resultobj;
+
+            }
+        }
+
         public async Task<DataTable> APSWCMasterSp(MasterSp objMa)
         {
             SqlConnection sqlcon = new SqlConnection(_connectionString);
