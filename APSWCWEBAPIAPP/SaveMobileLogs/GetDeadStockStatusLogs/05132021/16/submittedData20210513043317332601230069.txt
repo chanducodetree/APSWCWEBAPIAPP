@@ -1,0 +1,1 @@
+GetDeadStockStatus : Input Data : {"INPUT_02":"SECTION","INPUT_03":"VJ07412000017","INPUT_04":"VJ07412","INPUT_05":"Test Section Login Approve","INPUT_06":1,"USER_NAME":"APSWC0116","CALL_SOURCE":"MOBILE"}

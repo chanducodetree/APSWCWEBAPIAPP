@@ -88,7 +88,6 @@ namespace APSWCWEBAPIAPP
                 config.AddPolicy(Policies.Mob, Policies.MobPolicy());
             });
 
-
             services.AddCors(options => {
                 options.AddPolicy("EnableCORS", builder =>
                 {
