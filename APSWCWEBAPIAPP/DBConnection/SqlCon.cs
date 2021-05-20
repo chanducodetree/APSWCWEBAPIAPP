@@ -4638,7 +4638,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         }
         #endregion
 
-        #region Help
+       
         #region Help
         public async Task<dynamic> GetHelpDetails(MasterSp objMa)
         {
@@ -4749,7 +4749,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
         #endregion
-        #endregion
+      
 
         public async Task<dynamic> GetLayoutConfiguration(MasterSp rootobj)
         {
