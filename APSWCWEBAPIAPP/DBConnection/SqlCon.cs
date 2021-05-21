@@ -7977,6 +7977,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         #endregion
 
         #region User Access Permission for Mobile
+
         public async Task<dynamic> GetPageMobDetails(MasterSp rootobj)
         {
 
