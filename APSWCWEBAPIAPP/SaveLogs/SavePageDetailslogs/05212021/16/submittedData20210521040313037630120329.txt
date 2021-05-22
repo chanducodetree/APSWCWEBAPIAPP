@@ -1,0 +1,1 @@
+SavePageDetails : Input Data : {"INPUT_01":"Registrations","INPUT_02":"1","INPUT_03":null,"INPUT_04":null,"USER_NAME":"APSWC0007","INPUT_05":"Main Menu","INPUT_06":null,"CALL_SOURCE":"Web"}

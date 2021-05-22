@@ -4496,6 +4496,216 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        #region User Access Permission for Mobile
+
+        [HttpPost]
+        [Route("GetPageMobDetails")]
+        public async Task<IActionResult> GetPageMobDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPageMobDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetPageMobDetailsByID")]
+        public async Task<IActionResult> GetPageMobDetailsByID(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPageMobDetailsByID(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetPageMobAccessDetails")]
+        public async Task<IActionResult> GetPageMobAccessDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPageMobAccessDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("Get_DesigPageMobAccessDetails")]
+        public async Task<IActionResult> Get_DesigPageMobAccessDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Get_DesigPageMobAccessDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SavePageMobDetails")]
+        public async Task<IActionResult> SavePageMobDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePageDetailslogs", "SavePageDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SavePageMobDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdatePageMobDetails")]
+        public async Task<IActionResult> UpdatePageMobDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdatePageDetailslogs", "UpdatePageDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdatePageMobDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update Page Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveUserMobaccessDetails")]
+        public async Task<IActionResult> SaveUserMobaccessDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveUseraccessDetailslogs", "SaveUseraccessDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveUserMobaccessDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Useraccess Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateUserMobaccessDetails")]
+        public async Task<IActionResult> UpdateUserMobaccessDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateUserMobaccessDetailslogs", "UpdateUserMobaccessDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateUserMobaccessDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Updateing User access Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetMobuserAccess_menu")]
+        public async Task<IActionResult> GetMobuserAccessmenu(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetMobuserAccessmenu(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Menu Details"
+                });
+                return response;
+            }
+        }
+
+        #endregion
+
     }
 
 }
