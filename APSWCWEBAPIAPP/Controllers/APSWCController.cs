@@ -5149,7 +5149,7 @@ namespace APSWCWEBAPIAPP.Controllers
             try
             {
                 string value = JsonConvert.SerializeObject(data);
-                Application _rbroot = JsonConvert.DeserializeObject<Application>(value);
+                EmployeeMasterSp _rbroot = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePayroleDetailsLogs", "SavePayroleDetailsLogs : Input Data : " + value));
 
                 return Ok(await _hel.SaveEmployeepayroleDetails(_rbroot));
@@ -5187,6 +5187,55 @@ namespace APSWCWEBAPIAPP.Controllers
 
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Load Employee Type Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmployeetypesData")]
+        public async Task<IActionResult> GetEmployeetypesData(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.GetemployeetypeDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Employee Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetEmployeeviewdata")]
+        public async Task<IActionResult> GetEmployeeviewdata(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.GetemployeeviewDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Employee Information"
                 });
                 return response;
             }
