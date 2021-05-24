@@ -4656,6 +4656,52 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetGeneratedWHReceipts")]
+        public async Task<IActionResult> GetGeneratedWHReceipts(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetGeneratedWHReceipts(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Warehouse Receipts  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("DownloadReceipts")]
+        public async Task<IActionResult> DownloadReceipts(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DownloadReceipts(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Download Receipt"
+                });
+                return response;
+            }
+        }
+
         #endregion
 
         #region depositor receipt in (Others)
