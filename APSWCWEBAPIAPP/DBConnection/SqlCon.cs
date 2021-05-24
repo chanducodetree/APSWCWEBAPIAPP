@@ -7584,7 +7584,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> GetPageMobDetailsByID(MasterSp rootobj)
         {
 
@@ -7861,6 +7860,213 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Menu Details";
+                return resultobj;
+
+            }
+        }
+
+        #endregion
+
+        #region depositor receipt in (Others)
+        public async Task<dynamic> GetOtherReceiptInTokens(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "TO_GATEIN";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Token Details Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Token Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> OtherWeighmentTokenList(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = rootobj.INPUT_02 == "WEIGHT_INTKN" ? "WEIGHT_IN" : rootobj.INPUT_02 == "COMDLISTOFTKN" ? "COMMODITY_DEATILS" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Token Details Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Token Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetOtherTokens(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "GET_TOKEN";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetTokensLogs", "GetTokens : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Tokens Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetOtherStackTokens(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "STACK_TOKEN";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetStackTokensLogs", "GetStackTokens : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Tokens Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> OtherWeighment_OUTTokenList(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = rootobj.INPUT_02 == "WEIGHT_OUTTKN" ? "WEIGHT_OUT" : rootobj.INPUT_02 == "COMDLISTOFTKN" ? "WEIGHT_OUT_COMMODITY" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Token Details Not Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Token Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetOtherGateoutTokens(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "GATE_OUT_TOKEN";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetGateoutTokensLogs", "GetGateoutTokens : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Tokens Details";
                 return resultobj;
 
             }
