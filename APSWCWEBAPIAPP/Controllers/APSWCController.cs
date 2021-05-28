@@ -2636,9 +2636,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-
-
-
         [HttpPost]
         [Route("Getcommodities")]
         public async Task<IActionResult> Getcommodities(dynamic data)
