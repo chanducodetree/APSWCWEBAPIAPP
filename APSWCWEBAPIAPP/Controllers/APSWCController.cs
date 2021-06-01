@@ -72,8 +72,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.CheckLogin(rootobj));
             }
@@ -103,8 +103,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetServiceCharterDetails(rootobj));
             }
@@ -277,8 +277,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetContactLists(rootobj));
             }
@@ -400,8 +400,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetMandlas(rootobj));
             }
@@ -423,8 +423,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetVillages(rootobj));
             }
@@ -466,8 +466,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetChargeDetails(rootobj));
             }
@@ -669,8 +669,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetLocations(rootobj));
             }
@@ -793,8 +793,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPrimaryDetailslogs", "SaveEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPrimaryDetails(rootobj));
@@ -817,8 +817,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                // string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpCommuDetailslogs", "SaveEmpCommuDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpCommuDetails(rootobj));
@@ -841,8 +841,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpWorkDetailsLogs", "SaveEmpWorkDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpWorkDetails(rootobj));
@@ -865,8 +865,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpBankDetailsLogs", "SaveEmpBankDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpBankDetails(rootobj));
@@ -889,8 +889,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpFamilyDetailslogs", "SaveEmpFamilyDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpFamilyDetails(rootobj));
@@ -913,8 +913,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                // string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpPFDetailslogs", "SaveEmpPFDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveEmpPFDetails(rootobj));
@@ -937,8 +937,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetIFSCCodeDetails(rootobj));
             }
@@ -960,8 +960,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                // string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetEmpFamilyDetails(rootobj));
             }
@@ -983,8 +983,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetEmployeeDetails(rootobj));
             }
@@ -1006,8 +1006,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdatedEmployeeDetailsLogs", "UpdatedEmployeeDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdatedEmployeeDetails(rootobj));
@@ -1030,8 +1030,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateEmpPrimaryDetailsLogs", "UpdateEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateEmpPrimaryDetails(rootobj));
@@ -1054,8 +1054,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateAdminEmpPrimaryDetailsLogs", "UpdateAdminEmpPrimaryDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateAdminEmpPrimaryDetails(rootobj));
@@ -1153,8 +1153,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetuserAccess(rootobj));
             }
@@ -1178,8 +1178,8 @@ namespace APSWCWEBAPIAPP.Controllers
             
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWHList(rootobj));
             }
@@ -1199,10 +1199,10 @@ namespace APSWCWEBAPIAPP.Controllers
         public async Task<IActionResult> GetWH_View(dynamic data)
         {
             IActionResult response = Unauthorized();
-            string value = EncDecrpt.Decrypt_Data(data);
+            //string value = EncDecrpt.Decrypt_Data(data);
             try
             {
-                //string value = JsonConvert.SerializeObject(jsondata);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWH_View(rootobj));
             }
@@ -1226,8 +1226,8 @@ namespace APSWCWEBAPIAPP.Controllers
             
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetWH_History(rootobj));
             }
@@ -1252,8 +1252,8 @@ namespace APSWCWEBAPIAPP.Controllers
            
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetRegionDistricts(rootobj));
             }
@@ -1277,8 +1277,8 @@ namespace APSWCWEBAPIAPP.Controllers
             
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                // string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWareHouseDetailslogs", "SaveWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveWareHouseDetails(rootobj));
@@ -1304,8 +1304,8 @@ namespace APSWCWEBAPIAPP.Controllers
             
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetailslogs", "UpdateWareHouseDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateWareHouseDetails(rootobj));
@@ -1328,8 +1328,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveChangePasswordlogs", "SaveChangePassword : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveChangePassword(rootobj));
@@ -1352,8 +1352,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.Getmasterslist(rootobj));
             }
@@ -1436,8 +1436,8 @@ namespace APSWCWEBAPIAPP.Controllers
            
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                // string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
@@ -1461,8 +1461,8 @@ namespace APSWCWEBAPIAPP.Controllers
            
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+               // //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetPageDetails(rootobj));
             }
@@ -1485,8 +1485,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetPageAccessDetails(rootobj));
             }
@@ -1508,8 +1508,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+               // //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.Get_DesigPageAccessDetails(rootobj));
             }
@@ -1531,8 +1531,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePageDetailslogs", "SavePageDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SavePageDetails(rootobj));
@@ -1555,8 +1555,8 @@ namespace APSWCWEBAPIAPP.Controllers
             IActionResult response = Unauthorized();
             try
             {
-                string value = EncDecrpt.Decrypt_Data(data);
-                //string value = JsonConvert.SerializeObject(data);
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveUseraccessDetailslogs", "SaveUseraccessDetails : Input Data : " + value));
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveUseraccessDetails(rootobj));
@@ -1582,7 +1582,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetuserAccessmenu(rootobj));
@@ -1608,7 +1608,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetExistingUserDetails(rootobj));
@@ -1633,7 +1633,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetSubmittedDocs(rootobj));
@@ -1658,7 +1658,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetCommuDetails(rootobj));
@@ -1683,7 +1683,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetCommodityGroupDetails(rootobj));
@@ -1709,7 +1709,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetQntity_cntrct_Details(rootobj));
@@ -1725,9 +1725,118 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+
+        [HttpPost]
+        [Route("WeighmentTokenList")]
+        public async Task<IActionResult> WeighmentTokenList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.WeighmentTokenList(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
         
+        [HttpPost]
+        [Route("GetVariety_GradeList")]
+        public async Task<IActionResult> GetVarietyGradeList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetVarietyGradeList(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
 
 
+
+        [HttpPost]
+        [Route("GetQualityPrameters")]
+        public async Task<IActionResult> GetQualityPrameters(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetQualityPrameters(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("SaveQualityChecking")]
+        public async Task<IActionResult> SaveQualityChecking(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveQualityChecking(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        
 
         [HttpPost]
         [Route("SaveSpaceReservation")]
@@ -1737,7 +1846,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
             try
             {
-                //string value = EncDecrpt.Decrypt_Data(data);
+                ////string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveSpaceReservation(rootobj));
@@ -1755,8 +1864,403 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
+        [HttpPost]
+        [Route("Weighment_OUTTokenList")]
+        public async Task<IActionResult> Weighment_OUTTokenList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
 
-        
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Weighment_OUTTokenList(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("SaveWeighmentOut")]
+        public async Task<IActionResult> SaveWeighmentOut(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveWeighmentOut(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("Savereceiptin")]
+        public async Task<IActionResult> Savereceiptin(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Savereceiptin(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetReceiptInTokens")]
+        public async Task<IActionResult> GetReceiptInTokens(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetReceiptInTokens(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+       
+
+
+        [HttpPost]
+        [Route("QC_OUT_Tokens")]
+        public async Task<IActionResult> QC_OUT_Tokens(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.QC_OUT_Tokens(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Out_Gateouttokens")]
+        public async Task<IActionResult> Out_Gateouttokens(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Out_Gateouttokens(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+
+
+        [HttpPost]
+        [Route("GetPeriodicQCDetails")]
+        public async Task<IActionResult> GetPeriodicQCDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPeriodicQCDetails(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("SavePeriodicQualityChecking")]
+        public async Task<IActionResult> SavePeriodicQualityChecking(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SavePeriodicQualityChecking(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]        
+        [Route("Savedisinfestation")]
+        public async Task<IActionResult> Savedisinfestation(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Savedisinfestation(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateUseraccessDetails")]
+        public async Task<IActionResult> UpdateUseraccessDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "updateUseraccessDetailslogs", "SaveUseraccessDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateUseraccessDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Updateing Useraccess Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetWeigh_Bridge_Details")]
+        public async Task<IActionResult> GetWeigh_Bridge_Details(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                ////string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWeigh_Bridge_Details(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+
+
+        [HttpPost]
+        [Route("SaveWBDetails")]
+        public async Task<IActionResult> SaveWBDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWeighBridgeDetailslogs", "SaveWeighBridgeDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveWBDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Weigh Bridge Details"
+                });
+                return response;
+            }
+        }
+
+
+
+
+        [HttpPost]
+        [Route("SaveEmpTransferWorkDetails")]
+        public async Task<IActionResult> SaveEmpTransferWorkDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpTransferWorkDetailsLogs", "SaveEmpTransferWorkDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveEmpTransferWorkDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Employee Transfer Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("GetLorryWBRegister")]
+        public async Task<IActionResult> GetLorryWBRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetLorryWBRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Lorry Weighbridge List"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetStockList")]
+        public async Task<IActionResult> GetStockList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetStockList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Lorry Weighbridge List"
+                });
+                return response;
+            }
+        }
+
+
     }
 
 }
