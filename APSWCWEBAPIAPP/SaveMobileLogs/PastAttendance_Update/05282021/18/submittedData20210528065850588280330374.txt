@@ -1,0 +1,1 @@
+PastAttendance_Update : Input Data : {"INPUT_01":"APSWC0007","INPUT_02":"Cancelled","USER_NAME":"APSWC0118","CALL_SOURCE":"MOBILE"}
