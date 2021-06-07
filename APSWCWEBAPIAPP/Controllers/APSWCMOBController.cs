@@ -18,7 +18,7 @@ using System.Net.Http.Headers;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
-    //[Authorize(Policy = Policies.Mob)]
+    [Authorize(Policy = Policies.Mob)]
     [Route("api/[controller]")]
     [ApiController]
     public class APSWCMOBController : ControllerBase
@@ -65,6 +65,7 @@ namespace APSWCWEBAPIAPP.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Authorize(Policy = Policies.Mob)]
         [Route("Token")]
         public IActionResult Token([FromBody] User login)
         {
@@ -4156,6 +4157,30 @@ namespace APSWCWEBAPIAPP.Controllers
 
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Save Spilling Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetQualityiHistory")]
+        public async Task<IActionResult> GetQualityiHistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetQualityiHistoryLogs", "GetQualityiHistory : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetQualityiHistory(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Quality History Details"
                 });
                 return response;
             }

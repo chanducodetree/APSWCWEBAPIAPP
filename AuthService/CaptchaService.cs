@@ -130,7 +130,7 @@ namespace AuthService
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(2),
+                expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

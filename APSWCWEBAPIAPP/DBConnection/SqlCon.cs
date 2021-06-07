@@ -9013,6 +9013,41 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> GetQualityiHistory(MasterSp objMa)
+        {
+
+            try
+            {
+                objMa.DIRECTION_ID = "12";
+                objMa.TYPEID = "GET_QUALITY";
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetQualityiHistoryLogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Quality History Details";
+                return resultobj;
+            }
+        }
+
         public async Task<DataTable> APSWCMasterSp(MasterSp objMa)
         {
             SqlConnection sqlcon = new SqlConnection(_connectionString);
