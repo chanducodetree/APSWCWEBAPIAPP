@@ -261,7 +261,16 @@ namespace APSWCWEBAPIAPP.Controllers
 
         }
 
+        [HttpGet]
+        [Route("DLDownloadPdf")]
+        public async Task<IActionResult> DLDownloadPdf([FromBody] DigiLocker data)
+        {
+            string value = JsonConvert.SerializeObject(data);
+            DigiLocker rootobj = JsonConvert.DeserializeObject<DigiLocker>(value);
+            return Ok(await _hel.DLDownloadPdf(rootobj));
 
+        }
+    
         [HttpGet]
         [Route("GetGalleryImages")]
         public async Task<IActionResult> GetGalleryImages()
@@ -5287,6 +5296,34 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        #endregion
+
+
+
+
+        #region Crystal report
+        [HttpPost]
+       
+        [Route("PdfDownloadtest")]
+        public async Task<IActionResult> PdfDownloadtest(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPdfData());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Login"
+                });
+                return response;
+            }
+        }
         #endregion
 
     }

@@ -17,11 +17,16 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.Net;
 
 namespace APSWCWEBAPIAPP.DBConnection
 {
     public class SqlCon
     {
+
+        private readonly IWebHostEnvironment _env;
         private readonly string _connectionString;
         private string exFolder = Path.Combine("ExceptionLogs");
         private string exPathToSave = string.Empty;
@@ -1428,7 +1433,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         }
 
 
-
+        
         public async Task<dynamic> GetRelations()
         {
             MasterSp rootobj = new MasterSp();
@@ -5628,6 +5633,167 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
+        public dynamic DigiLockerIssueFiles(DigiLocker root)
+        {
+            string input = "";
+            MasterSp s = new MasterSp();
+            dynamic obj_data = new ExpandoObject();
+            try
+            {
+
+                input = "";
+                var data1 = PostDataAPSWC("https://api.digitallocker.gov.in/public/oauth2/2/files/issued", input, root.token);
+
+                string logdata = JsonConvert.SerializeObject(data1);
+                string mappath = HttpContext.Current.Server.MapPath("DigiLockerIssuedFilesLog");
+                Task WriteTask = Task.Factory.StartNew(() => Log(logdata + "_" + root.RedirectURL, mappath, root.token));
+
+                DLDocs data = JsonConvert.DeserializeObject<DLDocs>(logdata);
+                if (data.items.Count > 0)
+                {
+
+                    dynamic val = data.items;
+
+                    try
+                    {
+                        foreach (files f in val)
+                        {
+                            s.DIRECTION_ID = "16";
+                            s.TYPEID = "102";
+                            s.INPUT_01 = root.token;
+                            s.INPUT_02 = f.name;
+                            s.INPUT_03 = f.type;
+                            s.INPUT_04 = f.size;
+                            s.INPUT_05 = f.date;
+                            s.INPUT_06 = f.parent;
+                            s.INPUT_07 = f.mime[0];
+                            s.INPUT_08 = f.uri;
+                            s.INPUT_09 = f.doctype;
+                            s.INPUT_10 = f.description;
+                            s.INPUT_11 = f.issuerid;
+                            s.INPUT_12 = f.issuer;
+                            s.INPUT_13 = "";
+                            s.USER_NAME = "";
+                            s.CALL_SOURCE = "Web";
+                            DataTable d = sp.SPCalling(s);
+                            if (d.Rows[0][0].ToString() == "0")
+                            {
+                                string logdata1 = JsonConvert.SerializeObject(data);
+                                string mappath1 = HttpContext.Current.Server.MapPath("DigiLockerIssuedFilesFailedLog");
+                                Task WriteTask1 = Task.Factory.StartNew(() => Log(logdata1, mappath1, root.token));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                    obj_data.Status = "Success";
+                    obj_data.UserFiles = data;
+                    obj_data.Reason = "Data Loaded Successfully";
+                }
+                else
+                {
+                    obj_data.Status = "Failure";
+                    obj_data.Reason = "Documents not found";
+                    obj_data.UserFiles = data;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                obj_data.Status = "Failure";
+                obj_data.Reason = ex.Message.ToString();
+                string mappath = HttpContext.Current.Server.MapPath("DigiLockerIssuedFilesExceptionLog");
+                Task WriteTask = Task.Factory.StartNew(() => Log(ex.Message.ToString() + "_" + root.RedirectURL, mappath, root.token));
+
+            }
+
+            return obj_data;
+        }
+
+        public dynamic DLDownloadPdf(DigiLocker root)
+        {
+            string pdfpath = "";
+            
+            try
+            {
+                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
+                string[] ext = root.mime.Split('/');
+                if (!supportedTypes.Contains(ext[1].ToString()))
+                {
+                    resultobj.StatusMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+                    return resultobj;
+                }
+                
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.digitallocker.gov.in/public/oauth2/1/file/" + root.url);
+                request.Headers.Add("authorization", "Bearer " + root.token);
+                request.ContentType = "application/pdf;charset=UTF-8";
+                request.Method = "GET";
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                BinaryReader bin = new BinaryReader(response.GetResponseStream());
+                byte[] buffer = bin.ReadBytes((Int32)response.ContentLength);
+                //string projectRootPath = _hostingEnvironment.ContentRootPath;
+
+                string base64 = Convert.ToBase64String(buffer);
+                string directoryPath = Path.Combine("Digilockerfiles/"+ root.pagename, root.url);
+                //string directoryPath =  Server.MapPath(string.Format("~/Digilockerfiles/") + root.url);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                if (generatefilepdf(directoryPath + "\\" + root.pagename + "\\" + root.url + "\\" + root.url + "." + ext[1].ToString(), base64))
+                {
+                    pdfpath = directoryPath + "\\" + root.pagename + "\\" + root.url + "\\" + root.url + "." + ext[1].ToString();
+                }
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = pdfpath;
+                return resultobj;
+
+
+            }
+            catch (Exception ex)
+            {
+                resultobj.StatusCode = 101;
+                resultobj.StatusMessage = ex.Message.ToString();
+                return resultobj;
+            }
+
+
+
+        }
+
+
+        public bool generatefilepdf(string path, string base64)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    ms.WriteTo(fs);
+                    ms.Close();
+                    fs.Close();
+                    fs.Dispose();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
 
         public async Task<dynamic> GetInsuranceByID(MasterSp rootobj)
         {
@@ -5729,7 +5895,8 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
+       
+       
         public async Task<dynamic> Getvarietylist(MasterSp objMa)
         {
 
@@ -8971,6 +9138,44 @@ namespace APSWCWEBAPIAPP.DBConnection
                 throw ex;
             }
 
+        }
+
+
+
+        public async Task<dynamic> GetPdfData()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "DESIGNATION";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetEmpListlogs", "GetEmpList : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Employees List";
+
+                return resultobj;
+            }
         }
     }
 }

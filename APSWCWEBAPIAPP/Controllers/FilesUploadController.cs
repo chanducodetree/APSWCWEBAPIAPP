@@ -9,6 +9,13 @@ using APSWCWEBAPIAPP.DBConnection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ModelService;
+using Microsoft.EntityFrameworkCore;
+using APSWCWEBAPIAPP.Models;
+using Microsoft.AspNetCore.Hosting;
+using System.Net;
+using System.Dynamic;
+using Newtonsoft.Json;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
@@ -16,6 +23,12 @@ namespace APSWCWEBAPIAPP.Controllers
     [ApiController]
     public class FilesUploadController : ControllerBase
     {
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
+        public FilesUploadController(Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         [HttpPost, DisableRequestSizeLimit]
         [Route("UploadFileDetails")]
         public IActionResult Upload()
@@ -352,7 +365,170 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("DLDownloadPdf")]
+        public dynamic DLDownloadPdf([FromBody] DigiLocker data)
+        {
+           
+            string pdfpath = "";
+            dynamic resultobj = new ExpandoObject();
+            string value = JsonConvert.SerializeObject(data);
+            DigiLocker root = JsonConvert.DeserializeObject<DigiLocker>(value);
+            try
+            {
+                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
+                string[] ext = root.mime.Split('/');
+                if (!supportedTypes.Contains(ext[1].ToString()))
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+                    return resultobj;
+                }
 
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.digitallocker.gov.in/public/oauth2/1/file/" + root.url);
+                request.Headers.Add("authorization", "Bearer " + root.token);
+                request.ContentType = "application/pdf;charset=UTF-8";
+                request.Method = "GET";
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                BinaryReader bin = new BinaryReader(response.GetResponseStream());
+                byte[] buffer = bin.ReadBytes((Int32)response.ContentLength);
+                string projectRootPath = _hostingEnvironment.ContentRootPath;
+
+                string base64 = Convert.ToBase64String(buffer);
+                string directoryPath = Path.Combine(projectRootPath + "/wwwroot/Digilockerfiles/" + root.pagename+  "/", root.url);
+                 
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                if (generatefile(directoryPath + "\\" + root.url + "." + ext[1], base64))
+                {
+                    pdfpath = directoryPath + "\\" + root.url + "." + ext[1];
+                }
+             string path=   pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+               // string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = path;
+               
+                return resultobj;
+            }
+            catch(Exception ex)
+            {
+                resultobj.StatusCode = 101;
+                resultobj.StatusMessage = ex.Message.ToString();
+               
+                return resultobj;
+            }
+
+        }
+        public bool generatefile(string path, string base64)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    ms.WriteTo(fs);
+                    ms.Close();
+                    fs.Close();
+                    fs.Dispose();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("DigilockerEncryptFileUpload")]
+        public ActionResult DigilockerEncryptFileUpload()
+        {
+            try
+            {
+                //var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
+
+                //var file = Request.Form.Files[0];
+                byte[] sPDFDecoded = Convert.FromBase64String("base64string");
+                string folderName = Request.Form["pagename"];
+
+                string todayDate = DateTime.Now.ToString("dd/MM/yyyy");
+
+                //var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1).ToLower();
+
+                //if (!supportedTypes.Contains(fileExt))
+                //{
+                //    string ErrorMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+
+                //    return Ok(new { ErrorMessage });
+                //}
+                folderName = Path.Combine(folderName, todayDate);
+
+                var pathToSave = Path.Combine("wwwroot", folderName);
+
+                
+                    //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                    //var fileWExt = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
+                    var createdtime = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss");
+
+                   var fileName = "DLfile" + "_" + createdtime + ".pdf" ;
+
+                    string fullPath = Path.Combine(pathToSave, fileName);
+
+                    bool folderExists = Directory.Exists(pathToSave);
+
+                    if (!folderExists)
+                    {
+                        Directory.CreateDirectory(pathToSave);
+                    }
+               // File.WriteAllBytes(pathToSave, sPDFDecoded);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                       // file.CopyTo(stream);
+                    }
+
+                    string outfileName = "DLfile_" + createdtime + "." + "txt";
+
+                    string outPath = Path.Combine(pathToSave, outfileName);
+
+                    bool isEncrypted = EncryptFile(fullPath, outPath);
+
+                    if (isEncrypted)
+                    {
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
+
+                        System.IO.FileInfo fi = new System.IO.FileInfo(outPath);
+
+                        if (fi.Exists)
+                        {
+                            fi.MoveTo(fullPath);
+                        }
+                    }
+                    return Ok(new { fullPath });
+
+
+
+                 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
         private bool EncryptFile(string inputFilePath, string outputfilePath)
         {
             bool isEncrypted = false;
@@ -381,6 +557,8 @@ namespace APSWCWEBAPIAPP.Controllers
             return isEncrypted;
         }
 
+
+       
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("DecryptFile")]
