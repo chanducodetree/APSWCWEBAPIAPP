@@ -76,8 +76,6 @@ namespace esms_client
             response.Close();
 
 
-
-
             return responseFromServer;
         }
         /// <summary>
