@@ -20,6 +20,7 @@ using IdentityModel.Client;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using System.Xml;
 
 namespace APSWCWEBAPIAPP.DBConnection
 {
@@ -10122,11 +10123,10 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SR_GET_INSERT_COMMON", "SR_GET_INSERT_COMMON : Method:" + jsondata));
 
-                // resultobj.StatusCode = 102;
-                // resultobj.StatusMessage = "Error Occured while SR_GET_INSERT_COMMON Details";
-                //return resultobj;
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = rootobj.INPUT_35;
 
-                throw ex;
+                return resultobj;
 
             }
         }
@@ -10272,7 +10272,8 @@ namespace APSWCWEBAPIAPP.DBConnection
             return obj_data;
         }
 
-        public async Task<dynamic> DigiLockerIssueFiles(DigiLocker root)
+
+        public async Task<dynamic> DLIssuedfiles(DigiLocker root)
         {
             string input = "";
             MasterSp s = new MasterSp();
@@ -10280,24 +10281,25 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             try
             {
-               
+
 
                 input = "";
-                var data1 = await PostDataAPSWC("https://api.digitallocker.gov.in/public/oauth2/2/files/issued", input, root.token);
-
-                string logdata = JsonConvert.SerializeObject(data1);
-
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerIssuedFilesLog", "DigiLockerIssueFiles : Method:" + logdata + "_" + root.RedirectURL + " , Input Data : " + root.token));
-
-                DLDocs data = JsonConvert.DeserializeObject<DLDocs>(logdata);
-
-                if (data.items.Count > 0)
+                try
                 {
+                    var data1 = await PostDataAPSWC("https://api.digitallocker.gov.in/public/oauth2/2/files/issued", input, root.token);
 
-                    dynamic val = data.items;
+                    string logdata = JsonConvert.SerializeObject(data1);
 
-                    try
+                    Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerIssuedFilesLog", "DigiLockerIssueFiles : Method:" + logdata + "_" + root.RedirectURL + " , Input Data : " + root.token));
+
+                    DLDocs data = JsonConvert.DeserializeObject<DLDocs>(logdata);
+
+                    if (data.items.Count > 0)
                     {
+
+                        dynamic val = data.items;
+
+
                         foreach (files f in val)
                         {
                             s.DIRECTION_ID = "16";
@@ -10321,35 +10323,94 @@ namespace APSWCWEBAPIAPP.DBConnection
                             if (d.Rows[0][0].ToString() == "0")
                             {
                                 string logdata1 = JsonConvert.SerializeObject(data);
-                                
+
 
                                 Task WriteTask1 = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerIssuedFilesFailedLog", "DigiLockerIssueFiles : Method:" + logdata1 + " , Input Data : " + root.token));
 
-                                
+
                             }
                         }
+                        obj_data.UserFiles = data;
+
                     }
-                    catch (Exception ex)
+                    else
                     {
-                       
-                       
+                        obj_data.UserFiles = data;
                     }
-
-                    obj_data.Status = "Success";
-                    obj_data.UserFiles = data;
-                    obj_data.Reason = "Data Loaded Successfully";
                 }
-                else
+                catch (Exception ex)
                 {
-                    obj_data.Status = "Failure";
-                    obj_data.Reason = "Documents not found";
-                    obj_data.UserFiles = data;
+
+                    obj_data.UserFiles = new DLDocs().items; ;
+
+                    Task WriteTask1 = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerIssuedFilesExceptionLog", "DigiLockerIssueFiles : Method:" + ex.Message.ToString() + " , Input Data : " + root.token));
+
+
                 }
 
-              
+
+                try
+                {
+                    var data4 = await PostDataAPSWC("https://api.digitallocker.gov.in/public/oauth2/1/files/", input, root.token);
+
+                    string logdata4 = JsonConvert.SerializeObject(data4);
+                    Task WriteTask4 = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerUploadedFilesLog", "DigiLockerUploadFiles : Method:" + logdata4 + "_" + root.RedirectURL + " , Input Data : " + root.token));
+
+                    UploadFiles data3 = JsonConvert.DeserializeObject<UploadFiles>(logdata4);
+                    if (data3.items.Count > 0)
+                    {
+                        dynamic val4 = data3.items;
+
+                        foreach (Item f in val4)
+                        {
+                            s.DIRECTION_ID = "16";
+                            s.TYPEID = "102";
+                            s.INPUT_01 = root.token;
+                            s.INPUT_02 = f.name;
+                            s.INPUT_03 = f.type;
+                            s.INPUT_04 = f.size;
+                            s.INPUT_05 = f.date;
+                            s.INPUT_06 = f.parent;
+                            s.INPUT_07 = f.mime;
+                            s.INPUT_08 = f.uri;
+                            s.INPUT_09 = "Upload File";
+                            s.INPUT_10 = f.description;
+                            s.INPUT_11 = "Upload File";
+                            s.INPUT_12 = f.issuer;
+                            s.INPUT_13 = "";
+                            s.USER_NAME = "";
+                            s.CALL_SOURCE = "Web";
+                            DataTable d = await APSWCMasterSp(s);
+                            if (d.Rows[0][0].ToString() == "0")
+                            {
+                                string logdata3 = JsonConvert.SerializeObject(data3);
+
+                                Task WriteTask3 = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerUploadFilesFailedLog", "DigiLockerUploadFiles : Method:" + logdata3 + " , Input Data : " + root.token));
+
+                            }
+                        }
+                        obj_data.UserUploadFiles = data3;
+                    }
+                    else
+                    {
+                        obj_data.UserUploadFiles = data3;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    obj_data.UserUploadFiles = new UploadFiles().items;
+                    Task WriteTask1 = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerUploadFilesExceptionLog", "DigiLockerIssueFiles : Method:" + ex.Message.ToString() + " , Input Data : " + root.token));
+                }
+
+                obj_data.Status = "Success";
+                obj_data.Reason = "Data Loaded Successfully";
             }
             catch (Exception ex)
             {
+                obj_data.UserUploadFiles = "";
+                obj_data.UserFiles = "";
                 obj_data.Status = "Failure";
                 obj_data.Reason = ex.Message.ToString();
 
@@ -10358,6 +10419,66 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
 
             return obj_data; ;
+        }
+
+        public async Task<dynamic> GETDataAPSWC(string url, string input, DigiLocker root)
+        {
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.digitallocker.gov.in/public/oauth2/1/xml/" + root.url);
+            request.Headers.Add("authorization", "Bearer " + root.token);
+            request.ContentType = "application/pdf;charset=UTF-8";
+            request.Method = "GET";
+            HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
+
+            BinaryReader bin = new BinaryReader(response.GetResponseStream());
+            byte[] buffer = bin.ReadBytes((Int32)20000000);
+
+
+            string base64 = Convert.ToBase64String(buffer);
+            var valueBytes = System.Convert.FromBase64String(base64);
+            string xml = Encoding.UTF8.GetString(valueBytes);
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+
+            string json = JsonConvert.SerializeXmlNode(doc);
+
+            Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerCertIssuerDetailsLog", "DigiLockerCertIssuerDetailsLog : Method:" + json + "_" + root.RedirectURL + " , Input Data : " + root.token));
+
+
+            dynamic data = JsonConvert.DeserializeObject(json);
+
+
+
+            return data;
+
+
+        }
+        public async Task<dynamic> DLCertfIssuerData(DigiLocker root)
+        {
+            string input = "";
+            MasterSp s = new MasterSp();
+            dynamic obj_data = new ExpandoObject();
+            try
+            {
+
+                var data1 = await GETDataAPSWC("https://api.digitallocker.gov.in/public/oauth2/1/xml/", input, root);
+                obj_data.Status = "Success";
+                obj_data.Reason = "Data Loaded Successfully";
+                obj_data.CertIssuerData = data1;
+
+            }
+            catch (Exception ex)
+            {
+
+                Task WriteTask1 = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DigiLockerCertIssuerDetailsExceptionLog", "DigiLockerCertIssuerDetailsExceptionLog : Method:" + ex.Message.ToString() + " , Input Data : " + root.token));
+
+                obj_data.StatusMessage = ex.Message.ToString();
+                obj_data.Status = "Failed";
+                obj_data.Reason = "Error Occured while load Price Details ";
+
+            }
+            return obj_data;
         }
 
         #endregion

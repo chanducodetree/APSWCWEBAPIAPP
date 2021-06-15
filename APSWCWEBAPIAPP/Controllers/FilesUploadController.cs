@@ -460,14 +460,15 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
                 string[] ext = root.mime.Split('/');
-                if (!supportedTypes.Contains(ext[1].ToString()))
+                if (!supportedTypes.Contains(ext[1].ToString().ToLower()))
                 {
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
                     return resultobj;
                 }
 
-
+                var createdtime = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss");
+                string todayDate = DateTime.Now.ToString("dd/MM/yyyy");
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.digitallocker.gov.in/public/oauth2/1/file/" + root.url);
                 request.Headers.Add("authorization", "Bearer " + root.token);
@@ -480,18 +481,42 @@ namespace APSWCWEBAPIAPP.Controllers
                 string projectRootPath = _hostingEnvironment.ContentRootPath;
 
                 string base64 = Convert.ToBase64String(buffer);
-                string directoryPath = Path.Combine(projectRootPath + "/wwwroot/Digilockerfiles/" + root.pagename + "/", root.url);
+                string filename = createdtime + "_" + root.url + "." + ext[1].ToString().ToLower();
+                string directoryPath = Path.Combine(projectRootPath + "/wwwroot/Digilockerfiles/" + root.pagename, todayDate);
 
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);
                 }
-                if (generatefile(directoryPath + "\\" + root.url + "." + ext[1], base64))
+                if (generatefile(directoryPath + "\\" + filename, base64))
                 {
-                    pdfpath = directoryPath + "\\" + root.url + "." + ext[1];
+                    pdfpath = directoryPath + "\\" + filename;
                 }
+
+                string outfileName = createdtime + "_" + root.url + ".txt";
+                string outPath = Path.Combine(directoryPath, outfileName);
+
+                bool isEncrypted = EncryptFile(pdfpath, outPath);
+
+                if (isEncrypted)
+                {
+                    if (System.IO.File.Exists(pdfpath))
+                    {
+                        System.IO.File.Delete(pdfpath);
+                    }
+
+                    System.IO.FileInfo fi = new System.IO.FileInfo(outPath);
+
+                    if (fi.Exists)
+                    {
+                        fi.MoveTo(pdfpath);
+                    }
+                }
+                // return Ok(new { pdfpath });
+
+
                 string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
-                // string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+                //string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = path;
 

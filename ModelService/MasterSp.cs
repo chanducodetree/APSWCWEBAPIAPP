@@ -175,4 +175,22 @@ namespace ModelService
         public string reference_key { get; set; }
         public string new_account { get; set; }
     }
+
+    public class Item
+    {
+        public string name { get; set; }
+        public string type { get; set; }
+        public string size { get; set; }
+        public string date { get; set; }
+        public string parent { get; set; }
+        public string mime { get; set; }
+        public string uri { get; set; }
+        public string description { get; set; }
+        public string issuer { get; set; }
+    }
+
+    public class UploadFiles
+    {
+        public List<Item> items { get; set; }
+    }
 }

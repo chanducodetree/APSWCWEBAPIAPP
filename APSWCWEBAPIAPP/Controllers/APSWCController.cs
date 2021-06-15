@@ -6501,6 +6501,29 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SR_Common_Insert_Save")]
+        public async Task<IActionResult> SR_Common_Insert_Save(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SR_GET_INSERT_COMMON(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while SR_Common_Insert_Save  Details"
+                });
+                return response;
+            }
+        }
+
         #endregion
 
 
@@ -6584,7 +6607,7 @@ namespace APSWCWEBAPIAPP.Controllers
             string jsondata = JsonConvert.SerializeObject(root);
             try
             {
-                return Ok(await _hel.DigiLockerIssueFiles(root));
+                return Ok(await _hel.DLIssuedfiles(root));
             }
             catch (Exception ex)
             {
@@ -6622,7 +6645,27 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        
+        [HttpPost]
+        [Route("DLCertfIssuerData")]
+        public async Task<IActionResult> DLCertfIssuerData(DigiLocker root)
+        {
+            IActionResult response = Unauthorized();
+            string jsondata = JsonConvert.SerializeObject(root);
+            try
+            {
+                return Ok(await _hel.DLCertfIssuerData(root));
+            }
+            catch (Exception ex)
+            {
+                response = BadRequest(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Issued Files"
+                });
+                return response;
+            }
+        }
+
         #endregion
 
 
