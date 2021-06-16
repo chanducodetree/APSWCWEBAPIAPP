@@ -21,9 +21,11 @@ namespace APSWCWEBAPIAPP.Controllers
     public class FilesUploadController : ControllerBase
     {
         private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
-        public FilesUploadController(Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
+        private readonly string _mapsserverpath;
+        public FilesUploadController(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+            _mapsserverpath = configuration.GetConnectionString("mapsserverpath");
         }
 
         [HttpPost, DisableRequestSizeLimit]

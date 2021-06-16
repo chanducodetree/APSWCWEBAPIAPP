@@ -137,6 +137,10 @@ namespace ModelService
         public string username { get; set; }
         public string pagename { get; set; }
         public string mime { get; set; }
+        public string INPUT_01 { get; set; }
+        public string INPUT_02 { get; set; }
+        public string DIRECTION_ID { get; set; }
+        public string TYPEID { get; set; }
     }
 
     public class DLDocs
