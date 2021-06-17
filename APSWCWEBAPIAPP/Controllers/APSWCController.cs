@@ -6019,7 +6019,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 //string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
-                
+
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetDisiHistory(rootobj));
 
