@@ -1,0 +1,83 @@
+onBankPassBookChange(event): void {
+    this.utils
+      .encodedString(
+        event,
+        this.utils.fileType.IMAGE,
+        this.utils.fileSize.twoHundredKB
+      )
+      .then((res: any) => {
+        this.secretaryDetails.passBookImg = res.replace(
+          'data:image/jpeg;base64,',
+          ''
+        );
+      })
+      .catch((error: any) => {
+        this.utils.catchResponse(error);
+      });
+  }
+  
+  
+  fileType = {
+    PDF: 'PDF',
+    IMAGE: 'IMAGE',
+  };
+
+  fileSize = {
+    twentyKB: 20480,
+    thirtyKB: 30720,
+    hundredKB: 102400,
+    twoHundredKB: 204800,
+    oneMB: 1024000,
+  };
+  
+  
+  encodedString(event, fileType, size) {
+    return new Promise((resolve, reject) => {
+      if (event.target.files.length > 0) {
+        if (
+          event.target.files[0].type === 'image/jpeg' &&
+          fileType === this.fileType.IMAGE
+        ) {
+          if (event.target.files[0].size < size) {
+            const file: File = event.target.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+          } else {
+            alert('Uploaded image must be less than 100KB');
+            event.target.value = '';
+          }
+        } else if (
+          event.target.files[0].type === 'application/pdf' &&
+          fileType === this.fileType.PDF
+        ) {
+          if (event.target.files[0].size < size) {
+            const file: File = event.target.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+          } else {
+            alert('Uploaded file must be less than 1MB');
+            event.target.value = '';
+          }
+        } else {
+          alert('Invalid File Format !!!');
+          event.target.value = '';
+        }
+      } else {
+        alert('file is Empty !!!, Please try again.');
+        event.target.value = '';
+      }
+    });
+  }
+  
+  <div [hidden]="secretaryDetails.passBookImg === ''">
+                <img
+                [src]="'data:image/jpeg;base64,' + secretaryDetails.passBookImg"
+                style="cursor: pointer"
+                class="img-thumbnail mr-3"
+                (click)="btnImage(secretaryDetails.passBookImg)"
+              />
+            </div>
