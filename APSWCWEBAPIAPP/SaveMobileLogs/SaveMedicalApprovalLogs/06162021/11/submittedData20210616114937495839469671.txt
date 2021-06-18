@@ -1,0 +1,1 @@
+SaveMedicalApproval : Input Data : {"INPUT_01":"MR0000003","INPUT_02":"P & A Section","INPUT_03":"B & L Section","INPUT_04":1,"INPUT_05":"Testing Approve","INPUT_06":"K LAKSHMAIAH","INPUT_07":"General Manager","USER_NAME":"APSWC0007","CALL_SOURCE":"MOBILE"}

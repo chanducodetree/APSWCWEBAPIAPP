@@ -1,0 +1,1 @@
+SaveSanctionedDetails : Input Data : {"INPUT_01":"MR0000001","INPUT_02":50000,"INPUT_03":"wwwroot\\MedicalReimbursementRequest\\14-06-2021\\sample_14_06_2021_10_49_59.pdf","USER_NAME":"APSWC0007","CALL_SOURCE":"MOBILE"}

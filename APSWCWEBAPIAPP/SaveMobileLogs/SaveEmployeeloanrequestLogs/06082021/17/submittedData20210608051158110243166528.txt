@@ -1,0 +1,1 @@
+SaveEmployeeloanrequestLogs : Input Data : {"INPUT_01":"APSWC0007","INPUT_02":2,"INPUT_03":18,"INPUT_04":100000,"INPUT_05":"wwwroot\\EmpLoanRequest\\08-06-2021\\InformationTechnology_08_06_2021_12_07_43.pdf","INPUT_06":"Test Car Loan","INPUT_07":101,"USER_NAME":"APSWC0007","CALL_SOURCE":"MOBILE"}

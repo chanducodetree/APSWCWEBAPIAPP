@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ using APSWCWEBAPIAPP.DBConnection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ModelService;
+using Newtonsoft.Json;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
@@ -16,6 +20,12 @@ namespace APSWCWEBAPIAPP.Controllers
     [ApiController]
     public class FilesUploadController : ControllerBase
     {
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
+        public FilesUploadController(Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         [HttpPost, DisableRequestSizeLimit]
         [Route("UploadFileDetails")]
         public IActionResult Upload()
@@ -436,6 +446,90 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         #endregion
+
+        [HttpPost]
+        [Route("DLDownloadPdf")]
+        public dynamic DLDownloadPdf([FromBody] DigiLocker data)
+        {
+
+            string pdfpath = "";
+            dynamic resultobj = new ExpandoObject();
+            string value = JsonConvert.SerializeObject(data);
+            DigiLocker root = JsonConvert.DeserializeObject<DigiLocker>(value);
+            try
+            {
+                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
+                string[] ext = root.mime.Split('/');
+                if (!supportedTypes.Contains(ext[1].ToString()))
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+                    return resultobj;
+                }
+
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.digitallocker.gov.in/public/oauth2/1/file/" + root.url);
+                request.Headers.Add("authorization", "Bearer " + root.token);
+                request.ContentType = "application/pdf;charset=UTF-8";
+                request.Method = "GET";
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                BinaryReader bin = new BinaryReader(response.GetResponseStream());
+                byte[] buffer = bin.ReadBytes((Int32)response.ContentLength);
+                string projectRootPath = _hostingEnvironment.ContentRootPath;
+
+                string base64 = Convert.ToBase64String(buffer);
+                string directoryPath = Path.Combine(projectRootPath + "/wwwroot/Digilockerfiles/" + root.pagename + "/", root.url);
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                if (generatefile(directoryPath + "\\" + root.url + "." + ext[1], base64))
+                {
+                    pdfpath = directoryPath + "\\" + root.url + "." + ext[1];
+                }
+                string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+                // string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = path;
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                resultobj.StatusCode = 101;
+                resultobj.StatusMessage = ex.Message.ToString();
+
+                return resultobj;
+            }
+
+        }
+
+        public bool generatefile(string path, string base64)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    ms.WriteTo(fs);
+                    ms.Close();
+                    fs.Close();
+                    fs.Dispose();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 
     public class FilePath
