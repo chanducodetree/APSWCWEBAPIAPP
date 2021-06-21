@@ -1624,6 +1624,9 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+
+        #region Virtual Inspection
+
         [HttpGet]
         [Route("GetWH_InspectionData")]
         public async Task<IActionResult> GetWH_InspectionData()
@@ -1644,6 +1647,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
         [HttpPost]
         [Route("WH_Inspection_Save")]
         public async Task<IActionResult> WH_Inspection_Save(dynamic data)
@@ -1894,8 +1898,6 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-
-
         [HttpPost]
         [Route("GetInspectionHistory")]
         public async Task<IActionResult> GetInspectionHistory(dynamic data)
@@ -1917,6 +1919,56 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("SaveWH_Questions")]
+        public async Task<IActionResult> SaveWHQuestions(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                EmployeeMasterSp _rbroot = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWHQuestionsLogs", "SaveWHQuestions : Input Data : " + value));
+
+                return Ok(await _hel.SaveWHQuestions(_rbroot));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WareHouse Questions Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetWH_Questions")]
+        public async Task<IActionResult> GetWHQuestions()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetWHQuestions());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get WareHouse Questions List",
+
+                });
+                return response;
+            }
+        }
+
+
+        #endregion
 
         [HttpGet]
         [Route("DeadStockCategory")]
@@ -4956,6 +5008,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
         [Route("SaveMedicalRequest")]
         public async Task<IActionResult> SaveMedicalRequest(dynamic data)
         {
@@ -5126,6 +5179,103 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
+        [Route("Getbankaccountdetails")]
+        public async Task<IActionResult> Getbankaccountdetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetbankaccountdetailsLogs", "Getbankaccountdetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Getbankaccountdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Bank Account Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("MedicalApprovalStatus")]
+        public async Task<IActionResult> MedicalApprovalStatus(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.MedicalApprovalStatus(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Medical Approval Status"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFamilyRelations")]
+        public async Task<IActionResult> GetFamilyRelations(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.GetFamilyRelations(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Family Relation Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Medical_UpdateDetails")]
+        public async Task<IActionResult> MedicalUpdateDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                EmployeeMasterSp _rbroot = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "MedicalUpdateDetailsLogs", "MedicalUpdateDetails : Input Data : " + value));
+
+                return Ok(await _hel.MedicalUpdateDetails(_rbroot));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update Medical Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
         [Route("GetMedicalRAHistory")]
         public async Task<IActionResult> GetMedicalRAHistory(dynamic data)
         {
@@ -5148,5 +5298,7 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         #endregion
+        
+
     }
 }

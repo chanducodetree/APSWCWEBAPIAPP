@@ -1,0 +1,1 @@
+GetWHInspectionList : Input Data : {"INPUT_01":"R0004","INPUT_02":517}

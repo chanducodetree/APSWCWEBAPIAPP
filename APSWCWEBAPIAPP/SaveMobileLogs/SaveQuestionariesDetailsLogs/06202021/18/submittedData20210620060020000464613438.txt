@@ -1,0 +1,1 @@
+SaveQuestionariesDetails : Input Data : {"INPUT_01":"VJ08409","INPUT_02":"VJ08409000001","INPUT_03":"Q000001, Q000002","INPUT_04":"YES, YES","INPUT_05":"Working in Good Condition, Satisfactory Goods","INPUT_06":"Smart Appliances, ","INPUT_07":" , ","INPUT_08":" , ","INPUT_09":" , ","INPUT_10":" , ","INPUT_11":"2021-06-24","USER_NAME":"APSWC0004","CALL_SOURCE":"MOBILE"}

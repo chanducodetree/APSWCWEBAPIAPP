@@ -1,0 +1,1 @@
+MedicalUpdateDetails : Input Data : {"INPUT_01":"MR0000010","INPUT_02":"P & A Section","INPUT_03":"Testing Required","USER_NAME":"APSWC0007","CALL_SOURCE":"MOBILE"}
