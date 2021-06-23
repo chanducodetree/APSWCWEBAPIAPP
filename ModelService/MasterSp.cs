@@ -56,7 +56,7 @@ namespace ModelService
 
     }
 
-    public class FamilyListCls 
+    public class FamilyListCls
     {
         public List<MasterSp> FamilyList { get; set; }
     }
@@ -208,4 +208,5 @@ namespace ModelService
     {
         public List<Item> items { get; set; }
     }
+
 }

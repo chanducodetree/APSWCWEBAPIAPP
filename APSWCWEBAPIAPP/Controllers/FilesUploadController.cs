@@ -187,7 +187,9 @@ namespace APSWCWEBAPIAPP.Controllers
                     var pathToSave = Path.Combine("wwwroot", folderName);
                     var fileExtension = Path.GetExtension(file.FileName);
                     //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"')
+
                     var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_"+ category + fileExtension;
+
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
                     bool folderExists = Directory.Exists(pathToSave);
