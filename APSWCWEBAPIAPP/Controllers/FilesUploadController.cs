@@ -517,8 +517,8 @@ namespace APSWCWEBAPIAPP.Controllers
                 // return Ok(new { pdfpath });
 
 
-                string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
-                //string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+                string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "wwwroot");
+                //string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "wwwroot");
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = path;
 
