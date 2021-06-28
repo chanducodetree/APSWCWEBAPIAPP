@@ -137,6 +137,21 @@ namespace ModelService
         public string username { get; set; }
         public string pagename { get; set; }
         public string mime { get; set; }
+        public string INPUT_01 { get; set; }
+        public string INPUT_02 { get; set; }
+        public string INPUT_03 { get; set; }
+        public string INPUT_04 { get; set; }
+        public string INPUT_05 { get; set; }
+        public string INPUT_06 { get; set; }
+        public string INPUT_07 { get; set; }
+        public string INPUT_08 { get; set; }
+        public string INPUT_09 { get; set; }
+        public string INPUT_10 { get; set; }
+        public string INPUT_11 { get; set; }
+        public string INPUT_12 { get; set; }
+        public string INPUT_13 { get; set; }
+        public string DIRECTION_ID { get; set; }
+        public string TYPEID { get; set; }
     }
 
     public class DLDocs
@@ -175,4 +190,23 @@ namespace ModelService
         public string reference_key { get; set; }
         public string new_account { get; set; }
     }
+
+    public class Item
+    {
+        public string name { get; set; }
+        public string type { get; set; }
+        public string size { get; set; }
+        public string date { get; set; }
+        public string parent { get; set; }
+        public string mime { get; set; }
+        public string uri { get; set; }
+        public string description { get; set; }
+        public string issuer { get; set; }
+    }
+
+    public class UploadFiles
+    {
+        public List<Item> items { get; set; }
+    }
+
 }

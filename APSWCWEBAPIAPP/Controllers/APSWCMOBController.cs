@@ -5367,7 +5367,120 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         #endregion
-        
+
+        #region Digilocker
+        [HttpPost]
+        [Route("DLAccessToken")]
+        public async Task<IActionResult> DLAccessToken(DigiLocker root)
+        {
+            IActionResult response = Unauthorized();
+            string jsondata = JsonConvert.SerializeObject(root);
+            try
+            {
+                return Ok(await _hel.DigiLockerAccessToken(root));
+            }
+            catch (Exception ex)
+            {
+                response = BadRequest(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Access Token"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("DLIssuedfiles")]
+        public async Task<IActionResult> DLIssuedfiles(DigiLocker root)
+        {
+            IActionResult response = Unauthorized();
+            string jsondata = JsonConvert.SerializeObject(root);
+            try
+            {
+                return Ok(await _hel.DLIssuedfiles(root));
+            }
+            catch (Exception ex)
+            {
+                response = BadRequest(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Issued Files"
+                });
+                return response;
+            }
+        }
+
+        #endregion
+
+        #region DigiLocker
+        [HttpPost]
+        [Route("DigiLocker")]
+        public async Task<IActionResult> DigiLocker(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DigiLocker(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("DLCertfIssuerData")]
+        public async Task<IActionResult> DLCertfIssuerData(DigiLocker root)
+        {
+            IActionResult response = Unauthorized();
+            string jsondata = JsonConvert.SerializeObject(root);
+            try
+            {
+                return Ok(await _hel.DLCertfIssuerData(root));
+            }
+            catch (Exception ex)
+            {
+                response = BadRequest(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Issued Files"
+                });
+                return response;
+            }
+        }
+
+        #endregion
+
+        [HttpPost]
+        [Route("GetAssetmanagementSubcategoryDetails")]
+        public async Task<IActionResult> GetAssetmanagementSubcategoryDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetAssetmanagementSubcategoryDetails", "GetAssetmanagementSubcategory : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetAssetmanagementsubcategory(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get AssetmanagementSubcategory Details"
+                });
+                return response;
+            }
+        }
 
     }
 }
