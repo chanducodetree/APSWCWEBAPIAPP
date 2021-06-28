@@ -1624,6 +1624,29 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SaveEmp_LatLongs")]
+        public async Task<IActionResult> SaveEmpLatLongs(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveEmpLatLongsLogs", "SaveEmpLatLongs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveEmpLatLongs(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Employee Latitude Longitude Details"
+                });
+                return response;
+            }
+        }
+
 
         #region Virtual Inspection
 
@@ -1945,7 +1968,6 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("GetWH_Questions")]
         public async Task<IActionResult> GetWHQuestions()
@@ -1967,6 +1989,53 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetGeneral_InspectionData")]
+        public async Task<IActionResult> GetGeneralInspectionData(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.GetGeneralInspectionData(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get General Inspection Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetWH_SheduledList")]
+        public async Task<IActionResult> GetWHSheduledList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.GetWHSheduledList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load WareHouse Inspection Sheduled List"
+                });
+                return response;
+            }
+        }
 
         #endregion
 
