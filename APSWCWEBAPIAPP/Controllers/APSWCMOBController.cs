@@ -1647,6 +1647,29 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetEmpTrackingDetails")]
+        public async Task<IActionResult> GetEmpTrackingDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetEmpTrackingDetailsLogs", "GetEmpTrackingDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.EmployeeTrackingDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Employee Tracking(Distance) Details"
+                });
+                return response;
+            }
+        }
+
 
         #region Virtual Inspection
 
@@ -2037,254 +2060,33 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SaveAddInsp_Questions")]
+        public async Task<IActionResult> SaveAddInspQuestions(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                EmployeeMasterSp _rbroot = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveAddInspQuestionsLogs", "SaveAddInspQuestions : Input Data : " + value));
+
+                return Ok(await _hel.SaveAddInspQuestions(_rbroot));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WareHouse Additional Inspection Questions Information"
+                });
+                return response;
+            }
+        }
+
         #endregion
 
-        [HttpGet]
-        [Route("DeadStockCategory")]
-        public async Task<IActionResult> DeadStockCategory()
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                return Ok(await _hel.DeadStockCategory());
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Dead Stock Category Details",
-
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("DeadStocksubCategory")]
-        public async Task<IActionResult> DeadStocksubCategory(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "DeadStocksubCategoryLogs", "DeadStocksubCategory : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.DeadStocksubCategory(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Dead Stock Sub Category List"
-                });
-                return response;
-            }
-        }
-
-        [HttpGet]
-        [Route("GetItemTypes")]
-        public async Task<IActionResult> GetItemTypes()
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                return Ok(await _hel.GetItemTypes());
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get Item Types List",
-
-                });
-                return response;
-            }
-        }
-
-        [HttpPost, DisableRequestSizeLimit]
-        [Route("DeadStockUploadFileDetails")]
-        public IActionResult DeadStockUploadFileDetails()
-        {
-            try
-            {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("DeadStock", "Documents");
-                var pathToSave = Path.Combine("wwwroot", folderName);
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    bool folderExists = Directory.Exists(pathToSave);
-                    if (!folderExists)
-                        Directory.CreateDirectory(pathToSave);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                    return Ok(new { dbPath });
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }
-        [HttpPost, DisableRequestSizeLimit]
-        [Route("DeadStockUploadImageDetails")]
-        public IActionResult DeadStockUploadImageDetails()
-        {
-            try
-            {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("DeadStock", "Images");
-                var pathToSave = Path.Combine("wwwroot", folderName);
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    bool folderExists = Directory.Exists(pathToSave);
-                    if (!folderExists)
-                        Directory.CreateDirectory(pathToSave);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                    return Ok(new { dbPath });
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }
-
-        [HttpPost]
-        [Route("Deadstock_Details_Save")]
-        public async Task<IActionResult> DeadstockDetailsSave(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "DeadstockDetailsSaveLogs", "DeadstockDetailsSave : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.DeadstockDetailsSave(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Save Deadstock Insertion Details"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("Get_DeadStock_Deatails")]
-        public async Task<IActionResult> GetDeadStockDeatails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetDeadStockDeatailsLogs", "GetDeadStockDeatails : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetDeadStockDeatails(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get WareHouse DeadStock Details"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("DeadStock_Regional_List")]
-        public async Task<IActionResult> DeadStockRegionalList(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "DeadStockRegionalListLogs", "DeadStockRegionalList : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.DeadStockRegionalList(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get WareHouse DeadStock Regional List"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("DeadStock_Section_List")]
-        public async Task<IActionResult> DeadStockSectionList(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "DeadStockSectionListLogs", "DeadStockSectionList : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.DeadStockSectionList(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Get WareHouse DeadStock Section List"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("Get_DeadStock_Status")]
-        public async Task<IActionResult> GetDeadStockStatus(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "GetDeadStockStatusLogs", "GetDeadStockStatus : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetDeadStockStatus(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while WareHouse DeadStock Status Details"
-                });
-                return response;
-            }
-        }
 
         [HttpGet]
         [Route("Get_Tenders_Details")]
@@ -4020,6 +3822,27 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("DeadStock_Update_History")]
+        public async Task<IActionResult> DeadStockUpdateHistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DeadStockUpdateHistory(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
         #endregion
 
         #region Help
@@ -5481,6 +5304,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
 
     }
 }
