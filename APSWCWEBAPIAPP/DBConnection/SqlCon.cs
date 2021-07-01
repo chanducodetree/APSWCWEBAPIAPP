@@ -209,6 +209,40 @@ using System.Xml;namespace APSWCWEBAPIAPP.DBConnection{    public class SqlC
             }
         }
 
+        public async Task<dynamic> SaveTechInspQuestions(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "102";
+                rootobj.TYPEID = "103";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0]["STATUS_TEXT"].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveTechInspQuestionsLogs", "SaveTechInspQuestions : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WareHouse Technical Inspection Questions Information";
+                return resultobj;
+
+            }
+        }
+
+
         #endregion        #region Medical Reambersment
 
         public async Task<dynamic> Saveapprovaldetails(EmployeeMasterSp rootobj)

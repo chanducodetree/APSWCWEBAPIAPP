@@ -2085,8 +2085,35 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        #endregion
+        [HttpPost]
+        [Route("SaveTechInsp_Questions")]
+        public async Task<IActionResult> SaveTechInspQuestions(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                EmployeeMasterSp _rbroot = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveTechInspQuestionsLogs", "SaveTechInspQuestions : Input Data : " + value));
 
+                return Ok(await _hel.SaveTechInspQuestions(_rbroot));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WareHouse Technical Inspection Questions Information"
+                });
+                return response;
+            }
+        }
+
+
+
+
+        #endregion
 
         [HttpGet]
         [Route("Get_Tenders_Details")]
