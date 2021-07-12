@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ using APSWCWEBAPIAPP.DBConnection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ModelService;
+using Newtonsoft.Json;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
@@ -16,6 +20,14 @@ namespace APSWCWEBAPIAPP.Controllers
     [ApiController]
     public class FilesUploadController : ControllerBase
     {
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
+        private readonly string _mapsserverpath;
+        public FilesUploadController(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+            _mapsserverpath = configuration.GetConnectionString("mapsserverpath");
+        }
+
         [HttpPost, DisableRequestSizeLimit]
         [Route("UploadFileDetails")]
         public IActionResult Upload()
@@ -175,7 +187,9 @@ namespace APSWCWEBAPIAPP.Controllers
                     var pathToSave = Path.Combine("wwwroot", folderName);
                     var fileExtension = Path.GetExtension(file.FileName);
                     //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"')
+
                     var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_"+ category + fileExtension;
+
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
                     bool folderExists = Directory.Exists(pathToSave);
@@ -436,6 +450,115 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         #endregion
+
+        [HttpPost]
+        [Route("DLDownloadPdf")]
+        public dynamic DLDownloadPdf([FromBody] DigiLocker data)
+        {
+
+            string pdfpath = "";
+            dynamic resultobj = new ExpandoObject();
+            string value = JsonConvert.SerializeObject(data);
+            DigiLocker root = JsonConvert.DeserializeObject<DigiLocker>(value);
+            try
+            {
+                var supportedTypes = new[] { "jpg", "jpeg", "png", "pdf" };
+                string[] ext = root.mime.Split('/');
+                if (!supportedTypes.Contains(ext[1].ToString().ToLower()))
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "File Extension Is InValid - Only Upload jpg/png/pdf File";
+                    return resultobj;
+                }
+
+                var createdtime = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss");
+                string todayDate = DateTime.Now.ToString("dd/MM/yyyy");
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.digitallocker.gov.in/public/oauth2/1/file/" + root.url);
+                request.Headers.Add("authorization", "Bearer " + root.token);
+                request.ContentType = "application/pdf;charset=UTF-8";
+                request.Method = "GET";
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                BinaryReader bin = new BinaryReader(response.GetResponseStream());
+                byte[] buffer = bin.ReadBytes((Int32)response.ContentLength);
+                string projectRootPath = _hostingEnvironment.ContentRootPath;
+
+                string base64 = Convert.ToBase64String(buffer);
+                string filename = createdtime + "_" + root.url + "." + ext[1].ToString().ToLower();
+                string directoryPath = Path.Combine(projectRootPath + "/wwwroot/Digilockerfiles/" + root.pagename, todayDate);
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                if (generatefile(directoryPath + "\\" + filename, base64))
+                {
+                    pdfpath = directoryPath + "\\" + filename;
+                }
+
+                string outfileName = createdtime + "_" + root.url + ".txt";
+                string outPath = Path.Combine(directoryPath, outfileName);
+
+                bool isEncrypted = EncryptFile(pdfpath, outPath);
+
+                if (isEncrypted)
+                {
+                    if (System.IO.File.Exists(pdfpath))
+                    {
+                        System.IO.File.Delete(pdfpath);
+                    }
+
+                    System.IO.FileInfo fi = new System.IO.FileInfo(outPath);
+
+                    if (fi.Exists)
+                    {
+                        fi.MoveTo(pdfpath);
+                    }
+                }
+                // return Ok(new { pdfpath });
+
+
+                string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "wwwroot");
+                //string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "wwwroot");
+                resultobj.StatusCode = 100;
+                resultobj.StatusMessage = path;
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                resultobj.StatusCode = 101;
+                resultobj.StatusMessage = ex.Message.ToString();
+
+                return resultobj;
+            }
+
+        }
+
+        public bool generatefile(string path, string base64)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    ms.WriteTo(fs);
+                    ms.Close();
+                    fs.Close();
+                    fs.Dispose();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 
     public class FilePath
