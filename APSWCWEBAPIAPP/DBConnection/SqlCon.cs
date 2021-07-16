@@ -1,4 +1,4 @@
-﻿using APSWCWEBAPIAPP.Services;
+using APSWCWEBAPIAPP.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ModelService;
