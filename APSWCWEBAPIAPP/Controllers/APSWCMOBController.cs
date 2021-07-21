@@ -1133,6 +1133,8 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+
+       
         [HttpPost]
         [Route("UpdateWareHouseDetails_all")]
         public async Task<IActionResult> UpdateWareHouseDetails_all(dynamic data)
@@ -1155,6 +1157,13 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+
+        
+
+
+
+
 
         [HttpPost]
         [Route("GetEmployeeHistory")]
@@ -4204,6 +4213,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+
         #region Employee payroll
 
         [HttpPost]
@@ -5780,6 +5790,29 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Employee Leave Balance Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetPincodeDetails")]
+        public async Task<IActionResult> GetPincodeDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPincodeDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Pincode Details"
                 });
                 return response;
             }
