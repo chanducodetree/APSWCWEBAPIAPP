@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -1134,7 +1134,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-
         [HttpPost]
         [Route("UpdateWareHouseDetails_all")]
         public async Task<IActionResult> UpdateWareHouseDetails_all(dynamic data)
@@ -1157,12 +1156,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
-
-
-
-
-
-
 
 
         [HttpPost]

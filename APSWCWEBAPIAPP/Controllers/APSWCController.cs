@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -1599,8 +1599,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
-
-
 
         [HttpPost]
         [Route("GetPageDetails")]
@@ -3723,6 +3721,30 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
 
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetQuantityTokens(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Tokens Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetStackTokens")]
+        public async Task<IActionResult> GetStackTokens(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetStackTokens(rootobj));
             }
             catch (Exception ex)
@@ -4778,7 +4800,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-
         [HttpPost]
         [Route("PastAttendance_Save")]
         public async Task<IActionResult> PastAttendance_Save(dynamic data)
@@ -4980,7 +5001,9 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Get Issued Files " + ex.Message
+
                 });
+
                 return response;
             }
         }
@@ -7144,7 +7167,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-
         #region Invoice Masters
 
         [HttpPost]
@@ -7647,9 +7669,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-
-
-
         [HttpPost]
         [Route("SaveMedicalRequest")]
         public async Task<IActionResult> SaveMedicalRequest(dynamic data)
@@ -7811,7 +7830,9 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveDeductionDetailsLogs", "SaveDeductionDetails : Input Data : " + value));
+
                 EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+
                 return Ok(await _hel.SaveDeductionDetails(rootobj));
             }
             catch (Exception ex)
