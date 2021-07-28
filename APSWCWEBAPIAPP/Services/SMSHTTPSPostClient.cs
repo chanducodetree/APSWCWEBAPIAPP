@@ -28,7 +28,7 @@ namespace esms_client
             //Latest Generated Secure Key
             Stream dataStream;
 
-            System.Net.ServicePointManager.SecurityProtocol =  SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
             HttpWebRequest request =
 

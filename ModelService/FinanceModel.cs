@@ -80,5 +80,3 @@ namespace ModelService
         public string CALL_SOURCE { get; set; }
     }
 
-    
-}

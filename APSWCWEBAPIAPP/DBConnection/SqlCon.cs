@@ -12171,7 +12171,9 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> SaveDeductionDetails(MasterSp rootobj)
+
+        public async Task<dynamic> SaveDeductionDetails(EmployeeMasterSp rootobj)
+
         {
             try
             {
@@ -14725,10 +14727,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 objMa.DIRECTION_ID = "1";
                 objMa.TYPEID = "WH_MASTER";
-
-
                 cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
-
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
                 cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
@@ -14778,7 +14777,6 @@ namespace APSWCWEBAPIAPP.DBConnection
                 await sqlcon.OpenAsync();
                 adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
-
                 await sqlcon.CloseAsync();
                 await cmd.DisposeAsync();
                 adp.Dispose();
@@ -16497,6 +16495,14 @@ namespace APSWCWEBAPIAPP.DBConnection
                         resultobj.StatusMessage = "OTP Sending Failed,Please try again...";
                         return resultobj;
                     }
+
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "OTP Generation Failed,Please try again...";
+                    return resultobj;
+
                 }
                 else
                 {
@@ -16577,8 +16583,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             { randomText.Append(alphabets[r.Next(alphabets.Length)]); }
 
-
-
             return randomText.ToString();
 
         }
@@ -16597,8 +16601,8 @@ namespace APSWCWEBAPIAPP.DBConnection
             { refrandomText.Append(alphabets[r.Next(alphabets.Length)]); }
 
 
-
             return "OTP"+refrandomText.ToString();
+
 
         }
 
