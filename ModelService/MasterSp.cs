@@ -137,6 +137,21 @@ namespace ModelService
         public string username { get; set; }
         public string pagename { get; set; }
         public string mime { get; set; }
+        public string INPUT_01 { get; set; }
+        public string INPUT_02 { get; set; }
+        public string INPUT_03 { get; set; }
+        public string INPUT_04 { get; set; }
+        public string INPUT_05 { get; set; }
+        public string INPUT_06 { get; set; }
+        public string INPUT_07 { get; set; }
+        public string INPUT_08 { get; set; }
+        public string INPUT_09 { get; set; }
+        public string INPUT_10 { get; set; }
+        public string INPUT_11 { get; set; }
+        public string INPUT_12 { get; set; }
+        public string INPUT_13 { get; set; }
+        public string DIRECTION_ID { get; set; }
+        public string TYPEID { get; set; }
     }
 
     public class DLDocs

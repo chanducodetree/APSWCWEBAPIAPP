@@ -21,9 +21,11 @@ namespace APSWCWEBAPIAPP.Controllers
     public class FilesUploadController : ControllerBase
     {
         private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
-        public FilesUploadController(Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
+        private readonly string _mapsserverpath;
+        public FilesUploadController(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+            _mapsserverpath = configuration.GetConnectionString("mapsserverpath");
         }
 
         [HttpPost, DisableRequestSizeLimit]
@@ -186,7 +188,7 @@ namespace APSWCWEBAPIAPP.Controllers
                     var fileExtension = Path.GetExtension(file.FileName);
                     //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"')
 
-                    var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_"+ category + fileExtension;
+                    var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_" + category + fileExtension;
 
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
@@ -517,8 +519,8 @@ namespace APSWCWEBAPIAPP.Controllers
                 // return Ok(new { pdfpath });
 
 
-                string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
-                //string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "http://uat.apswc.ap.gov.in/apswcapp");
+                string path = pdfpath.Replace(@"C:\websites\APSWCWeb API App/wwwroot", "wwwroot");
+                //string path =pdfpath.Replace(@"D:\APSWC_NEW\APSWCWEBAPIAPP/wwwroot", "wwwroot");
                 resultobj.StatusCode = 100;
                 resultobj.StatusMessage = path;
 
