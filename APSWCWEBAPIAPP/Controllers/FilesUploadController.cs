@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
@@ -188,7 +188,7 @@ namespace APSWCWEBAPIAPP.Controllers
                     var fileExtension = Path.GetExtension(file.FileName);
                     //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"')
 
-                    var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_"+ category + fileExtension;
+                    var fileName = DateTime.Now.ToString("yyyyMMddhhmmssmmm") + "_" + category + fileExtension;
 
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);

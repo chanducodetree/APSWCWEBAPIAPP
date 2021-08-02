@@ -1,4 +1,4 @@
-﻿using APSWCWEBAPIAPP.Services;
+using APSWCWEBAPIAPP.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ModelService;
@@ -29,7 +29,9 @@ namespace APSWCWEBAPIAPP.DBConnection
         private readonly string _connectionString;
         private readonly string _mapsserverpath;
         private string exFolder = Path.Combine("ExceptionLogs");
+        private string saFolder = Path.Combine("SaveLogs");
         private string exPathToSave = string.Empty;
+        private string savePath = string.Empty;
         dynamic resultobj = new ExpandoObject();
         private ApplicationAPSWCCDbContext _context;
         private readonly ICaptchaService _authservice;
@@ -39,6 +41,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             _context = apcontext;
             _authservice = auth;
             exPathToSave = Path.Combine(Directory.GetCurrentDirectory(), exFolder);
+            savePath = Path.Combine(Directory.GetCurrentDirectory(), saFolder);
             _connectionString = configuration.GetConnectionString("apswcproddb");
             _mapsserverpath = configuration.GetConnectionString("mapsserverpath");
         }
@@ -739,7 +742,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         public async Task<dynamic> GetPincodeDetails(MasterSp rootobj)
         {
-            
+
             try
             {
                 rootobj.DIRECTION_ID = "1";
@@ -2115,6 +2118,41 @@ namespace APSWCWEBAPIAPP.DBConnection
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetDistrictslogs", "GetDistricts : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Regional Districts";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> InsuranceCmpnywiseDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "INSURANCE_GET";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "InsuranceCmpnywiseDetailslogs", "InsuranceCmpnywiseDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Regional Districts";
@@ -3945,7 +3983,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> SaveSpaceReservation(MasterSp rootobj)
+        public async Task<dynamic> SaveSpaceReservation(EmployeeMasterSp rootobj)
         {
 
             try
@@ -3953,7 +3991,8 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 rootobj.DIRECTION_ID = "4";
                 rootobj.TYPEID = "101";
-                DataTable dt = await APSWCMasterSp(rootobj);
+                //DataTable dt = await APSWCMasterSp(rootobj);
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
                 {
                     resultobj.StatusCode = 100;
@@ -4245,19 +4284,19 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Inserted Successfully";
                     resultobj.Details = dt;
-                   }
+                }
                 else
                 {
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = dt.Rows[0][1].ToString();
-                  }
+                }
 
                 return resultobj;
-              }
+            }
             catch (Exception ex)
             {
-              string jsondata = JsonConvert.SerializeObject(ex.Message);
-              string inputdata = JsonConvert.SerializeObject(rootobj);
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveEmpAttendance : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
@@ -4284,7 +4323,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 {
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = "No Data Found";
-                    
+
                 }
 
                 return resultobj;
@@ -4309,21 +4348,21 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.TYPEID = "417";
 
                 DataTable dt = await APSWCMasterSp(rootobj);
-                 if (dt != null && dt.Rows.Count > 0)
-                  {
-                      resultobj.StatusCode = 100;
-                      resultobj.StatusMessage = "Data Loaded Successfully";
-                      resultobj.Details = dt;
-                  }
-                  else
-                  {
-                      resultobj.StatusCode = 102;
-                      resultobj.StatusMessage = "No Data Found";
-                  }
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
 
-                  return resultobj;
+                return resultobj;
             }
-              catch (Exception ex)
+            catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
@@ -4438,7 +4477,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-      public async Task<dynamic> updateCommodities(MasterSp rootobj)
+        public async Task<dynamic> updateCommodities(MasterSp rootobj)
         {
             try
             {
@@ -4471,7 +4510,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-      
+
         public async Task<dynamic> GetCalendarDetails(MasterSp rootobj)
         {
             try
@@ -4482,7 +4521,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                   resultobj.StatusCode = 100;
+                    resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Loaded Successfully";
                     resultobj.Details = dt;
                 }
@@ -5028,7 +5067,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 rootobj.DIRECTION_ID = "2";
                 rootobj.TYPEID = "713";
                 DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0 )
+                if (dt != null && dt.Rows.Count > 0)
                 {
                     resultobj.StatusCode = 100;
                     resultobj.StatusMessage = "Data Saved Successfully";
@@ -5044,8 +5083,8 @@ namespace APSWCWEBAPIAPP.DBConnection
             catch (Exception ex)
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
-                
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveLayoutConfigurationlogs", "SaveLayoutConfiguration : Method:" + jsondata ));
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveLayoutConfigurationlogs", "SaveLayoutConfiguration : Method:" + jsondata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Layout Configuration Details";
@@ -5180,6 +5219,73 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Quantity/Contarct Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetWHCapacityDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "4";
+                rootobj.TYPEID = "WH_CAPACITY_AVAILABILITY";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load WHCapacity Details";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> GetCompartmentlistforleased(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "4";
+                rootobj.TYPEID = "TO_LOCK_COMPARTMENTS";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Compartment Details";
                 return resultobj;
 
             }
@@ -5342,7 +5448,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 rootobj.DIRECTION_ID = "1";
                 rootobj.TYPEID = "GEN_BOOKING";
-               
+
                 DataTable dt = await APSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -5398,7 +5504,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
 
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetTransportDetailsLogs", "GetTransportDetails : Method:" + jsondata ));
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetTransportDetailsLogs", "GetTransportDetails : Method:" + jsondata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Get Trasport Details";
@@ -7671,6 +7777,40 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+        public async Task<dynamic> SaveWH_InsuranceDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "5";
+                rootobj.TYPEID = "213";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Submitted Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveWH_InsuranceDetailslogs", "SaveWH_InsuranceDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Insurance Details";
+                return resultobj;
+
+            }
+        }
+
         public async Task<dynamic> PastAttendance_Save(MasterSp rootobj)
         {
             try
@@ -7873,7 +8013,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                     resultobj.StatusCode = 102;
                     resultobj.StatusMessage = "No Data Found";
                 }
-                 
+
                 return resultobj;
             }
             catch (Exception ex)
@@ -7962,7 +8102,71 @@ namespace APSWCWEBAPIAPP.DBConnection
             return obj_data;
         }
 
+        public async Task<dynamic> UpdateLoanDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "104";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdateLoanDetailsLogs", "UpdateLoanDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Bank Loan Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> UpdateLoanRepaymentDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "105";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UpdateLoanRepaymentDetailsLogs", "UpdateLoanRepaymentDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Bank Loan Re-payment Details";
+                return resultobj;
+
+            }
+        }
 
         #endregion
 
@@ -8530,7 +8734,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-        
+
         public async Task<dynamic> GetEmpDetailsBycode(EmployeeMasterSp rootobj)
         {
             try
@@ -9736,9 +9940,113 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
             catch (Exception ex)
             {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "DashboardDetailsLogs", "DashboardDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Dashboard Details";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> HRDashboardDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "21";
+                rootobj.TYPEID = rootobj.INPUT_01;
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Details Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "HRDashboardDetailsLogs", "HRDashboardDetails : Method:" + jsondata + " , Input Data : " + inputdata));
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Dashboard Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetPriorityData(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "PRIORITY_REGISTER";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Details Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Priority Register Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetStorageChargesData(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "INVOICE_DEDUCTION_REPORT";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Details Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Storage Charges Details";
                 return resultobj;
 
             }
@@ -9967,6 +10275,43 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Spilling  Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetSpillageStack(MasterSp rootobj)
+        {
+            //MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "12";
+                rootobj.TYPEID = "GET_SPILLAGE_STACKS";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetSpillageStackLogs", "GetSpillageStack : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Load Stacks Details";
+
                 return resultobj;
 
             }
@@ -10523,7 +10868,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        
+
 
         #region Medical Reimbursement
 
@@ -10768,7 +11113,7 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         #endregion
 
-        public async Task<dynamic> GetInvoiceDetails(MasterSp rootobj)
+        public async Task<dynamic> GetInvoiceMasterDetails(MasterSp rootobj)
         {
             try
             {
@@ -11824,6 +12169,137 @@ namespace APSWCWEBAPIAPP.DBConnection
 
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while load Invoice List";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetInvoicesList(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "23";
+                rootobj.TYPEID = "101";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Invoice List";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetInvoiceIDDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "23";
+                rootobj.TYPEID = "102";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Invoice List";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> SaveDeductionDetails(EmployeeMasterSp rootobj)
+
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "23";
+                rootobj.TYPEID = "103";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0]["STATUS_TEXT"].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveDeductionDetailsLogs", "SaveDeductionDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Deductions Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetDeductionDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "23";
+                rootobj.TYPEID = "104";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Deductions Details";
                 return resultobj;
 
             }
@@ -13235,7 +13711,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                 string jsondata = JsonConvert.SerializeObject(ex.Message);
                 string inputdata = JsonConvert.SerializeObject(rootobj);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SavePendingWHMemosDetailsLogs", "SavePendingWHMemosDetails : Method:" + jsondata + " , Input Data : " + inputdata));
-       
+
                 resultobj.StatusCode = 102;
                 resultobj.StatusMessage = "Error Occured while Save Pending Warehouse Weight Memo Details";
                 return resultobj;
@@ -13607,6 +14083,533 @@ namespace APSWCWEBAPIAPP.DBConnection
 
         #endregion
 
+        public async Task<dynamic> SaveemployeeloanApproveDetails(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "101";
+                rootobj.TYPEID = "202";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "loanApproveDetailsLogs", "loanApproveDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Employee Loan Approval Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> updateemployeeloanApproveDetails(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "101";
+                rootobj.TYPEID = "203";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "loanUpdateDetailsLogs", "loanUpdateDetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Update Employee Loan Approval Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> Saveemployeeloandetais(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "101";
+                rootobj.TYPEID = "104";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveemployeeloanSDetailslogs", "SaveemployeeloanSDetailslogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save EmployeeLoan Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetQRResponse(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "QR_RESPONSE";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetQrResponselogs", "GetQrResponse : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get QR Response";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetLoanRAHistory(EmployeeMasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "101";
+                rootobj.TYPEID = rootobj.INPUT_02 == "REQ_HISTORY" ? "EMP_LOAN_HISTORY" : rootobj.INPUT_02 == "APPR_HISTORY" ? "EMP_LOAN_REQ_HISTORY" : "";
+
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No History Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetLoanRAHistoryLogs", "GetLoanRAHistory: Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting Employee Loan Request/Approval History Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetVersionCheck(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "8";
+                rootobj.TYPEID = "VERSION_GET";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "You're Using Latest Version";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    resultobj.APK_URL = dt.Rows[0][2].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetVersionCheckLogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Get Mobile Version";
+                return resultobj;
+
+            }
+        }
+
+
+        #region Warehouse Reports
+
+        public async Task<dynamic> GetFumigationSprayingRegister(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "SPRAYING_FUMIGATION_REPORT";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFumigationSprayingRegisterLogs", "GetFumigationSprayingRegister : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetGateRegister(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "GATE_REGISTER";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetGateRegisterLogs", "GetGateRegister : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetReceiptIssueCancellation(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "RECEIPT_CANCELATION";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetReceiptIssueCancellationLogs", "GetReceiptIssueCancellation : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetGunnyRegister(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "GUNNY_BAG_REGISTER_GET";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetGunnyRegisterLogs", "GetGunnyRegister : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetDepositorCommodities(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "REGISTERED_COMMODITIES";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetDepositorCommoditiesLogs", "GetDepositorCommodities : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetAnalysisRegister(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "ANALYSIS_REGISTER";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetAnalysisRegisterLogs", "GetAnalysisRegister : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetJointSampleRegister(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "JOINT_SAMPLE_REGISTER";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetAnalysisRegisterLogs", "GetAnalysisRegister : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetDeadStockRegister(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "13";
+                rootobj.TYPEID = "DEAD_STOCK_REGISTER";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data  Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetDeadStockRegisterLogs", "GetDeadStockRegister : Input Data : " + inputdata + ", Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+
+        #endregion
+
+
+        public async Task<dynamic> EmpLeaveBalance_Get(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "2";
+                rootobj.TYPEID = "423";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "EmpLeaveBalance_Get : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Employee Leave Balance Details";
+                return resultobj;
+
+            }
+        }
+
         public async Task<DataTable> EmployeeAPSWCMasterSp(EmployeeMasterSp objMa)
         {
             SqlConnection sqlcon = new SqlConnection(_connectionString);
@@ -13966,10 +14969,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             {
                 objMa.DIRECTION_ID = "1";
                 objMa.TYPEID = "WH_MASTER";
-
-
                 cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
-
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
                 cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
@@ -14019,7 +15019,6 @@ namespace APSWCWEBAPIAPP.DBConnection
                 await sqlcon.OpenAsync();
                 adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
-
                 await sqlcon.CloseAsync();
                 await cmd.DisposeAsync();
                 adp.Dispose();
@@ -14269,5 +15268,2181 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
+
+
+        public async Task<dynamic> GetTendersList(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "17";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (rootobj.TYPEID == "301" || rootobj.TYPEID == "304" || rootobj.TYPEID == "302" || rootobj.TYPEID == "303" || rootobj.TYPEID == "305" || rootobj.TYPEID == "306" || rootobj.TYPEID == "307" || rootobj.TYPEID == "308")
+                {
+                    if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    }
+                }
+                else
+                {
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "No Data Found";
+                    }
+                }
+
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveTenders : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Details";
+                return resultobj;
+
+
+            }
+        }
+
+        #region  save warehouse construction Details
+        public async Task<dynamic> SaveWarehousereqdetails(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "101";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveWarehousereqdetails", "SaveWarehousereqdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Approval Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GETFinWHCDetailsli(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_CONSTRUCTION_GET";
+                DataTable dt = await APSWCFINWHCGETSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFinWHCDetailslilogs", "GETFinWHCDetailsli : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load WHCDetailsli";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GETFWHCTDetailsli(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_CONTRACTOR_GET";
+                DataTable dt = await APSWCFINWHCGETSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCTDetailsli", "GETFWHCTDetailsli : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load WHCDetailsli";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> GetFWHRUli()
+        {
+            try
+            {
+                warehousereq rootobj = new warehousereq();
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "URBAN_RURAL";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch
+            {
+                //string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                //Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHRUlilogs", "GetFWHRUli : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load RUral urban";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetFWHMandalli(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "MMC";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHMandallogs", "GetFWHMandal : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Mandals";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveFWHLFDDETAILS(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "110";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHLREPAYDETAILS", "SaveFWHLREPAYDETAILS : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLFDDetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "FD_DETAILS_GET";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching  Details";
+                return resultobj;
+            }
+        }
+
+
+        public async Task<dynamic> GETFWHLFDMonths(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "FD_MONTHS_GET";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching  Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> UPDFWHLFDDETAILS(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "111";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UPDFWHLFDDETAILS", "UPDFWHLFDDETAILS : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while update WH FD Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GetWHRegionsli()
+        {
+            warehousereq rootobj = new warehousereq();
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "REGION";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHCRegionslogs", "GetFWHCRegions : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Regions";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetFWHDistrictsli(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "REGN_DIST";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHDistrictslilogs", "GetFWHDistrictsli : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Districts";
+                return resultobj;
+
+            }
+        }
+
+        #endregion 
+
+        #region Warehouse construction Loan Details
+        public async Task<dynamic> SaveFWHCLoandetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "102";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHCLoandetails", "SaveFWHCLoandetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Loan Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLInstallmentdetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "NIDA_QUATER_PRINCIPLE_SCH";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching WH Loan Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLIntrestdetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "NIDA_ENTIRE_SCH"; //"NIDA_QUATER_INTREST_SCH";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching WH Loan Details";
+                return resultobj;
+            }
+        }
+
+        #endregion
+
+        #region WareHouse Contractor Details
+        public async Task<dynamic> SaveFWHCContractordetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "103";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHCContractordetails", "SaveFWHCContractordetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Contractor Details";
+                return resultobj;
+            }
+        }
+        #endregion
+
+        #region WareHouse Bank Master Details
+        public async Task<dynamic> SaveFWHBANKMasterdetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "104";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHBANKMaster", "SaveFWHBANKMaster : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> SaveFWHLREPAYDETAILS(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "107";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHLREPAYDETAILS", "SaveFWHLREPAYDETAILS : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHBANKMasterdetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_BANK_DETAILS_GET";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHBANKMaster", "SaveFWHBANKMaster : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLBANKList(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_BANK_GET";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHLBANKList", "GETFWHLBANKList : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Fetching WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLBANKDetailsList(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_BANK_NUM_GET";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHLBANKDetailsList", "GETFWHLBANKDetailsList : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Fetching WH Bank Details";
+                return resultobj;
+            }
+        }
+
+
+        public async Task<dynamic> GETFWHREQUESTList(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "REQUES_ID";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHLBANKDetailsList", "GETFWHLBANKDetailsList : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Fetching WH Bank Details";
+                return resultobj;
+            }
+        }
+
+
+        public async Task<dynamic> GETFWHLNOQUATERS(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "NIDA_QUATERS";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHLBANKDetailsList", "GETFWHLBANKDetailsList : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Fetching WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        #endregion
+        #region WareHouse CT Loan Approval & Reject helpers
+        public async Task<dynamic> GETFWHLREQUESTLI(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "LOAN_APPROVAL";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    //List<WHCTAPREJCL> obj = new List<WHCTAPREJCL>();
+                    //foreach(DataRow dr in dt.Rows)
+                    //{
+                    //    WHCTAPREJCL WOBJ = new WHCTAPREJCL();
+                    //    WOBJ.LOCATION_NAME = dr["constructioN_LOCATION_NAME"].ToString();
+                    //    WOBJ.warehousE_CODE = dr["warehousE_CODE"].ToString();
+                    //    WOBJ.wH_CONS_CAPACITY = dr["wH_CONS_CAPACITY"].ToString();
+                    //    WOBJ.status = dr["status"].ToString() == "0" ? "Pending" : "Approve";
+                    //    WOBJ.requesT_ID = dr["requesT_ID"].ToString();
+                    //    WOBJ.department= Convert.ToString(dr["department"]);
+                    //    WOBJ.estimatioN_AMOUNT= dr["estimatioN_AMOUNT"].ToString(); 
+                    //    WOBJ.inserteD_BY= dr["inserteD_BY"].ToString();
+                    //    obj.Add(WOBJ);
+                    //}
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHREQUESTlogs", "GetFWHREQUEST : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Data";
+                return resultobj;
+
+            }
+        }
+        #endregion
+        #region WH CT Loan Repay Details
+        public async Task<dynamic> GETFWHLDRPLIST(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_DRP_GET";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHREQUESTlogs", "GetFWHREQUEST : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Data";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GETFWHLSDATALIST(warehousereq rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_SLOAN_GET";
+                DataTable dt = await APSWCFINWHCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetFWHREQUESTlogs", "GetFWHREQUEST : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Data";
+                return resultobj;
+
+            }
+        }
+
+        #endregion
+        #region WareHouse Construction & Loan Module SP
+
+        public async Task<DataTable> APSWCFINWHCMasterSp(warehousereq objMa)
+        {
+            SqlConnection sqlcon = new SqlConnection(_connectionString);
+            SqlCommand cmd = new SqlCommand();
+            DataTable dt = new DataTable();
+            SqlDataAdapter adp = new SqlDataAdapter();
+            try
+            {
+                cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
+                cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
+                cmd.Parameters.AddWithValue("@INPUT_01", objMa.INPUT_01);
+                cmd.Parameters.AddWithValue("@INPUT_02", objMa.INPUT_02);
+                cmd.Parameters.AddWithValue("@INPUT_03", objMa.INPUT_03);
+                cmd.Parameters.AddWithValue("@INPUT_04", objMa.INPUT_04);
+                cmd.Parameters.AddWithValue("@INPUT_05", objMa.INPUT_05);
+                cmd.Parameters.AddWithValue("@INPUT_06", objMa.INPUT_06);
+                cmd.Parameters.AddWithValue("@INPUT_07", objMa.INPUT_07);
+                cmd.Parameters.AddWithValue("@INPUT_08", objMa.INPUT_08);
+                cmd.Parameters.AddWithValue("@INPUT_09", objMa.INPUT_09);
+                cmd.Parameters.AddWithValue("@INPUT_10", objMa.INPUT_10);
+                cmd.Parameters.AddWithValue("@INPUT_11", objMa.INPUT_11);
+                cmd.Parameters.AddWithValue("@INPUT_12", objMa.INPUT_12);
+                cmd.Parameters.AddWithValue("@INPUT_13", objMa.INPUT_13);
+                cmd.Parameters.AddWithValue("@USER_NAME", objMa.USER_NAME);
+                cmd.Parameters.AddWithValue("@CALL_SOURCE", objMa.CALL_SOURCE);
+                //cmd.Parameters.AddWithValue("@CALL_PAGE_ACTIVITY", objMa.CALL_PAGE_ACTIVITY);
+                //cmd.Parameters.AddWithValue("@CALL_BRO_APP_VER", objMa.CALL_BRO_APP_VER);
+                //cmd.Parameters.AddWithValue("@CALL_MOBILE_MODEL", objMa.CALL_MOBILE_MODEL);
+                //cmd.Parameters.AddWithValue("@CALL_LATITUDE", objMa.CALL_LATITUDE);
+                //cmd.Parameters.AddWithValue("@CALL_LONGITUDE", objMa.CALL_LONGITUDE);
+                //cmd.Parameters.AddWithValue("@CALL_IP_IMEI", objMa.CALL_IP_IMEI);
+                await sqlcon.OpenAsync();
+                adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+                await sqlcon.CloseAsync();
+                await cmd.DisposeAsync();
+                adp.Dispose();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                if (sqlcon.State == ConnectionState.Open)
+                {
+                    await sqlcon.CloseAsync();
+                    await cmd.DisposeAsync();
+                    adp.Dispose();
+                }
+                throw ex;
+            }
+
+        }
+
+        public async Task<DataTable> APSWCFINWHCGETSp(warehousereq objMa)
+        {
+            SqlConnection sqlcon = new SqlConnection(_connectionString);
+            SqlCommand cmd = new SqlCommand();
+            DataTable dt = new DataTable();
+            SqlDataAdapter adp = new SqlDataAdapter();
+            try
+            {
+                cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
+                cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
+                cmd.Parameters.AddWithValue("@INPUT_01", objMa.INPUT_01);
+                //cmd.Parameters.AddWithValue("@CALL_PAGE_ACTIVITY", objMa.CALL_PAGE_ACTIVITY);
+                //cmd.Parameters.AddWithValue("@CALL_BRO_APP_VER", objMa.CALL_BRO_APP_VER);
+                //cmd.Parameters.AddWithValue("@CALL_MOBILE_MODEL", objMa.CALL_MOBILE_MODEL);
+                //cmd.Parameters.AddWithValue("@CALL_LATITUDE", objMa.CALL_LATITUDE);
+                //cmd.Parameters.AddWithValue("@CALL_LONGITUDE", objMa.CALL_LONGITUDE);
+                //cmd.Parameters.AddWithValue("@CALL_IP_IMEI", objMa.CALL_IP_IMEI);
+                await sqlcon.OpenAsync();
+                adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+                await sqlcon.CloseAsync();
+                await cmd.DisposeAsync();
+                adp.Dispose();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                if (sqlcon.State == ConnectionState.Open)
+                {
+                    await sqlcon.CloseAsync();
+                    await cmd.DisposeAsync();
+                    adp.Dispose();
+                }
+                throw ex;
+            }
+
+        }
+
+        public async Task<DataTable> APSWCFINWHCLMasterSp(WHLoancl objMa)
+        {
+            SqlConnection sqlcon = new SqlConnection(_connectionString);
+            SqlCommand cmd = new SqlCommand();
+            DataTable dt = new DataTable();
+            SqlDataAdapter adp = new SqlDataAdapter();
+            try
+            {
+                cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
+                cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
+                cmd.Parameters.AddWithValue("@INPUT_01", objMa.INPUT_01);
+                cmd.Parameters.AddWithValue("@INPUT_02", objMa.INPUT_02);
+                cmd.Parameters.AddWithValue("@INPUT_03", objMa.INPUT_03);
+                cmd.Parameters.AddWithValue("@INPUT_04", objMa.INPUT_04);
+                cmd.Parameters.AddWithValue("@INPUT_05", objMa.INPUT_05);
+                cmd.Parameters.AddWithValue("@INPUT_06", objMa.INPUT_06);
+                cmd.Parameters.AddWithValue("@INPUT_07", objMa.INPUT_07);
+                cmd.Parameters.AddWithValue("@INPUT_08", objMa.INPUT_08);
+                cmd.Parameters.AddWithValue("@INPUT_09", objMa.INPUT_09);
+                cmd.Parameters.AddWithValue("@INPUT_10", objMa.INPUT_10);
+                cmd.Parameters.AddWithValue("@INPUT_11", objMa.INPUT_11);
+                cmd.Parameters.AddWithValue("@INPUT_12", objMa.INPUT_12);
+                cmd.Parameters.AddWithValue("@INPUT_13", objMa.INPUT_13);
+                cmd.Parameters.AddWithValue("@INPUT_14", objMa.INPUT_14);
+                cmd.Parameters.AddWithValue("@INPUT_15", objMa.INPUT_15);
+                cmd.Parameters.AddWithValue("@INPUT_16", objMa.INPUT_16);
+                cmd.Parameters.AddWithValue("@INPUT_17", objMa.INPUT_17);
+                cmd.Parameters.AddWithValue("@INPUT_18", objMa.INPUT_18);
+                cmd.Parameters.AddWithValue("@INPUT_19", objMa.INPUT_19);
+                cmd.Parameters.AddWithValue("@INPUT_20", objMa.INPUT_20);
+                cmd.Parameters.AddWithValue("@INPUT_21", objMa.INPUT_21);
+                cmd.Parameters.AddWithValue("@INPUT_22", objMa.INPUT_22);
+                cmd.Parameters.AddWithValue("@INPUT_23", objMa.INPUT_23);
+                cmd.Parameters.AddWithValue("@INPUT_24", objMa.INPUT_24);
+                cmd.Parameters.AddWithValue("@INPUT_25", objMa.INPUT_25);
+                cmd.Parameters.AddWithValue("@INPUT_26", objMa.INPUT_26);
+                cmd.Parameters.AddWithValue("@INPUT_27", objMa.INPUT_27);
+                cmd.Parameters.AddWithValue("@INPUT_28", objMa.INPUT_28);
+                cmd.Parameters.AddWithValue("@INPUT_29", objMa.INPUT_29);
+                cmd.Parameters.AddWithValue("@INPUT_30", objMa.INPUT_30);
+                cmd.Parameters.AddWithValue("@INPUT_31", objMa.INPUT_31);
+                cmd.Parameters.AddWithValue("@INPUT_32", objMa.INPUT_32);
+                cmd.Parameters.AddWithValue("@INPUT_33", objMa.INPUT_33);
+                cmd.Parameters.AddWithValue("@USER_NAME", objMa.USER_NAME);
+                cmd.Parameters.AddWithValue("@CALL_SOURCE", objMa.CALL_SOURCE);
+                //cmd.Parameters.AddWithValue("@CALL_PAGE_ACTIVITY", objMa.CALL_PAGE_ACTIVITY);
+                //cmd.Parameters.AddWithValue("@CALL_BRO_APP_VER", objMa.CALL_BRO_APP_VER);
+                //cmd.Parameters.AddWithValue("@CALL_MOBILE_MODEL", objMa.CALL_MOBILE_MODEL);
+                //cmd.Parameters.AddWithValue("@CALL_LATITUDE", objMa.CALL_LATITUDE);
+                //cmd.Parameters.AddWithValue("@CALL_LONGITUDE", objMa.CALL_LONGITUDE);
+                //cmd.Parameters.AddWithValue("@CALL_IP_IMEI", objMa.CALL_IP_IMEI);
+                await sqlcon.OpenAsync();
+                adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+                await sqlcon.CloseAsync();
+                await cmd.DisposeAsync();
+                adp.Dispose();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                if (sqlcon.State == ConnectionState.Open)
+                {
+                    await sqlcon.CloseAsync();
+                    await cmd.DisposeAsync();
+                    adp.Dispose();
+                }
+                throw ex;
+            }
+
+        }
+
+
+        public async Task<DataTable> APSWCWHCONTRACTORMasterSp(WHLoancl objMa)
+        {
+            SqlConnection sqlcon = new SqlConnection(_connectionString);
+            SqlCommand cmd = new SqlCommand();
+            DataTable dt = new DataTable();
+            SqlDataAdapter adp = new SqlDataAdapter();
+            try
+            {
+                cmd = new SqlCommand("SP_MASTER_PROC", sqlcon);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DIRECTION_ID", objMa.DIRECTION_ID);
+                cmd.Parameters.AddWithValue("@TYPEID", objMa.TYPEID);
+                cmd.Parameters.AddWithValue("@INPUT_01", objMa.INPUT_01);
+                cmd.Parameters.AddWithValue("@INPUT_02", objMa.INPUT_02);
+                cmd.Parameters.AddWithValue("@INPUT_03", objMa.INPUT_03);
+                cmd.Parameters.AddWithValue("@INPUT_04", objMa.INPUT_04);
+                cmd.Parameters.AddWithValue("@INPUT_05", objMa.INPUT_05);
+                cmd.Parameters.AddWithValue("@INPUT_06", objMa.INPUT_06);
+                cmd.Parameters.AddWithValue("@INPUT_07", objMa.INPUT_07);
+                cmd.Parameters.AddWithValue("@INPUT_08", objMa.INPUT_08);
+                cmd.Parameters.AddWithValue("@INPUT_09", objMa.INPUT_09);
+                cmd.Parameters.AddWithValue("@INPUT_10", objMa.INPUT_10);
+                cmd.Parameters.AddWithValue("@INPUT_11", objMa.INPUT_11);
+                cmd.Parameters.AddWithValue("@INPUT_12", objMa.INPUT_12);
+                cmd.Parameters.AddWithValue("@INPUT_13", objMa.INPUT_13);
+                cmd.Parameters.AddWithValue("@INPUT_14", objMa.INPUT_14);
+                cmd.Parameters.AddWithValue("@INPUT_15", objMa.INPUT_15);
+                cmd.Parameters.AddWithValue("@USER_NAME", objMa.USER_NAME);
+                cmd.Parameters.AddWithValue("@CALL_SOURCE", objMa.CALL_SOURCE);
+                await sqlcon.OpenAsync();
+                adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+                await sqlcon.CloseAsync();
+                await cmd.DisposeAsync();
+                adp.Dispose();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                if (sqlcon.State == ConnectionState.Open)
+                {
+                    await sqlcon.CloseAsync();
+                    await cmd.DisposeAsync();
+                    adp.Dispose();
+                }
+                throw ex;
+            }
+
+        }
+
+        public async Task<dynamic> GETFWHLEMIDetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "LOAN_DETAILS_EMI_CHAT_GET";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching WH Loan Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLoanDetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "LOAN_DETAILS_GET";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching WH Loan Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> UPDFWHBANKMasterdetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "105";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveFWHBANKMaster", "SaveFWHBANKMaster : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save WH Bank Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> WHsaveempapprovalApproval(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "20";
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["RTN_ID"].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Data Insertion Failed";
+                    }
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Data Insertion Failed";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveemployeeloanApprovelogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save the Data";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> WHloanapprovalupdateApproval(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "20";
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["RTN_ID"].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data updated Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Data updation Failed";
+                    }
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Data updation Failed";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "WHupdateemployeeloanApprove : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while update Data";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> whHistorydetails(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "20";
+                objMa.TYPEID = "WH_LOAN_HISTORY";
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, " whHistorydetails: Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting Data";
+                return resultobj;
+            }
+        }
+
+        #endregion
+
+        public async Task<dynamic> servicePayrefund(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "5";
+                objMa.TYPEID = "214";
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["RTN_ID"].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Data Insertion Failed";
+                    }
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Data Insertion Failed";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveemployeeloanApprovelogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save the Data";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHPREEMICHAT(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "EMI_CHAT_PRE_CAL";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching  Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GETFWHLEMPREQHIST(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "WH_EMP_LOAN_HISTORY";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data FOund";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GETFWHCLdetails", "GETFWHCLdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while fetching  Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> SendSMS(MasterSp rootobj)
+        {
+            dynamic response = new ExpandoObject();
+
+            rootobj.DIRECTION_ID = "2";
+            rootobj.TYPEID = "716";
+
+            try
+            {
+
+                SMSService sms = new SMSService();
+
+                string otpnumber = GetRandomText();
+                string ReferenceID = GetRefrenceID();
+                rootobj.INPUT_03 = otpnumber;
+                rootobj.INPUT_04 = ReferenceID;
+                string message = "Dear " + rootobj.INPUT_02 + ", your OTP " + otpnumber + " for registration as " + rootobj.INPUT_05 + "\n (APSWC)-GOVTAP";
+                //this.message = "Dear " + this.empname + "your OTP  " + this.randnum + " for registration as farmer (APSWC) -Dir.EDS.AP";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+
+
+                    string status = sms.SendSMS(rootobj.INPUT_01, message);
+
+                    if (status.Contains("402"))
+                    {
+                        string inputdata = JsonConvert.SerializeObject(rootobj);
+                        Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(savePath, "SendSMSLogs", "SendSMS : Method:" + status + " , Input Data : " + inputdata));
+
+                        resultobj.StatusCode = 100;
+                        resultobj.RefernceID = ReferenceID;
+                        resultobj.StatusMessage = "Successfully OTP send your Register Mobile Number";
+
+                        return resultobj;
+                    }
+                    else
+                    {
+
+                        string inputdata = JsonConvert.SerializeObject(rootobj);
+                        Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SendSMSLogs", "SendSMS : Method:" + status + " , Input Data : " + inputdata));
+
+                        resultobj.StatusCode = 102;
+                        resultobj.RefernceID = "";
+                        resultobj.StatusMessage = "OTP Sending Failed,Please try again...";
+                        return resultobj;
+                    }
+
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "OTP Generation Failed,Please try again...";
+                    return resultobj;
+
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "OTP Generation Failed,Please try again...";
+                    return resultobj;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SendSMSLogs", "SendSMS : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Sending  SMS";
+                return resultobj;
+            }
+
+        }
+
+        public async Task<dynamic> VerifyOTPNumber(MasterSp rootobj)
+        {
+            dynamic response = new ExpandoObject();
+
+            rootobj.DIRECTION_ID = "2";
+            rootobj.TYPEID = "717";
+
+            try
+            {
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+
+                    resultobj.StatusCode = 100;
+
+                    resultobj.StatusMessage = "Successfully OTP Verified";
+
+                    return resultobj;
+
+
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+
+                    resultobj.StatusMessage = "OTP Verification Failed,Please try again...";
+                    return resultobj;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SendSMSLogs", "SendSMS : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Sending  SMS";
+                return resultobj;
+            }
+        }
+
+
+        private string GetRandomText()
+
+        {
+
+            StringBuilder randomText = new StringBuilder();
+
+            string alphabets = "0123456789";
+
+            Random r = new Random();
+
+            for (int j = 0; j <= 5; j++)
+
+            { randomText.Append(alphabets[r.Next(alphabets.Length)]); }
+
+            return randomText.ToString();
+
+        }
+
+        private string GetRefrenceID()
+        {
+
+            StringBuilder refrandomText = new StringBuilder();
+
+            string alphabets = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            Random r = new Random();
+
+            for (int j = 0; j <= 6; j++)
+
+            { refrandomText.Append(alphabets[r.Next(alphabets.Length)]); }
+
+
+            return "OTP"+refrandomText.ToString();
+
+
+        }
+
+        public async Task<dynamic> GetTaxApproveReject(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "10";
+                rootobj.TYPEID = rootobj.INPUT_06 == "APPROVE" ? "102" : rootobj.INPUT_06 == "REJECT" ? "103" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "GetTaxApproveRejectLogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Tax Approve or Reject Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetTaxReqHistory(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "10";
+                rootobj.TYPEID = rootobj.INPUT_02 == "TAX_HISTORY" ? "EMP_LOAN_HISTORY" : rootobj.INPUT_02 == "APPR_HISTORY" ? "TAX_REQ_HISTORY" : "";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No History Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetTaxReqHistorylogs", "GetTaxReqHistory : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting Tax Request History";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetImprestBillDetails(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "10";
+                rootobj.TYPEID = "BILL_OFFICER";
+
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetImprestBillDetailsLogs", "GetImprestBillDetails: Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Gettig Imprest Approval Bill";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> GetImprestPaymentDetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "10";
+                rootobj.TYPEID = "BILL_OFFICER";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetImprestPaymentDetailsLogs", "GetImprestPaymentDetails : Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Gettig Imprest Approval Bill List";
+                return resultobj;
+
+            }
+        }
+
+
+        public async Task<dynamic> GetInspectionYears()
+        {
+            EmployeeMasterSp rootobj = new EmployeeMasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "102";
+                rootobj.TYPEID = "104";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting Years";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetMQCSectionList()
+        {
+            MasterSp rootobj = new MasterSp();
+            try
+            {
+                rootobj.DIRECTION_ID = "8";
+                rootobj.TYPEID = "M&QC_SECTION";
+
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetMQCSectionListlogs", "GetMQCSectionList : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting M & QC Section List";
+
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetregsecDetails(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "1";
+                rootobj.TYPEID = "WORK_LOCATION_GET";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Details Found";
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "Getregionsectionlogs", "Getregionsectionlogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Details";
+                return resultobj;
+
+            }
+        }
+        public async Task<dynamic> whImprestdetails(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "10";
+                objMa.TYPEID = "BILL_OFFICER";
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, " whImprestdetails: Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting Data";
+                return resultobj;
+            }
+        }
+        public async Task<dynamic> saveImprestApproval(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "10";
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["RTN_ID"].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Data Insertion Failed";
+                    }
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Data Insertion Failed";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "saveImprestApprovallogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save the Data";
+                return resultobj;
+            }
+        }
+
+
+        public async Task<dynamic> updateimprestapproval(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "10";
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["RTN_ID"].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data updated Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Data updation Failed";
+                    }
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Data updation Failed";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "updateemployeeloanApprove : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while update Data";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> Saveimprestpprovaldetails(MasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "10";
+                rootobj.TYPEID = "104";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveimprestApprovalDetailsLogs", "SaveimprestApprovalDetailsLogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Approval Details";
+                return resultobj;
+
+            }
+        }
+        public async Task<dynamic> savepushbackImprestApproval(MasterSp objMa)
+        {
+            try
+            {
+
+                objMa.DIRECTION_ID = "10";
+
+                DataTable dt = await APSWCMasterSp(objMa);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["RTN_ID"].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "Data Insertion Failed";
+                    }
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "Data Insertion Failed";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(objMa);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "Saveimprestpushbacklogs : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save the Data";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> UPDFWHCONTRDETAILS(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "106";
+                DataTable dt = await APSWCWHCONTRACTORMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Updated Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "UPDFWHCONTRDETAILS", "UPDFWHCONTRDETAILS : Method:" + jsondata + " , Input Data : " + inputdata));
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while update WH Contractor Details";
+                return resultobj;
+            }
+        }
+
+        public async Task<dynamic> GetWHLeasedCompartemtns(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "4";
+                rootobj.TYPEID = "TO_LOCK_COMPARTMENTS";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while load Leased Comparment Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveWarehousereqdetails(WHLoancl rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "20";
+                rootobj.TYPEID = "101";
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveWarehousereqdetails", "SaveWarehousereqdetails : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Approval Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> GetWHQuestionsResponse(MasterSp rootobj)
+        {
+
+            try
+            {
+
+                rootobj.DIRECTION_ID = "8";
+                rootobj.TYPEID = "WH_QUESTION_RESPONSE";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Getting Questions Response Details";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveObservationATR(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "102";
+                rootobj.TYPEID = "105";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0]["STATUS_TEXT"].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveObservationATRLogs", "SaveObservationATR : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Inspection Action Taken Report Observation";
+                return resultobj;
+
+            }
+        }
     }
 }
