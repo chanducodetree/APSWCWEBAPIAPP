@@ -12239,7 +12239,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         }
 
 
-        public async Task<dynamic> SaveDeductionDetails(EmployeeMasterSp rootobj)
+        public async Task<dynamic> SaveDeductionDetails(MasterSp rootobj)
 
         {
             try
@@ -16746,14 +16746,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                     return resultobj;
 
                 }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "OTP Generation Failed,Please try again...";
-                    return resultobj;
-                }
-
-
+             
             }
             catch (Exception ex)
             {

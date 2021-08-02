@@ -3763,30 +3763,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
-        [Route("GetStackTokens")]
-        public async Task<IActionResult> GetStackTokens(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetStackTokens(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Load Tokens Information"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
         [Route("GetStackTokenInfo")]
         public async Task<IActionResult> GetStackTokenInfo(dynamic data)
         {
@@ -7881,7 +7857,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveDeductionDetailsLogs", "SaveDeductionDetails : Input Data : " + value));
 
-                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
 
                 return Ok(await _hel.SaveDeductionDetails(rootobj));
             }
