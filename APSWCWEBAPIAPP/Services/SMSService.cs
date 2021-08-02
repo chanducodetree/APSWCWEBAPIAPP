@@ -1,4 +1,5 @@
 ﻿
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,9 @@ namespace APSWCWEBAPIAPP.Services
                 string password = "esd@123";  // "esd@123";
                 string senderid = "GOVTAP";
                 string secureykey = "db7bed5a-b622-4e0a-9ab1-5730ff85a0a0";
-                string status = _SMS.sendBulkSMStulugu(username, password, senderid, mobilenos, message, secureykey, "10032659996488");
+
+                string status = _SMS.sendBulkSMS(username, password, senderid, mobilenos, message, secureykey, "10032659996488");
+
                 //  Write_Log(status + mobilenos, "SMSLogs");
                 return status;
 
@@ -95,4 +98,4 @@ namespace APSWCWEBAPIAPP.Services
 
 
     }
-}
+

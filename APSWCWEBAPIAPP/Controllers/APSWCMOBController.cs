@@ -1134,7 +1134,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-       
         [HttpPost]
         [Route("UpdateWareHouseDetails_all")]
         public async Task<IActionResult> UpdateWareHouseDetails_all(dynamic data)
@@ -1157,12 +1156,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
-
-
-        
-
-
-
 
 
         [HttpPost]
