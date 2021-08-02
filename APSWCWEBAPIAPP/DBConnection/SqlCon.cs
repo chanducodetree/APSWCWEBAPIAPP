@@ -14731,18 +14731,35 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             try
             {
-                
+                rootobj.DIRECTION_ID = "17";               
                 DataTable dt = await APSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                if (rootobj.TYPEID == "301" || rootobj.TYPEID == "304" || rootobj.TYPEID == "302" || rootobj.TYPEID == "303" || rootobj.TYPEID == "305")
                 {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Inserted Successfully";
-                    resultobj.Details = dt;
+                    if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    }
                 }
                 else
                 {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    if (dt != null && dt.Rows.Count > 0 )
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = "No Data Found";
+                    }
                 }
 
 
@@ -14765,5 +14782,42 @@ namespace APSWCWEBAPIAPP.DBConnection
         }
 
 
+        public async Task<dynamic> GetReceipts(MasterSp rootobj)
+        {
+
+            try
+            {
+                rootobj.DIRECTION_ID = "22";
+                DataTable dt = await APSWCMasterSp(rootobj);
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        resultobj.StatusCode = 100;
+                        resultobj.StatusMessage = "Data Inserted Successfully";
+                        resultobj.Details = dt;
+                    }
+                    else
+                    {
+                        resultobj.StatusCode = 102;
+                        resultobj.StatusMessage = dt.Rows[0][1].ToString();
+                    }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+
+
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log_Exception(exPathToSave, "SaveTenders : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Details";
+                return resultobj;
+
+
+            }
+        }
+
+        
     }
 }
