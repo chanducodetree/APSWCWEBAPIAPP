@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 namespace APSWCWEBAPIAPP.Services
 {
 
-    public static class Logfile
-    {
-		
+	public static class Logfile
+	{
+		private static IHttpContextAccessor _httpContextAccessor;
 		#region"Logs code"
-	 
+
 		public static object Write_Log_Exception(string mappath, dynamic strMsg)
 		{
 			//string strPath = mappath + "\\" + DateTime.Now.ToString("MMddyyyy");
@@ -50,9 +50,9 @@ namespace APSWCWEBAPIAPP.Services
 		public static object Write_Log(string f_name, string methodlog, dynamic strMsg)
 		{
 			//f_name= "//10.96.52.149\\vvolunteers02\\websites\\VVSendOtpLogs";
-			string strPath = f_name + "\\" + methodlog + "\\" + DateTime.Now.ToString("MMddyyyy") + "\\" + DateTime.Now.ToString("HH").ToString();
+			string strPath = f_name +"\\"+methodlog+"\\" + DateTime.Now.ToString("MMddyyyy") + "\\" + DateTime.Now.ToString("HH").ToString();
 			var random = new Random();
-			var number = random.Next(111111, 999999);
+			var number = random.Next(111111,999999);
 			if (!Directory.Exists(strPath))
 				Directory.CreateDirectory(strPath);
 			string path2 = strPath + "\\" + "submittedData" + DateTime.Now.ToString("yyyyMMddhhmmssmmmffff") + number.ToString();
@@ -90,7 +90,6 @@ namespace APSWCWEBAPIAPP.Services
 		{
 			try
 			{
-				IHttpContextAccessor _httpContextAccessor = null;
 				string userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
 				return userAgent;
 			}
@@ -101,6 +100,7 @@ namespace APSWCWEBAPIAPP.Services
 				return "chrome";
 			}
 		}
+
 
 	}
 }
