@@ -4,6 +4,18 @@ using System.Text;
 
 namespace ModelService
 {
+    public class WHCTAPREJCL
+    {
+        public string LOCATION_NAME { get; set; }
+        public string department { get; set; }
+        public string estimatioN_AMOUNT { get; set; }
+        public string inserteD_BY { get; set; }
+        public string requesT_ID { get; set; }
+        public string wH_CONS_CAPACITY { get; set; }
+        public string status { get; set; }
+        public string warehousE_CODE { get; set; }
+    }
+
     public class warehousereq
     {
         public string DIRECTION_ID { get; set; }
@@ -57,7 +69,14 @@ namespace ModelService
         public string INPUT_24 { get; set; }
         public string INPUT_25 { get; set; }
         public string INPUT_26 { get; set; }
+        public string INPUT_27 { get; set; }
+        public string INPUT_28 { get; set; }
+        public string INPUT_29 { get; set; }
+        public string INPUT_30 { get; set; }
+        public string INPUT_31 { get; set; }
+        public string INPUT_32 { get; set; }
+        public string INPUT_33 { get; set; }
         public string USER_NAME { get; set; }
         public string CALL_SOURCE { get; set; }
     }
-}
+
