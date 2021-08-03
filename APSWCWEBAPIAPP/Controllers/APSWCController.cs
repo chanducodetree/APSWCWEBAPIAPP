@@ -2621,8 +2621,9 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 //string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Input Data : " + value));
                 EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Input Data : " + value));
+               
                 return Ok(await _hel.SaveSpaceReservation(rootobj));
 
             }
@@ -9231,7 +9232,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 //Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFinWHCDetailsLogs", "SaveFinWHCDetailsLogs : Input Data : " + value));
-                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
                 return Ok(await _hel.GETFinWHCDetailsli(rootobj));
             }
             catch (Exception ex)
@@ -9244,6 +9245,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
 
         [HttpGet]
         [Route("GetWHRegionslist")]
@@ -10225,6 +10227,8 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+
 
 
         
