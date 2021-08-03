@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -2620,8 +2621,9 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 //string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Input Data : " + value));
                 EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Input Data : " + value));
+               
                 return Ok(await _hel.SaveSpaceReservation(rootobj));
 
             }
@@ -3749,30 +3751,6 @@ namespace APSWCWEBAPIAPP.Controllers
 
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.GetQuantityTokens(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Load Tokens Information"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("GetStackTokens")]
-        public async Task<IActionResult> GetStackTokens(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetStackTokens(rootobj));
             }
             catch (Exception ex)
             {
@@ -7881,7 +7859,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveDeductionDetailsLogs", "SaveDeductionDetails : Input Data : " + value));
 
-                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
 
                 return Ok(await _hel.SaveDeductionDetails(rootobj));
             }
@@ -9254,7 +9232,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 //Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFinWHCDetailsLogs", "SaveFinWHCDetailsLogs : Input Data : " + value));
-                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
                 return Ok(await _hel.GETFinWHCDetailsli(rootobj));
             }
             catch (Exception ex)
@@ -9267,6 +9245,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
 
         [HttpGet]
         [Route("GetWHRegionslist")]
@@ -10248,6 +10227,9 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+
+
 
         
     }

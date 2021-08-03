@@ -79,4 +79,4 @@ namespace ModelService
         public string USER_NAME { get; set; }
         public string CALL_SOURCE { get; set; }
     }
-
+}

@@ -1,3 +1,4 @@
+
 using APSWCWEBAPIAPP.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -3983,45 +3984,7 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> SaveSpaceReservation(EmployeeMasterSp rootobj)
-        {
-
-            try
-            {
-
-                rootobj.DIRECTION_ID = "4";
-                rootobj.TYPEID = "101";
-                //DataTable dt = await APSWCMasterSp(rootobj);
-                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
-                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
-                {
-                    resultobj.StatusCode = 100;
-                    resultobj.StatusMessage = "Data Submitted Successfully";
-                    resultobj.Details = dt;
-                }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = dt.Rows[0][1].ToString();
-                }
-
-                return resultobj;
-
-
-            }
-            catch (Exception ex)
-            {
-                string jsondata = JsonConvert.SerializeObject(ex.Message);
-                string inputdata = JsonConvert.SerializeObject(rootobj);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SpaceReservationDetailslogs", "SpaceReservationDetails : Method:" + jsondata + " , Input Data : " + inputdata));
-
-                resultobj.StatusCode = 102;
-                resultobj.StatusMessage = "Error Occured while Save SpaceReservation Details";
-                return resultobj;
-
-            }
-        }
-
+      
 
 
         public async Task<dynamic> WeighmentTokenList(MasterSp rootobj)
@@ -12239,7 +12202,7 @@ namespace APSWCWEBAPIAPP.DBConnection
         }
 
 
-        public async Task<dynamic> SaveDeductionDetails(EmployeeMasterSp rootobj)
+        public async Task<dynamic> SaveDeductionDetails(MasterSp rootobj)
 
         {
             try
@@ -15359,13 +15322,13 @@ namespace APSWCWEBAPIAPP.DBConnection
             }
         }
 
-        public async Task<dynamic> GETFinWHCDetailsli(warehousereq rootobj)
+        public async Task<dynamic> GETFinWHCDetailsli(WHLoancl rootobj)
         {
             try
             {
                 rootobj.DIRECTION_ID = "20";
                 rootobj.TYPEID = "WH_CONSTRUCTION_GET";
-                DataTable dt = await APSWCFINWHCGETSp(rootobj);
+                DataTable dt = await APSWCFINWHCLMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     resultobj.StatusCode = 100;
@@ -15391,7 +15354,6 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
-
         public async Task<dynamic> GETFWHCTDetailsli(warehousereq rootobj)
         {
             try
@@ -16746,14 +16708,7 @@ namespace APSWCWEBAPIAPP.DBConnection
                     return resultobj;
 
                 }
-                else
-                {
-                    resultobj.StatusCode = 102;
-                    resultobj.StatusMessage = "OTP Generation Failed,Please try again...";
-                    return resultobj;
-                }
-
-
+             
             }
             catch (Exception ex)
             {
@@ -17417,7 +17372,8 @@ namespace APSWCWEBAPIAPP.DBConnection
             try
             {
                 rootobj.DIRECTION_ID = "102";
-                rootobj.TYPEID = "105";
+                //rootobj.TYPEID = "105";
+                rootobj.TYPEID = rootobj.INPUT_10 == "SAVE_OBSERVATION" ? "105" : rootobj.INPUT_10 == "UPDATE_OBSERVATION" ? "106" : "";
                 DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
                 if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
                 {
@@ -17444,5 +17400,76 @@ namespace APSWCWEBAPIAPP.DBConnection
 
             }
         }
+
+
+        public async Task<dynamic> GetATRObservationDetails(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "102";
+                rootobj.TYPEID = "107";
+
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Loaded Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = "No Data Found";
+                }
+
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "GetATRObservationDetailsLogs", "GetATRObservationDetails: Method:" + jsondata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Gettig ATR Observations";
+                return resultobj;
+
+            }
+        }
+
+        public async Task<dynamic> SaveSpaceReservation(EmployeeMasterSp rootobj)
+        {
+            try
+            {
+                rootobj.DIRECTION_ID = "4";
+                rootobj.TYPEID = "101";
+                DataTable dt = await EmployeeAPSWCMasterSp(rootobj);
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0].ToString() == "1")
+                {
+                    resultobj.StatusCode = 100;
+                    resultobj.StatusMessage = "Data Saved Successfully";
+                    resultobj.Details = dt;
+                }
+                else
+                {
+                    resultobj.StatusCode = 102;
+                    resultobj.StatusMessage = dt.Rows[0]["STATUS_TEXT"].ToString();
+                }
+                return resultobj;
+            }
+            catch (Exception ex)
+            {
+                string jsondata = JsonConvert.SerializeObject(ex.Message);
+                string inputdata = JsonConvert.SerializeObject(rootobj);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(exPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Method:" + jsondata + " , Input Data : " + inputdata));
+
+                resultobj.StatusCode = 102;
+                resultobj.StatusMessage = "Error Occured while Save Space Reservation Details";
+                return resultobj;
+
+            }
+        }
+
     }
 }
+

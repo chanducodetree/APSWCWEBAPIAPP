@@ -3169,30 +3169,7 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("SaveSpaceReservation")]
-        public async Task<IActionResult> SaveSpaceReservation(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-
-            try
-            {
-                //string value = EncDecrpt.Decrypt_Data(data);
-                string value = JsonConvert.SerializeObject(data);
-                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
-                return Ok(await _hel.SaveSpaceReservation(rootobj));
-
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Saveing Details"
-                });
-                return response;
-            }
-        }
+       
 
         [HttpPost]
         [Route("SaveRegistrationDetails")]
@@ -6042,6 +6019,56 @@ namespace APSWCWEBAPIAPP.Controllers
 
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Save Inspection Action Taken Report Observation"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetATRObservationDetails")]
+        public async Task<IActionResult> GetATRObservationDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.GetATRObservationDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Gettig ATR Observations"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveSpaceReservation")]
+        public async Task<IActionResult> SaveSpaceReservation(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                EmployeeMasterSp _rbroot = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Input Data : " + value));
+
+                return Ok(await _hel.SaveSpaceReservation(_rbroot));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Space Reservation Details"
                 });
                 return response;
             }
