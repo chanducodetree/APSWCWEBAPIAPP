@@ -3750,7 +3750,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
 
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetQuantityTokens(rootobj));
+                return Ok(await _hel.GetStackTokens(rootobj));
             }
             catch (Exception ex)
             {
@@ -9345,6 +9345,35 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFWHCLoanDetailsLogs", "SaveFWHCLoanDetailsLogs : Input Data : " + value));
                 WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+
+                string dd = rootobj.INPUT_01;
+                DateTime LApdDate;
+                string[] formats = { "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+                DateTime.TryParseExact(dd, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out LApdDate);
+
+                rootobj.INPUT_01 = LApdDate.ToString("yyyy-MM-dd");
+
+                string dd14 = rootobj.INPUT_14;
+                DateTime SandDate;
+
+                DateTime.TryParseExact(dd14, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out SandDate);
+
+                rootobj.INPUT_14 = SandDate.ToString("yyyy-MM-dd");
+
+                string dd34 = rootobj.INPUT_34;
+                DateTime CRDDate;
+
+                DateTime.TryParseExact(dd34, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out CRDDate);
+
+                rootobj.INPUT_34 = CRDDate.ToString("yyyy-MM-dd");
+
                 return Ok(await _hel.SaveFWHCLoandetails(rootobj));
             }
             catch (Exception ex)
@@ -9477,6 +9506,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
 
         [HttpPost]
         [Route("GETFWHBANKMasterDetails")]
@@ -9673,6 +9703,16 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+
+                string dd = rootobj.INPUT_03;
+                DateTime startDate;
+                string[] formats = { "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+                DateTime.TryParseExact(dd, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out startDate);
+
+                rootobj.INPUT_03 = startDate.ToString("yyyy-MM-dd");
                 return Ok(await _hel.GETFWHLSDATALIST(rootobj));
             }
             catch (Exception)
@@ -9857,7 +9897,25 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                string dd = rootobj.INPUT_01;
+                DateTime startDate;
+                string[] formats = { "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+                DateTime.TryParseExact(dd, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out startDate);
+
+                rootobj.INPUT_01 = startDate.ToString("yyyy-MM-dd");
                 return Ok(await _hel.GETFWHPREEMICHAT(rootobj));
+
+                //if (rootobj.INPUT_05 == "NIDA")
+                //{
+                //    return Ok(await _hel.GETFWHPREEMICHAT(rootobj));
+                //}
+                //else
+                //{
+                //    return Ok(await _hel.GETFWHPREWIFEMICHAT(rootobj));
+                //}
             }
             catch (Exception ex)
             {
@@ -10229,9 +10287,167 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
+        [HttpPost]
+
+        [Route("SaveSendDetails")]
+        public async Task<IActionResult> SaveSendDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SendDetailslogs", "SendDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.SendDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Details"
+                });
+                return response;
+            }
+        }
 
 
-        
+        [HttpPost]
+
+        [Route("SubmitCancelDetails")]
+        public async Task<IActionResult> SubmitCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "CancelDetailslogs", "CancelDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.CancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+
+        [Route("SavePushbackDetails")]
+        public async Task<IActionResult> SavePushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePushbacklogs", "SavePushbacklogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.pushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SaveserviceSendDetails")]
+        public async Task<IActionResult> SaveserviceSendDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveserviceSendlogs", "SaveserviceSendlogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.serviceSendDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Send the Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SubmitserviceCancelDetails")]
+        public async Task<IActionResult> SubmitserviceCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "serviceCancelDetailslogs", "serviceCancelDetailslogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.serviceCancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+
+        [Route("SaveservicePushbackDetails")]
+        public async Task<IActionResult> SaveservicePushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveservicePushbacklogs", "SaveservicePushbacklogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.servicepushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while pushback the Information"
+                });
+                return response;
+            }
+        }
+
     }
 
 }

@@ -76,6 +76,8 @@ namespace ModelService
         public string INPUT_31 { get; set; }
         public string INPUT_32 { get; set; }
         public string INPUT_33 { get; set; }
+        public string INPUT_34 { get; set; }
+        
         public string USER_NAME { get; set; }
         public string CALL_SOURCE { get; set; }
     }
