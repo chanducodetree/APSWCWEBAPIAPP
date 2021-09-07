@@ -15,6 +15,7 @@ using APSWCWEBAPIAPP.Services;
 using System.IO;
 using APSWCWEBAPIAPP.Models;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
@@ -6210,6 +6211,440 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Save Imprest Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetInsuranceList")]
+        public async Task<IActionResult> GetInsuranceList()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetInsuranceList());
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Insurance  Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("InsuranceCmpnywiseDetails")]
+        public async Task<IActionResult> InsuranceCmpnywiseDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.InsuranceCmpnywiseDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Insurance Company Details"
+                });
+                return response;
+            }
+        }
+
+        #region EncryptFile
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("VirtualInspectionFileUpload")]
+        public ActionResult EncryptFileUpload()
+        {
+            try
+            {
+                var supportedTypes = new[] { "mp4" };
+
+                var file = Request.Form.Files[0];
+                var file1 = Request.Form.Files[1];
+                var file2 = Request.Form.Files[2];
+                var file3 = Request.Form.Files[3];
+                var file4 = Request.Form.Files[4];
+                string folderName = Request.Form["pagename"];
+
+                string todayDate = DateTime.Now.ToString("dd/MM/yyyy");
+
+                var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1).ToLower();
+                var fileExt1 = System.IO.Path.GetExtension(file1.FileName).Substring(1).ToLower();
+                var fileExt2 = System.IO.Path.GetExtension(file2.FileName).Substring(1).ToLower();
+                var fileExt3 = System.IO.Path.GetExtension(file3.FileName).Substring(1).ToLower();
+                var fileExt4 = System.IO.Path.GetExtension(file4.FileName).Substring(1).ToLower();
+                if (!supportedTypes.Contains(fileExt))
+                {
+                    string ErrorMessage = "File Extension Is InValid - Only Upload mp4 File";
+
+                    return Ok(new { ErrorMessage });
+                }
+                folderName = Path.Combine(folderName, todayDate);
+
+                var pathToSave = Path.Combine("wwwroot", folderName);
+
+                if (file.Length > 0 && file1.Length > 0 && file2.Length > 0 && file3.Length > 0 && file4.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileName1 = ContentDispositionHeaderValue.Parse(file1.ContentDisposition).FileName.Trim('"');
+                    var fileName2 = ContentDispositionHeaderValue.Parse(file2.ContentDisposition).FileName.Trim('"');
+                    var fileName3 = ContentDispositionHeaderValue.Parse(file3.ContentDisposition).FileName.Trim('"');
+                    var fileName4 = ContentDispositionHeaderValue.Parse(file4.ContentDisposition).FileName.Trim('"');
+
+                    var fileWExt = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                    var fileWExt1 = System.IO.Path.GetFileNameWithoutExtension(fileName1);
+                    var fileWExt2 = System.IO.Path.GetFileNameWithoutExtension(fileName2);
+                    var fileWExt3 = System.IO.Path.GetFileNameWithoutExtension(fileName3);
+                    var fileWExt4 = System.IO.Path.GetFileNameWithoutExtension(fileName4);
+                    var createdtime = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss");
+
+                    fileName = fileWExt + "_" + createdtime + "." + fileExt;
+                    fileName1 = fileWExt1 + "_" + createdtime + "." + fileExt1;
+                    fileName2 = fileWExt2 + "_" + createdtime + "." + fileExt2;
+                    fileName3 = fileWExt3 + "_" + createdtime + "." + fileExt3;
+                    fileName4 = fileWExt4 + "_" + createdtime + "." + fileExt4;
+
+                    string fullPath = Path.Combine(pathToSave, fileName);
+                    string fullPath1 = Path.Combine(pathToSave, fileName1);
+                    string fullPath2 = Path.Combine(pathToSave, fileName2);
+                    string fullPath3 = Path.Combine(pathToSave, fileName3);
+                    string fullPath4 = Path.Combine(pathToSave, fileName4);
+
+                    bool folderExists = Directory.Exists(pathToSave);
+
+                    if (!folderExists)
+                    {
+                        Directory.CreateDirectory(pathToSave);
+                    }
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    using (var stream1 = new FileStream(fullPath1, FileMode.Create))
+                    {
+                        file1.CopyTo(stream1);
+                    }
+                    using (var stream2 = new FileStream(fullPath2, FileMode.Create))
+                    {
+                        file2.CopyTo(stream2);
+                    }
+                    using (var stream3 = new FileStream(fullPath3, FileMode.Create))
+                    {
+                        file3.CopyTo(stream3);
+                    }
+                    using (var stream4 = new FileStream(fullPath4, FileMode.Create))
+                    {
+                        file4.CopyTo(stream4);
+                    }
+
+                    string outfileName = fileWExt + "_" + createdtime + "." + "txt";
+                    string outfileName1 = fileWExt1 + "_" + createdtime + "." + "txt";
+                    string outfileName2 = fileWExt2 + "_" + createdtime + "." + "txt";
+                    string outfileName3 = fileWExt3 + "_" + createdtime + "." + "txt";
+                    string outfileName4 = fileWExt4 + "_" + createdtime + "." + "txt";
+
+                    string outPath = Path.Combine(pathToSave, outfileName);
+                    string outPath1 = Path.Combine(pathToSave, outfileName1);
+                    string outPath2 = Path.Combine(pathToSave, outfileName2);
+                    string outPath3 = Path.Combine(pathToSave, outfileName3);
+                    string outPath4 = Path.Combine(pathToSave, outfileName4);
+                    bool isEncrypted = MobEncryptFile(fullPath, outPath);
+                    bool isEncrypted1 = MobEncryptFile(fullPath1, outPath1);
+                    bool isEncrypted2 = MobEncryptFile(fullPath2, outPath2);
+                    bool isEncrypted3 = MobEncryptFile(fullPath3, outPath3);
+                    bool isEncrypted4 = MobEncryptFile(fullPath4, outPath4);
+
+                    if (isEncrypted)
+                    {
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
+
+                        System.IO.FileInfo fi = new System.IO.FileInfo(outPath);
+
+                        if (fi.Exists)
+                        {
+                            fi.MoveTo(fullPath);
+                        }
+                    }
+                    if (isEncrypted1)
+                    {
+                        if (System.IO.File.Exists(fullPath1))
+                        {
+                            System.IO.File.Delete(fullPath1);
+                        }
+
+                        System.IO.FileInfo fi1 = new System.IO.FileInfo(outPath1);
+
+                        if (fi1.Exists)
+                        {
+                            fi1.MoveTo(fullPath1);
+                        }
+                    }
+                    if (isEncrypted2)
+                    {
+                        if (System.IO.File.Exists(fullPath2))
+                        {
+                            System.IO.File.Delete(fullPath2);
+                        }
+
+                        System.IO.FileInfo fi2 = new System.IO.FileInfo(outPath2);
+
+                        if (fi2.Exists)
+                        {
+                            fi2.MoveTo(fullPath2);
+                        }
+                    }
+                    if (isEncrypted3)
+                    {
+                        if (System.IO.File.Exists(fullPath3))
+                        {
+                            System.IO.File.Delete(fullPath3);
+                        }
+
+                        System.IO.FileInfo fi3 = new System.IO.FileInfo(outPath3);
+
+                        if (fi3.Exists)
+                        {
+                            fi3.MoveTo(fullPath3);
+                        }
+                    }
+                    if (isEncrypted4)
+                    {
+                        if (System.IO.File.Exists(fullPath4))
+                        {
+                            System.IO.File.Delete(fullPath4);
+                        }
+
+                        System.IO.FileInfo fi4 = new System.IO.FileInfo(outPath4);
+
+                        if (fi4.Exists)
+                        {
+                            fi4.MoveTo(fullPath4);
+                        }
+                    }
+                    return Ok(new { fullPath, fullPath1, fullPath2, fullPath3, fullPath4 });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        private bool MobEncryptFile(string inputFilePath, string outputfilePath)
+        {
+            bool isEncrypted = false;
+            string EncryptionKey = "MAKV2SPBNI99512";
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (FileStream fsOutput = new FileStream(outputfilePath, FileMode.Create))
+                {
+                    using (CryptoStream cs = new CryptoStream(fsOutput, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        using (FileStream fsInput = new FileStream(inputFilePath, FileMode.Open))
+                        {
+                            int data;
+                            while ((data = fsInput.ReadByte()) != -1)
+                            {
+                                cs.WriteByte((byte)data);
+                            }
+                            isEncrypted = true;
+                        }
+                    }
+                }
+            }
+            return isEncrypted;
+        }
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("DecryptFile")]
+        public ActionResult<string> DecryptFile(FilePath filePath)
+        {
+            string inputFilePath = filePath.DBPath;
+            byte[] byteArray = null;
+            string EncryptionKey = "MAKV2SPBNI99512";
+            string docBase64 = "";
+            try
+            {
+                using (Aes encryptor = Aes.Create())
+                {
+                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                    encryptor.Key = pdb.GetBytes(32);
+                    encryptor.IV = pdb.GetBytes(16);
+
+                    using (FileStream fsInput = new FileStream(inputFilePath, FileMode.Open))
+                    {
+                        using (CryptoStream cs = new CryptoStream(fsInput, encryptor.CreateDecryptor(), CryptoStreamMode.Read))
+                        {
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                cs.CopyTo(memoryStream);
+                                byteArray = memoryStream.ToArray();
+                            }
+                        }
+                    }
+                    string ext = System.IO.Path.GetExtension(inputFilePath).Substring(1).ToLower();
+
+                    if (ext == "mp4")
+                    {
+                        docBase64 = "data:image/mp4;base64," + Convert.ToBase64String(byteArray);
+                        return Ok(new { docBase64 });
+                    }
+                    else
+                    {
+                        return Ok(new { docBase64 });
+                    }
+                    //return byteArray;
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { docBase64 });
+            }
+        }
+
+        #endregion
+
+
+        [HttpPost]
+        [Route("SaveWH_InsuranceDetails")]
+        public async Task<IActionResult> SaveWH_InsuranceDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWH_InsuranceDetailsLogs", "SaveWH_InsuranceDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveWH_InsuranceDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save  Warehouse Insurance Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("SavePushbackDetails")]
+        public async Task<IActionResult> SavePushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePushbacklogs", "SavePushbacklogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.pushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("MedicalSendCancelDetails")]
+        public async Task<IActionResult> MedicalSendCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "MedicalSendCancelDetailslogs", "MedicalSendCancelDetails : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.MedicalSendCancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saving the Medical Send/Cancel Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+
+        [Route("SaveservicePushbackDetails")]
+        public async Task<IActionResult> SaveservicePushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveservicePushbacklogs", "SaveservicePushbacklogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.servicepushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while pushback the Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("ServiceSendCancelDetails")]
+        public async Task<IActionResult> ServiceSendCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "ServiceSendCancelDetailslogs", "ServiceSendCancelDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.ServiceSendCancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Submit the Service Request Send/Cancel Details"
                 });
                 return response;
             }

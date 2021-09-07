@@ -12,7 +12,7 @@ namespace APSWCWEBAPIAPP.Services
 {
     public class SMSService
     {
-        public string SendSMS(string mobileno, string message)
+        public string SendSMS(string mobileno, string message,string templateID)
         {
             try
             {
@@ -26,7 +26,8 @@ namespace APSWCWEBAPIAPP.Services
                 string password = "Welcome@123";  // "esd@123";
                 string senderid = "GOVTAP";
                 string securekey = "a1109136-9e1c-459a-a609-64abd51d522b";
-                string status = _SMS.sendSingleSMS(username, password, senderid, mobileno, message, securekey, "1007604236977494617");
+                //    string status = _SMS.sendSingleSMS(username, password, senderid, mobileno, message, securekey, "1007604236977494617");
+                string status = _SMS.sendSingleSMS(username, password, senderid, mobileno, message, securekey, templateID);
 
                 //Write_Log(status + mobileno, "SMSLogs");
                 return status;
