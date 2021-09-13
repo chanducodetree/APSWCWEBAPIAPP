@@ -7,6 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CrystalReports\**" />
+    <Compile Remove="CrystalReport\**" />
+    <Compile Remove="EntityFramework\**" />
+    <Compile Remove="ESignModule\**" />
+    <Content Remove="CrystalReports\**" />
+    <Content Remove="CrystalReport\**" />
+    <Content Remove="EntityFramework\**" />
+    <Content Remove="ESignModule\**" />
+    <EmbeddedResource Remove="CrystalReports\**" />
+    <EmbeddedResource Remove="CrystalReport\**" />
+    <EmbeddedResource Remove="EntityFramework\**" />
+    <EmbeddedResource Remove="ESignModule\**" />
+    <None Remove="CrystalReports\**" />
+    <None Remove="CrystalReport\**" />
+    <None Remove="EntityFramework\**" />
+    <None Remove="ESignModule\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityModel" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
@@ -24,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EntityFramework\" />
     <Folder Include="Inspection\" />
     <Folder Include="capth\" />
     <Folder Include="wwwroot\" />

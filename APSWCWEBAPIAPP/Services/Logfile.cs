@@ -11,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace APSWCWEBAPIAPP.Services
 {
+
 	public static class Logfile
 	{
-
+		private static IHttpContextAccessor _httpContextAccessor;
 		#region"Logs code"
 
 		public static object Write_Log_Exception(string mappath, dynamic strMsg)
@@ -69,7 +70,6 @@ namespace APSWCWEBAPIAPP.Services
 		public static string GetLocalIPAddress()
 		{
 
-
 			var host = Dns.GetHostEntry(Dns.GetHostName());
 			foreach (var ip in host.AddressList)
 			{
@@ -90,16 +90,16 @@ namespace APSWCWEBAPIAPP.Services
 		{
 			try
 			{
-				IHttpContextAccessor _httpContextAccessor = null;
 				string userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
 				return userAgent;
 			}
+
 			catch (Exception ex)
+
 			{
 				return "chrome";
 			}
 		}
-
 
 
 	}

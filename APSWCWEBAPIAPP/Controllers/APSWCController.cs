@@ -1,4 +1,5 @@
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -21,6 +22,7 @@ using AuthService;
 using APSWCWEBAPIAPP.DBConnection;
 using Microsoft.EntityFrameworkCore;
 using APSWCWEBAPIAPP.Models;
+using System.Dynamic;
 
 namespace APSWCWEBAPIAPP.Controllers
 {
@@ -444,6 +446,31 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+
+        [HttpPost]
+        [Route("GetPincodeDetails")]
+        public async Task<IActionResult> GetPincodeDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPincodeDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Pincode Details"
+                });
+                return response;
+            }
+        }
+
 
         [HttpGet]
         [Route("GetAreaTypes")]
@@ -1343,6 +1370,135 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
         [HttpPost]
+        [Route("updateWareHouseDetails_ALL")]
+        public async Task<IActionResult> updateWareHouseDetails_ALL(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update WareHouse Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetWeigh_Bridge_Details")]
+        public async Task<IActionResult> GetWeigh_Bridge_Details(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWeigh_Bridge_Details(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveWBDetails")]
+        public async Task<IActionResult> SaveWBDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWBDetailsLogs", "SaveWBDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveWBDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Weigh Bridge Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("InsuranceCmpnywiseDetails")]
+        public async Task<IActionResult> InsuranceCmpnywiseDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.InsuranceCmpnywiseDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Insurance Company Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("SaveWH_InsuranceDetails")]
+        public async Task<IActionResult> SaveWH_InsuranceDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWH_InsuranceDetailsLogs", "SaveWH_InsuranceDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveWH_InsuranceDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save  Warehouse Insurance Details"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        [HttpPost]
         [Route("SaveChangePassword")]
         public async Task<IActionResult> SaveChangePassword(dynamic data)
         {
@@ -1440,29 +1596,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while update Master Details"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("updateWareHouseDetails_ALL")]
-        public async Task<IActionResult> updateWareHouseDetails_ALL(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateWareHouseDetails_alllogs", "UpdateWareHouseDetails_all : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.UpdateWareHouseDetails_all(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Update WareHouse Details"
                 });
                 return response;
             }
@@ -2488,8 +2621,9 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 //string value = EncDecrpt.Decrypt_Data(data);
                 string value = JsonConvert.SerializeObject(data);
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
                 Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveSpaceReservationLogs", "SaveSpaceReservation : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
                 return Ok(await _hel.SaveSpaceReservation(rootobj));
 
             }
@@ -2530,6 +2664,8 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+
 
         [HttpPost]
         [Route("GetVariety_GradeList")]
@@ -2583,7 +2719,6 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("SaveQualityChecking")]
         public async Task<IActionResult> SaveQualityChecking(dynamic data)
@@ -2596,6 +2731,32 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
                 return Ok(await _hel.SaveQualityChecking(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveQuantityChecking")]
+        public async Task<IActionResult> SaveQuantityChecking(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveQuantityCheckingLogs", "SaveQuantityChecking : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveQuantityChecking(rootobj));
 
             }
             catch (Exception)
@@ -3053,7 +3214,7 @@ namespace APSWCWEBAPIAPP.Controllers
             {
                 string value = JsonConvert.SerializeObject(data);
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.TestMail(rootobj));
+                return Ok(await _hel.TestMail1(rootobj));
             }
             catch (Exception)
             {
@@ -3114,6 +3275,54 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("UpdateLayoutApproveorRejectStatus")]
+        public async Task<IActionResult> UpdateLayoutApproveorRejectStatus(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateLayoutConfigurationLogs", "UpdateLayoutStatus : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateLayoutApproveorRejectStatus(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Layout Approve/Reject Status"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetWHDetailsByRM")]
+        public async Task<IActionResult> GetWHDetailsByRM(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWHDetailsByRM(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Warehouse Details"
+                });
+                return response;
+            }
+        }
+
 
         [HttpPost]
         [Route("GetQuantity_contract_Details")]
@@ -3135,6 +3344,60 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("GetWHCapacityDetails")]
+        public async Task<IActionResult> GetWHCapacityDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWHCapacityDetails(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("GetCompartmentlistforleased")]
+        public async Task<IActionResult> GetCompartmentlistforleased(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCompartmentlistforleased(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading Compartment Details"
                 });
                 return response;
             }
@@ -3448,6 +3711,30 @@ namespace APSWCWEBAPIAPP.Controllers
 
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Save Dumping Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetQuantityTokens")]
+        public async Task<IActionResult> GetQuantityTokens(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetQuantityTokens(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Tokens Information"
                 });
                 return response;
             }
@@ -4517,55 +4804,6 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("GetWeigh_Bridge_Details")]
-        public async Task<IActionResult> GetWeigh_Bridge_Details(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-
-            try
-            {
-                //string value = EncDecrpt.Decrypt_Data(data);
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetWeigh_Bridge_Details(rootobj));
-
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while loading Details"
-                });
-                return response;
-            }
-        }
-
-        [HttpPost]
-        [Route("SaveWBDetails")]
-        public async Task<IActionResult> SaveWBDetails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-
-            try
-            {
-                //string value = EncDecrpt.Decrypt_Data(data);
-                string value = JsonConvert.SerializeObject(data);
-                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWBDetailsLogs", "SaveWBDetails : Input Data : " + value));
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.SaveWBDetails(rootobj));
-            }
-            catch (Exception ex)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while Save Weigh Bridge Details"
-                });
-                return response;
-            }
-        }
 
         [HttpPost]
         [Route("PastAttendance_Save")]
@@ -4768,6 +5006,56 @@ namespace APSWCWEBAPIAPP.Controllers
                 {
                     StatusCode = 102,
                     StatusMessage = "Error Occured while Get Issued Files " + ex.Message
+
+                });
+
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateLoanDetails")]
+        public async Task<IActionResult> UpdateLoanDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateLoanDetailsLogs", "UpdateLoanDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateLoanDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Bank Loan Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateLoanRepaymentDetails")]
+        public async Task<IActionResult> UpdateLoanRepaymentDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateLoanRepaymentDetailsLogs", "UpdateLoanRepaymentDetails : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateLoanRepaymentDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Bank Loan Re-payment Details"
                 });
                 return response;
             }
@@ -5961,6 +6249,122 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetWHDetails")]
+        public async Task<IActionResult> GetWHDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWHDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Warehouse Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("DashboardData")]
+        public async Task<IActionResult> DashboardData(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DashboardDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Dashboard Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("HRDashboardData")]
+        public async Task<IActionResult> HRDashboardData(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.HRDashboardDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Dashboard Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetPriorityData")]
+        public async Task<IActionResult> GetPriorityData(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPriorityData(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Priority Register Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetStorageChargesData")]
+        public async Task<IActionResult> GetStorageChargesData(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetStorageChargesData(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Storage Charges Details"
+                });
+                return response;
+            }
+        }
 
         #endregion
 
@@ -6111,6 +6515,33 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("GetSpillageStack")]
+        public async Task<IActionResult> GetSpillageStack(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetSpillageStack(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Stacks Details"
+                });
+                return response;
+            }
+        }
+
         #endregion
 
         #region SERVICE REGISTRAR SR_LeaveLedger_Save
@@ -6763,28 +7194,6 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("GetWHDetails")]
-        public async Task<IActionResult> GetWHDetails(dynamic data)
-        {
-            IActionResult response = Unauthorized();
-            try
-            {
-                //string value = EncDecrpt.Decrypt_Data(data);
-                string value = JsonConvert.SerializeObject(data);
-                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetWHDetails(rootobj));
-            }
-            catch (Exception)
-            {
-                response = Ok(new
-                {
-                    StatusCode = 102,
-                    StatusMessage = "Error Occured while load Warehouse Details"
-                });
-                return response;
-            }
-        }
 
         #region Invoice Masters
 
@@ -6798,7 +7207,7 @@ namespace APSWCWEBAPIAPP.Controllers
                 string value = JsonConvert.SerializeObject(data);
 
                 MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
-                return Ok(await _hel.GetInvoiceDetails(rootobj));
+                return Ok(await _hel.GetInvoiceMasterDetails(rootobj));
             }
             catch (Exception ex)
             {
@@ -7041,7 +7450,6 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
-
         [HttpPost]
         [Route("updateRebatededtails")]
         public IActionResult updateRebatededtails(dynamic data)
@@ -7289,9 +7697,6 @@ namespace APSWCWEBAPIAPP.Controllers
         }
 
 
-
-
-
         [HttpPost]
         [Route("SaveMedicalRequest")]
         public async Task<IActionResult> SaveMedicalRequest(dynamic data)
@@ -7372,8 +7777,129 @@ namespace APSWCWEBAPIAPP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("GetCreditorDebitInvoiceDetails")]
+        public async Task<IActionResult> GetCreditorDebitInvoiceDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCreditorDebitInvoiceDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Invoice List"
+                });
+                return response;
+            }
 
+        }
+
+        [HttpPost]
+        [Route("GetInvoicesList")]
+        public async Task<IActionResult> GetInvoicesList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetInvoicesList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Invoice List"
+                });
+                return response;
+            }
+
+        }
+
+        [HttpPost]
+        [Route("GetInvoiceIDDetails")]
+        public async Task<IActionResult> GetInvoiceIDDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetInvoiceIDDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Invoice Details"
+                });
+                return response;
+            }
+
+        }
+
+        [HttpPost]
+        [Route("SaveDeductionDetails")]
+        public async Task<IActionResult> SaveDeductionDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveDeductionDetailsLogs", "SaveDeductionDetails : Input Data : " + value));
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
+                return Ok(await _hel.SaveDeductionDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Deductions Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetDeductionDetails")]
+        public async Task<IActionResult> GetDeductionDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetDeductionDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Deductions Details"
+                });
+                return response;
+            }
+
+        }
         #endregion
+
 
         #region H & T Contractors
 
@@ -7643,7 +8169,2848 @@ namespace APSWCWEBAPIAPP.Controllers
                 return response;
             }
         }
+
+        #region Hamalies Services Details
+
+        [HttpPost]
+        [Route("SaveHamaliesServices")]
+        public async Task<IActionResult> SaveHamaliesServices(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveHamaliesServicesLogs", "SaveHamaliesServices : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveHamaliesServices(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Hamalies Service  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateHamaliesServices")]
+        public async Task<IActionResult> UpdateHamaliesServices(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateHamaliesServicesLogs", "UpdateHamaliesServices : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.UpdateHamaliesServices(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update Hamalies Service  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHamaliesServices")]
+        public async Task<IActionResult> GetHamaliesServices(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHamaliesServices(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of Hamalies Services"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHMHistoryDetails")]
+        public async Task<IActionResult> GetHMHistoryDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHMHistoryDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get History Of Hamalies Services"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHTContractorsDetails")]
+        public async Task<IActionResult> GetHTContractorsDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHTContractorsDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of H&T Contractors Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHTServicesDetails")]
+        public async Task<IActionResult> GetHTServicesDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHTServicesDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of H&T Services Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveWHHTMapping")]
+        public async Task<IActionResult> SaveWHHTMapping(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveWHHTMappingLogs", "SaveWHHTMapping : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveWHHTMapping(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Warehouse ANd H&T Mapping  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHTMappingDetails")]
+        public async Task<IActionResult> GetHTMappingDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHTMappingDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of H&T Mapping Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHTMapHistoryDetails")]
+        public async Task<IActionResult> GetHTMapHistoryDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHTMapHistoryDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of H&T Mapping History Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHTServicesList")]
+        public async Task<IActionResult> GetHTServicesList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHTServicesList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of H&T Services List"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetHTServicesPrice")]
+        public async Task<IActionResult> GetHTServicesPrice(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHTServicesPrice(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of H&T Services Price"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetWHHTContractors")]
+        public async Task<IActionResult> GetWHHTContractors(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetWHHTContractors(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get Details of Warehouse H&T Contractors Details"
+                });
+                return response;
+            }
+        }
+
+        #endregion
+
+        [HttpPost]
+        [Route("SaveDeadstockApproveDetails")]
+        public async Task<IActionResult> SaveDeadstockApproveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveDeadstockApprovelogs", "SaveDeadstockApprovelogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DeadStockApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("updateDeadstockApproveDetails")]
+        public async Task<IActionResult> updateDeadstockApproveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "updateDeadstockApprovelogs", "updateDeadstockApprovelogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DeadStockupdateApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetDeadstockhistory1")]
+        public async Task<IActionResult> GetDeadstockhistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Historydetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+        #region Warehouse Weight Check Memos
+
+        [HttpPost]
+        [Route("GetPendingWHMemos")]
+        public async Task<IActionResult> GetPendingWHMemos(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetPendingWHMemos(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Warehouse Weight Check Memo  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetCompletedWHMemos")]
+        public async Task<IActionResult> GetCompletedWHMemos(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCompletedWHMemos(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Warehouse Weight Check Memo  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SavePendingWHMemosDetails")]
+        public async Task<IActionResult> SavePendingWHMemosDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePendingWHMemosDetailsLogs", "SavePendingWHMemosDetails , Inpuut Data :  " + jsondata));
+                return Ok(await _hel.SavePendingWHMemosDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = "102",
+                    StatusMessage = "Error Occured while Save  Save Pending Warehouse Weight Memo Details",
+
+                });
+                return response;
+            }
+        }
+
+        #endregion
+
+
+        [HttpPost]
+        [Route("SaveImprestmaster")]
+        public IActionResult SaveImprestmaster(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+
+                var folderName = Path.Combine("imprestmasterLogs");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "imprestmasterLogs", jsondata));
+                return Ok(_hel.SaveImprestparams(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+
+                    StatusCode = "102",
+                    StatusMessage = "Error Occured while Save Master Details",
+
+                });
+                return response;
+            }
+
+        }
+
+
+
+        [HttpPost]
+        [Route("GetDEEODetails")]
+        public async Task<IActionResult> GetDEEODetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.DEEOdetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateImprestmaster")]
+        public IActionResult UpdateImprestmaster(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+
+                var folderName = Path.Combine("UpdateImprestmasterLogs");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                //string mappath = Server.MapPath("UpdateMailMobileFormLogs");
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(pathToSave, "UpdateImprestmasterLogs", jsondata));
+                return Ok(_hel.UpdateImprestparams(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+
+                    StatusCode = "102",
+                    StatusMessage = "Error Occured while Save Master Details",
+
+                });
+                return response;
+            }
+
+        }
+
+
+
+        [HttpPost]
+
+        [Route("SaveServicereqApprovalDetails")]
+        public async Task<IActionResult> SaveServicereqApprovalDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveServicereqApprovalLogs", "SaveServicereqApprovalLogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.SaveServicereqapprovaldetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Approval Information"
+                });
+                return response;
+            }
+        }
+
+        #region Warehouse Manual Existing Stock Entry
+
+        [HttpPost]
+        [Route("GetStocksList")]
+        public async Task<IActionResult> GetStocksList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetStocksList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Stcks Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetDepositorList")]
+        public async Task<IActionResult> GetDepositorList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetDepositorList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Depositor Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetBookingList")]
+        public async Task<IActionResult> GetBookingList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetBookingList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Bookings  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetCommodityList")]
+        public async Task<IActionResult> GetCommodityList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCommodityList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load Commodity  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveExistingStockDetails")]
+        public async Task<IActionResult> SaveExistingStockDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string jsondata = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(jsondata);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveExistingStockDetailsLogs", "SaveExistingStockDetails , Inpuut Data :  " + jsondata));
+                return Ok(await _hel.SaveExistingStockDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+
+                    StatusCode = "102",
+                    StatusMessage = "Error Occured while Save Existing Stock Details",
+
+                });
+                return response;
+            }
+
+        }
+
+        #endregion
+
+        [HttpPost]
+        [Route("SaveemployeeloanApproveDetails")]
+        public async Task<IActionResult> SaveemployeeloanApproveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveemployeeloanApprovelogs", "SaveemployeeloanApprovelogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.saveempapprovalApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("updateemployeeloanApproveDetails")]
+        public async Task<IActionResult> updateemployeeloanApproveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "updateemployeeloanApprovelogs", "updateemployeeloanApprovelogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.loanapprovalupdateApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while update Data"
+                });
+                return response;
+            }
+        }
+
+
+
+
+        [HttpPost]
+        [Route("GetCashBook")]
+        public async Task<IActionResult> GetCashBook(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetCashBook(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("GetHandTReg")]
+        public async Task<IActionResult> GetHandTReg(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetHandTReg(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetInvoiceDepositers")]
+        public async Task<IActionResult> GetInvoiceDepositers(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetInvoiceDepositers(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+
+        [Route("SaveemployeeloanSDetails")]
+        public async Task<IActionResult> SaveemployeeloanSDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveemployeeloanSDetailslogs", "SaveemployeeloanSDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.Saveemployeeloandetais(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save EmployeeLoan Information"
+                });
+                return response;
+            }
+        }
+
+        #region Warehouse Reports
+
+        [HttpPost]
+        [Route("GetFumigationSprayingRegister")]
+        public async Task<IActionResult> GetFumigationSprayingRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetFumigationSprayingRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetTendersList")]
+        public async Task<IActionResult> GetTendersList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveTendersMasterLogs", "SaveTendersLogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
+                return Ok(await _hel.GetTendersList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetGateRegister")]
+        public async Task<IActionResult> GetGateRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetGateRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetReceiptIssueCancellation")]
+        public async Task<IActionResult> GetReceiptIssueCancellation(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetReceiptIssueCancellation(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetGunnyRegister")]
+        public async Task<IActionResult> GetGunnyRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetGunnyRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetDepositorCommodities")]
+        public async Task<IActionResult> GetDepositorCommodities(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetDepositorCommodities(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetAnalysisRegister")]
+        public async Task<IActionResult> GetAnalysisRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetAnalysisRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetJointSampleRegister")]
+        public async Task<IActionResult> GetJointSampleRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetJointSampleRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetDeadStockRegister")]
+        public async Task<IActionResult> GetDeadStockRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetDeadStockRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+        #endregion
+
+        #region Warehouse construction Engg section
+        [HttpPost]
+
+        [Route("SaveFinWHCDetails")]
+        public async Task<IActionResult> SaveFinWHCDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFinWHCDetailsLogs", "SaveFinWHCDetailsLogs : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.SaveWarehousereqdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WH construction Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+
+        [Route("GETFinWHCDetails")]
+        public async Task<IActionResult> GETFinWHCDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                //Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFinWHCDetailsLogs", "SaveFinWHCDetailsLogs : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFinWHCDetailsli(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading WH construction Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetWHRegionslist")]
+        public async Task<IActionResult> GetWHRegionslist()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetWHRegionsli());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Regions"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFWHDistrictlist")]
+        public async Task<IActionResult> GetFWHDistrictlist(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                return Ok(await _hel.GetFWHDistrictsli(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Districts"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetFWHRUlist")]
+        public async Task<IActionResult> GetFWHRUlist()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetFWHRUli());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load RuralUrban"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFWHMandallist")]
+        public async Task<IActionResult> GetFWHMandallist(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                return Ok(await _hel.GetFWHMandalli(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Mandals"
+                });
+                return response;
+            }
+        }
+
+        #endregion
+
+        #region Warehouse Construction Loan Details
+
+        [HttpPost]
+        [Route("SaveFWHCLoanDetails")]
+        public async Task<IActionResult> SaveFWHCLoanDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFWHCLoanDetailsLogs", "SaveFWHCLoanDetailsLogs : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+
+                string dd = rootobj.INPUT_01;
+                DateTime LApdDate;
+                string[] formats = { "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+                DateTime.TryParseExact(dd, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out LApdDate);
+
+                rootobj.INPUT_01 = LApdDate.ToString("yyyy-MM-dd");
+
+                string dd14 = rootobj.INPUT_14;
+                DateTime SandDate;
+
+                DateTime.TryParseExact(dd14, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out SandDate);
+
+                rootobj.INPUT_14 = SandDate.ToString("yyyy-MM-dd");
+
+                string dd34 = rootobj.INPUT_34;
+                DateTime CRDDate;
+
+                DateTime.TryParseExact(dd34, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out CRDDate);
+
+                rootobj.INPUT_34 = CRDDate.ToString("yyyy-MM-dd");
+
+                return Ok(await _hel.SaveFWHCLoandetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Loan Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHLInstallmentDetails")]
+        public async Task<IActionResult> GETFWHLInstallmentDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLInstallmentdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+        [HttpPost]
+        [Route("GETFWHLInterestDetails")]
+        public async Task<IActionResult> GETFWHLInterestDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLIntrestdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+
+
+        #endregion
+
+        #region WareHouse Contractor Master Details
+        [HttpPost]
+        [Route("SaveFWHCContractorDetails")]
+        public async Task<IActionResult> SaveFWHCContractorDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFWHCLoanDetailsLogs", "SaveFWHCLoanDetailsLogs : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.SaveFWHCContractordetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Contractor Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+
+        [Route("GETFWHCTDetails")]
+        public async Task<IActionResult> GETFWHCTDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                //Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFinWHCDetailsLogs", "SaveFinWHCDetailsLogs : Input Data : " + value));
+                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                return Ok(await _hel.GETFWHCTDetailsli(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while loading WH construction Information"
+                });
+                return response;
+            }
+        }
+        #endregion
+
+        #region WareHouse Loan Provided Bank Details MAster
+        [HttpPost]
+        [Route("SaveFWHBANKMasterDetails")]
+        public async Task<IActionResult> SaveFWHBANKMasterDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFWHBANKMasterDetails", "SaveFWHBANKMasterDetails : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.SaveFWHBANKMasterdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GETFWHBANKMasterDetails")]
+        public async Task<IActionResult> GETFWHBANKMasterDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHBANKMasterdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHBANKList")]
+        public async Task<IActionResult> GETFWHBANKList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLBANKList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHBANKDetailsList")]
+        public async Task<IActionResult> GETFWHBANKDetailsList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLBANKDetailsList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHNOOFQUATERS")]
+        public async Task<IActionResult> GETFWHNOOFQUATERS(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLNOQUATERS(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHREQUESTList")]
+        public async Task<IActionResult> GETFWHREQUESTList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLBANKDetailsList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveFWHLREPAYDETAILS")]
+        public async Task<IActionResult> SaveFWHLREPAYDETAILS(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFWHLREPAYDETAILS", "SaveFWHLREPAYDETAILS : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.SaveFWHLREPAYDETAILS(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WH Loan Repay Information"
+                });
+                return response;
+            }
+        }
+
+
+        #endregion
+
+
+        #region WareHouse CT Loan Approval and Reject details
+
+        [HttpPost]
+        [Route("GETFWHLREQUESTLIST")]
+        public async Task<IActionResult> GETFWHLREQUESTLIST(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                return Ok(await _hel.GETFWHLREQUESTLI(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Mandals"
+                });
+                return response;
+            }
+        }
+        #endregion
+
+
+        #region WH CT Loan Repay Details
+        [HttpPost]
+        [Route("GETFWHLDRPLIST")]
+        public async Task<IActionResult> GETFWHLDRPLIST(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+                return Ok(await _hel.GETFWHLDRPLIST(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Mandals"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHLSDATALIST")]
+        public async Task<IActionResult> GETFWHLSDATALIST(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                warehousereq rootobj = JsonConvert.DeserializeObject<warehousereq>(value);
+
+                string dd = rootobj.INPUT_03;
+                DateTime startDate;
+                string[] formats = { "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+                DateTime.TryParseExact(dd, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out startDate);
+
+                rootobj.INPUT_03 = startDate.ToString("yyyy-MM-dd");
+                return Ok(await _hel.GETFWHLSDATALIST(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Mandals"
+                });
+                return response;
+            }
+        }
+        #endregion
+
+        [HttpPost]
+        [Route("GETFWHLoanDetails")]
+        public async Task<IActionResult> GETFWHLoanDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLoanDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHLEMIDetails")]
+        public async Task<IActionResult> GETFWHLEMIDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLEMIDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UPDFWHBANKMasterDetails")]
+        public async Task<IActionResult> UPDFWHBANKMasterDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UPDFWHBANKMasterDetails", "UPDFWHBANKMasterDetails : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.UPDFWHBANKMasterdetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update WHC Bank Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("WHSaveemployeeloanApproveDetails")]
+        public async Task<IActionResult> WHSaveemployeeloanApproveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "WHSaveemployeeloanApprovelogs", "WHSaveemployeeloanApprovelogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.WHsaveempapprovalApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Data"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("WHupdateemployeeloanApproveDetails")]
+        public async Task<IActionResult> WHupdateemployeeloanApproveDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "WHupdateemployeeloanApprovelogs", "WHupdateemployeeloanApprovelogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.WHloanapprovalupdateApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while update Data"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetWhhistory")]
+        public async Task<IActionResult> GetWhhistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.whHistorydetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("servicerequestRefunddetails")]
+        public async Task<IActionResult> servicerequestRefunddetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "servicerequestRefunddetailslogs", "servicerequestRefunddetailslogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.servicePayrefund(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHLPREEMICHAT")]
+        public async Task<IActionResult> GETFWHLPREEMICHAT(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                string dd = rootobj.INPUT_01;
+                DateTime startDate;
+                string[] formats = { "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+                DateTime.TryParseExact(dd, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out startDate);
+
+                rootobj.INPUT_01 = startDate.ToString("yyyy-MM-dd");
+                return Ok(await _hel.GETFWHPREEMICHAT(rootobj));
+
+                //if (rootobj.INPUT_05 == "NIDA")
+                //{
+                //    return Ok(await _hel.GETFWHPREEMICHAT(rootobj));
+                //}
+                //else
+                //{
+                //    return Ok(await _hel.GETFWHPREWIFEMICHAT(rootobj));
+                //}
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHLEMPREQHIST")]
+        public async Task<IActionResult> GETFWHLEMPREQHIST(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLEMPREQHIST(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SendOTP")]
+        public async Task<IActionResult> SendOTP(dynamic data)
+        {
+
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
+                return Ok(await _hel.SendSMS(rootobj));
+
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while sending OTP"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("GenerateOTP")]
+        public async Task<IActionResult> GenerateOTP(dynamic data)
+        {
+
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
+                return Ok(await _hel.GenerateOTP(rootobj));
+
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while sending OTP"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("VerifyOTP")]
+        public async Task<IActionResult> VerifyOTP(dynamic data)
+        {
+
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
+                return Ok(await _hel.VerifyOTP(rootobj));
+
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while sending OTP"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveFWHLFDDETAILS")]
+        public async Task<IActionResult> SaveFWHLFDDETAILS(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveFWHLFDDETAILS", "SaveFWHLFDDETAILS : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.SaveFWHLFDDETAILS(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save WHC Bank FD Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHLFDDetails")]
+        public async Task<IActionResult> GETFWHLFDDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLFDDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+
+
+        //[HttpPost]
+        //[Route("VerifyOTP")]
+        //public async Task<IActionResult> VerifyOTP(dynamic data)
+        //{
+
+        //    IActionResult response = Unauthorized();
+
+        //    try
+        //    {
+        //        string value = JsonConvert.SerializeObject(data);
+        //        MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+
+        //        return Ok(await _hel.VerifyOTPNumber(rootobj));
+
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        response = Ok(new
+        //        {
+        //            StatusCode = 102,
+        //            StatusMessage = "Error Occured while sending OTP"
+        //        });
+        //        return response;
+        //    }
+        //}
+
+
+
+        [HttpPost]
+        [Route("GETFWHLFDMonths")]
+        public async Task<IActionResult> GETFWHLFDMonths(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLFDMonths(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Fetching data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UPDFWHLFDDETAILS")]
+        public async Task<IActionResult> UPDFWHLFDDETAILS(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UPDFWHLFDDETAILS", "UPDFWHLFDDETAILS : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.UPDFWHLFDDETAILS(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update WHC Bank FD Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetImprestDetails")]
+        public async Task<IActionResult> GetImprestDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.whImprestdetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting Data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveimprestreqDetails")]
+        public async Task<IActionResult> SaveimprestreqDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "saveImprestApprovallogs", "saveImprestApprovallogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.saveImprestApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Data"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("updateimprestapproval")]
+        public async Task<IActionResult> updateimprestapproval(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "updateimprestapprovallogs", "updateimprestapprovallogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.updateimprestapproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while update Data"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SaveimprestApprovalDetails")]
+        public async Task<IActionResult> SaveimprestApprovalDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveimprestApprovalDetailsLogs", "SaveimprestApprovalDetailsLogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Saveimprestpprovaldetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save Approval Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveimprestpushbackDetails")]
+        public async Task<IActionResult> Saveimprestdetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "Saveimprestpushbacklogs", "Saveimprestpushbacklogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.savepushbackImprestApproval(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Data"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetIMPRESThistory")]
+        public async Task<IActionResult> GetIMPRESThistory(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.Historydetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Getting History details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("Getregionsections")]
+        public async Task<IActionResult> Getregionsections(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetregsecDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load  Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("UPDFWHCONTRDETAILS")]
+        public async Task<IActionResult> UPDFWHCONTRDETAILS(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UPDFWHCONTRDETAILS", "UPDFWHCONTRDETAILS : Input Data : " + value));
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.UPDFWHCONTRDETAILS(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update WH Contractor Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SaveSendDetails")]
+        public async Task<IActionResult> SaveSendDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SendDetailslogs", "SendDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.SendDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SubmitCancelDetails")]
+        public async Task<IActionResult> SubmitCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "CancelDetailslogs", "CancelDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.CancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+
+        [Route("SavePushbackDetails")]
+        public async Task<IActionResult> SavePushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SavePushbacklogs", "SavePushbacklogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.pushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SaveserviceSendDetails")]
+        public async Task<IActionResult> SaveserviceSendDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveserviceSendlogs", "SaveserviceSendlogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.serviceSendDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Send the Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SubmitserviceCancelDetails")]
+        public async Task<IActionResult> SubmitserviceCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "serviceCancelDetailslogs", "serviceCancelDetailslogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.serviceCancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+
+        [Route("SaveservicePushbackDetails")]
+        public async Task<IActionResult> SaveservicePushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveservicePushbacklogs", "SaveservicePushbacklogs : Input Data : " + value));
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.servicepushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while pushback the Information"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+
+        [Route("SaveloanSendDetails")]
+        public async Task<IActionResult> SaveloanSendDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveloanSendlogs", "SaveloanSendlogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.loanSendDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Send the Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+
+        [Route("SubmitloanCancelDetails")]
+        public async Task<IActionResult> SubmitloanCancelDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SubmitloanCancelDetails", "SubmitloanCancelDetails : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.LoanCancelDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Save the Information"
+                });
+                return response;
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+
+        [Route("SaveloanPushbackDetails")]
+        public async Task<IActionResult> SaveloanPushbackDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SaveloanPushbackDetailslogs", "SaveloanPushbackDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.LoanpushbackDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while pushback the Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+
+        [Route("SactionDetails")]
+        public async Task<IActionResult> SactionDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "SactionDetailslogs", "SactionDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.InstallMentDetails(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Get the Information"
+                });
+                return response;
+            }
+        }
+        [HttpPost]
+
+        [Route("UpdateSactionDetails")]
+        public async Task<IActionResult> UpdateSactionDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "UpdateSactionDetailslogs", "UpdateSactionDetailslogs : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.DetailsUpdate(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Update the Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GETFWHWIFLOANLIST")]
+        public async Task<IActionResult> GETFWHwiflOANList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.GETFWHLWIFLOANList(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load WH WIF Loan Information"
+                });
+                return response;
+            }
+        }
+        [HttpGet]
+        [Route("GetHeadOfficesList")]
+        public async Task<IActionResult> GetHeadOfficesList()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetHeadOfficesList());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load HeadOffices Details",
+
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("WeigbBridgeWeightCapture")]
+        public async Task<IActionResult> WeigbBridgeWeightCapture(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                string value = JsonConvert.SerializeObject(data);
+                WHLoancl rootobj = JsonConvert.DeserializeObject<WHLoancl>(value);
+                return Ok(await _hel.WeigbBridgeWeightCapture(rootobj));
+            }
+            catch (Exception ex)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Load WH WIF Loan Information"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetTechnicalDeadStockRegister")]
+        public async Task<IActionResult> GetTechnicalDeadStockRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetTechnicalDeadStockRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetAckRegister")]
+        public async Task<IActionResult> GetAckRegister(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetAckRegister(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetInspectionYears")]
+        public async Task<IActionResult> GetInspectionYears()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetInspectionYears_web());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Inspection Years",
+
+                });
+                return response;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetInspectionMonths")]
+        public async Task<IActionResult> GetInspectionMonths()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetInspectionMonths());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Inspection Months",
+
+                });
+                return response;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetInsRegions")]
+        public async Task<IActionResult> GetRegions()
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                return Ok(await _hel.GetRegions());
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Region Details",
+
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetDistandWHType")]
+        public async Task<IActionResult> GetDistandWHType(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetDistandWHType(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Details"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetMonthWiseAbstract")]
+        public async Task<IActionResult> GetMonthWiseAbstract(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetMonthWiseAbstract(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Month wise Abstract Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetAnnualInspectionPlan")]
+        public async Task<IActionResult> GetAnnualInspectionPlan(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetAnnualInspectionPlan(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Annual Inspection Plan Details"
+                });
+                return response;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("GetScheduleDetails")]
+        public async Task<IActionResult> GetScheduleDetails(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetScheduleDetails(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Inspection Scheduled Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetQuestionariesResponse")]
+        public async Task<IActionResult> GetQuestionariesResponse(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetQuestionariesResponse(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Questionaries and Response Details"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetImagesVideosList")]
+        public async Task<IActionResult> GetImagesVideosList(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetImagesVideosList(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load Inspection Images and Videos"
+                });
+                return response;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GetATRStatusResponse")]
+        public async Task<IActionResult> GetATRStatusResponse(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                MasterSp rootobj = JsonConvert.DeserializeObject<MasterSp>(value);
+                return Ok(await _hel.GetATRStatusResponse(rootobj));
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while load ATR Response List"
+                });
+                return response;
+            }
+        }
+
+        [HttpPost]
+        [Route("DepositorSaveSpaceReservation")]
+        public async Task<IActionResult> DepositorSaveSpaceReservation(dynamic data)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                //string value = EncDecrpt.Decrypt_Data(data);
+                string value = JsonConvert.SerializeObject(data);
+                Task WriteTask = Task.Factory.StartNew(() => Logfile.Write_Log(saPathToSave, "DepositorSaveSpaceReservationLogs", "DepositorSaveSpaceReservation : Input Data : " + value));
+                EmployeeMasterSp rootobj = JsonConvert.DeserializeObject<EmployeeMasterSp>(value);
+                return Ok(await _hel.DepositorSaveSpaceReservation(rootobj));
+
+            }
+            catch (Exception)
+            {
+                response = Ok(new
+                {
+                    StatusCode = 102,
+                    StatusMessage = "Error Occured while Saveing Details"
+                });
+                return response;
+            }
+        }
+
     }
 
 }
-
